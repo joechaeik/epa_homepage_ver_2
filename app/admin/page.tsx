@@ -1,16 +1,20 @@
 import Link from "next/link";
 import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
-import { chatGPTSignInPath, chatGPTSignOutPath } from "@/app/chatgpt-auth";
 import AdminWorkspace from "@/components/admin/workspace";
-import { ArrowUpRight, ShieldCheck, ArrowLeft } from "lucide-react";
+import { ShieldCheck, ArrowLeft } from "lucide-react";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "관리자",
   robots: { index: false, follow: false },
 };
-export default async function AdminPage() {
-  const { user, allowed, local } = await adminIdentity();
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ login?: string }>;
+}) {
+  const { user, allowed, local, passwordLoginAvailable } = await adminIdentity();
+  const loginFailed = (await searchParams).login === "failed";
   if (!allowed)
     return (
       <main lang="ko" className="admin-login">
@@ -31,39 +35,26 @@ export default async function AdminPage() {
             논문과 소식, 구성원, 사진부터
             <br />홈 화면까지 한 곳에서 업데이트하세요.
           </p>
-          {!user ? (
+          {!user && passwordLoginAvailable ? (
             <>
-              <a
-                className="button"
-                target="_top"
-                href={chatGPTSignInPath("/admin")}
-              >
-                ChatGPT로 관리자 로그인 <ArrowUpRight size={18} />
-              </a>
+              <form action="/api/admin/session" method="post" className="admin-password-form">
+                <label htmlFor="admin-password">관리자 비밀번호</label>
+                <input id="admin-password" name="password" type="password" autoComplete="current-password" required />
+                {loginFailed ? <p className="form-error">비밀번호를 확인해 주세요.</p> : null}
+                <button className="button" type="submit">관리자 로그인</button>
+              </form>
               <p className="login-note">
-                지정된 관리자 계정만 콘텐츠를 수정할 수 있습니다.
-                {import.meta.env.DEV
-                  ? " 이 로컬 미리보기에서는 테스트 관리자 계정으로 로그인됩니다."
-                  : ""}
+                사이트 소유자가 설정한 비밀번호로 로그인하세요.
               </p>
             </>
+          ) : !user ? (
+            <p className="login-note">관리자 비밀번호가 아직 배포 환경에 설정되지 않았습니다.</p>
           ) : (
             <>
               <p className="form-error">
                 로그인한 계정은 관리자로 등록되지 않았습니다.
               </p>
-              <p className="login-note">
-                사이트 소유자가 배포 환경에 이 계정의 관리자 권한을 지정해야
-                합니다.
-              </p>
-              <code className="identity-code">{user.userId}</code>
-              <a
-                className="text-link"
-                target="_top"
-                href={chatGPTSignOutPath("/admin")}
-              >
-                다른 계정으로 로그인
-              </a>
+              <p className="login-note">관리자 비밀번호로 로그인해 주세요.</p>
             </>
           )}
           <Link className="login-back" href="/">

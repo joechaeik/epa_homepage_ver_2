@@ -479,8 +479,7 @@ export default function AdminWorkspace({
             </div>
             <a
               aria-label="로그아웃"
-              href="/signout-with-chatgpt?return_to=/admin"
-              target="_top"
+              href="/api/admin/session"
             >
               <LogOut size={16} />
             </a>

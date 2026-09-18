@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "epa-homepage-ver-2",
+  "main": "dist/server/index.js",
+  "assets": { "directory": "dist/client" },
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "epa-homepage-ver-2-review",
+      "database_id": "37834724-9c98-4fb7-bce5-4b8533497a4a",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}

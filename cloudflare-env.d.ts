@@ -3,5 +3,6 @@ declare namespace Cloudflare {
     DB?: D1Database;
     BUCKET?: R2Bucket;
     EPA_ADMIN_USER_ID?: string;
+    EPA_ADMIN_PASSWORD?: string;
   }
 }
