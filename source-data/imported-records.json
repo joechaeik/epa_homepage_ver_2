@@ -1,0 +1,399 @@
+[
+  {
+    "id": "pub-001",
+    "kind": "publications",
+    "data": {
+      "title": "Materials Design for Environmental Technologies: Advancing Water and Air Purification Through Functional Materials Innovation",
+      "journal": "Advanced Functional Materials",
+      "authors": "B. Weng, S. Wang, Y. Zheng, W. Choi, J. Caro",
+      "citation": "Advanced Functional Materials, 2026, 36, 55, e00082",
+      "doi": "10.1002/adfm.202600082",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": true,
+      "sortOrder": 0,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-002",
+    "kind": "publications",
+    "data": {
+      "title": "Dual-Functional Photocatalyst-Embedded Hydrovoltaic Nanogenerator for Coupled Electricity Generation and Water Purification",
+      "journal": "ACS ES&T Engineering",
+      "authors": "M. Choi, M. Lee, M. Chung, J. Yoon, P. Zhang, W. Choi, J. Jang, S. Weon",
+      "citation": "ACS ES&T Engineering, (2026), 6, 7, 1982-1993",
+      "doi": "10.1021/acsestengg.6c00228",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": true,
+      "sortOrder": 1,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-003",
+    "kind": "publications",
+    "data": {
+      "title": "Gradient-Driven Galvanic Effect Enables Self-Sustained Peroxymonosulfate Activation in a Stacked Flow Reactor",
+      "journal": "Environmental Science & Technology",
+      "authors": "Q. Zeng, J. Ni, Q. Zhang, P. Cao, C. Hu, X. Huang, B. Ma, Y. Liu, W. Choi",
+      "citation": "Environ. Sci. Technol. (2026) 60 (26): 18900–18911",
+      "doi": "10.1021/acs.est.6c01180",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": true,
+      "sortOrder": 2,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-004",
+    "kind": "publications",
+    "data": {
+      "title": "Lattice-Embedded Single-Atom Sr–O–Ni Channels Enable Photon–Phonon Coupling for Photothermal N2O Decomposition",
+      "journal": "Journal of the American Chemical Society",
+      "authors": "Y. Gao, H. Chen, C. Wang, K. Yin, X. Weng, W. Choi, Z. Wu, X. Wu",
+      "citation": "Journal of the American Chemical Society, (2026), 148, 30, 31989-32002",
+      "doi": "10.1021/jacs.6c05820",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 3,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-005",
+    "kind": "publications",
+    "data": {
+      "title": "Three-way photocatalytic redox conversions: Removal of organic contaminant and Cr (VI) with concurrent H2 production achieved in aerated condition",
+      "journal": "Journal of Hazardous Materials",
+      "authors": "H. Bae, Y. Cho, C. Kim, S. Weon, J. Lim, W. Choi",
+      "citation": "Journal of Hazardous Materials, (2026), 513, 15, 142499",
+      "doi": "10.1016/j.jhazmat.2026.142499",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 4,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-006",
+    "kind": "publications",
+    "data": {
+      "title": "Biomass for photocatalysis, photocatalysis for biomass: Two-way route of sustainable use of biomass",
+      "journal": "Applied Catalysis B: Environment and Energy",
+      "authors": "A. Naseri, M. Samadi, M. J. Nosratpour, D. Vidyasagar, A. Z. Moshfegh, W. Choi",
+      "citation": "Applied Catalysis B: Environment and Energy, (2026), 393, 126768",
+      "doi": "10.1016/j.apcatb.2026.126768",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 5,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-007",
+    "kind": "publications",
+    "data": {
+      "title": "Tunable Defect Chemistry in Nonstoichiometric WOx (0 < x < 3) Enables Diverse Catalytic Reactions",
+      "journal": "Journal of the American Chemical Society",
+      "authors": "B. Kim, K. Cho, W. Kim, W. Choi",
+      "citation": "Journal of the American Chemical Society, (2026), 148, 15, 15683–15693",
+      "doi": "10.1021/jacs.5c20967",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 6,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-008",
+    "kind": "publications",
+    "data": {
+      "title": "Foundations and Frontiers in Environmental Engineering: A Collection of Reviews & Perspectives",
+      "journal": "ACS ES&T Engineering",
+      "authors": "W. Choi, B. P. Chaplin, F. Dong, I. Lo, J. Kim, M. Kumar, R. Nerenberg, G. F. Wells, K. Gupta",
+      "citation": "ACS ES&T Engineering, (2026), 6, 4, 1259–1260",
+      "doi": "10.1021/acsestengg.6c00213",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 7,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-009",
+    "kind": "publications",
+    "data": {
+      "title": "Preillumination Boosts Photon Utilization Efficiency in CO Oxidation over PtOx Supported Catalysts",
+      "journal": "ACS Catalysis",
+      "authors": "S. Weon, B. Kim, M. Chung, D. Jang, W. Jeon, W. Kim, W. Choi",
+      "citation": "ACS Catalysis, (2026), 16, 6, 5570–5581",
+      "doi": "10.1021/acscatal.5c07686",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 8,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "pub-010",
+    "kind": "publications",
+    "data": {
+      "title": "Surface-Engineered WO3 Enables Photocatalytic Mineralization of Toluene under Visible Light by Boosting Mobile OH Radicals",
+      "journal": "ACS ES&T Engineering",
+      "authors": "W. Jeon, S. S. Subramanian, E. Hong, S. Weon, G. Gu, W. Choi",
+      "citation": "ACS EST Engg. (2026), 6, 3, 1172–1183",
+      "doi": "10.1021/acsestengg.5c01076",
+      "year": 2026,
+      "source": "https://epa.kentech.ac.kr/home",
+      "featured": false,
+      "sortOrder": 9,
+      "category": "Journal article"
+    }
+  },
+  {
+    "id": "photo-1",
+    "kind": "photos",
+    "data": {
+      "title": "2025 EPA lab seminar day 3",
+      "image": "/images/lab-1.jpg",
+      "imageAlt": "2025 EPA lab seminar day 3",
+      "category": "Seminars",
+      "year": 2025,
+      "sortOrder": 1,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": true
+    }
+  },
+  {
+    "id": "photo-2",
+    "kind": "photos",
+    "data": {
+      "title": "2025 EPA lab seminar day 2",
+      "image": "/images/lab-2.jpg",
+      "imageAlt": "2025 EPA lab seminar day 2",
+      "category": "Seminars",
+      "year": 2025,
+      "sortOrder": 2,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": false
+    }
+  },
+  {
+    "id": "photo-3",
+    "kind": "photos",
+    "data": {
+      "title": "2025 EPA lab seminar day 1",
+      "image": "/images/lab-3.jpg",
+      "imageAlt": "2025 EPA lab seminar day 1",
+      "category": "Seminars",
+      "year": 2025,
+      "sortOrder": 3,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": false
+    }
+  },
+  {
+    "id": "photo-4",
+    "kind": "photos",
+    "data": {
+      "title": "2025 group photo(cafe madang)",
+      "image": "/images/lab-4.jpg",
+      "imageAlt": "2025 group photo(cafe madang)",
+      "category": "Lab life",
+      "year": 2025,
+      "sortOrder": 4,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": true
+    }
+  },
+  {
+    "id": "photo-5",
+    "kind": "photos",
+    "data": {
+      "title": "2025 Teachers' day",
+      "image": "/images/lab-5.jpg",
+      "imageAlt": "2025 Teachers' day",
+      "category": "Lab life",
+      "year": 2025,
+      "sortOrder": 5,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": false
+    }
+  },
+  {
+    "id": "photo-6",
+    "kind": "photos",
+    "data": {
+      "title": "2025 Group photo",
+      "image": "/images/lab-6.jpg",
+      "imageAlt": "2025 Group photo",
+      "category": "Lab life",
+      "year": 2025,
+      "sortOrder": 6,
+      "source": "https://epa.kentech.ac.kr/board_4_2",
+      "featured": true
+    }
+  },
+  {
+    "id": "person-choi",
+    "kind": "people",
+    "data": {
+      "title": "Wonyong Choi",
+      "role": "Director & Distinguished Professor",
+      "category": "Principal investigator",
+      "image": "/images/wonyong-choi.jpg",
+      "imageAlt": "Professor Wonyong Choi",
+      "email": "wchoi@kentech.ac.kr",
+      "summary": "Environmental & Climate Technology, Korea Institute of Energy Technology (KENTECH).",
+      "body": "Professor Wonyong Choi leads the Eco-friendly Photoenergy Application Laboratory. His research explores photoenergy applications, photocatalysis, and environmental chemistry.",
+      "link": "https://orcid.org/0000-0003-1801-9386",
+      "source": "https://epa.kentech.ac.kr/mboard_3_1",
+      "sortOrder": 0,
+      "featured": true
+    }
+  },
+  {
+    "id": "person-5175",
+    "kind": "people",
+    "data": {
+      "title": "Minsuk Song",
+      "role": "PhD Integrated Course",
+      "category": "Graduate students",
+      "summary": "Photoelectrochemical Aplication",
+      "email": "songalstjr@kentech.ac.kr",
+      "image": "/images/member-5175.jpg",
+      "imageAlt": "Minsuk Song",
+      "source": "https://epa.kentech.ac.kr/mboard_3_2",
+      "sortOrder": 1
+    }
+  },
+  {
+    "id": "person-5194",
+    "kind": "people",
+    "data": {
+      "title": "Gahyeon Yoon",
+      "role": "Master's and PhD Integrated Course",
+      "category": "Graduate students",
+      "summary": "Photoelectrochemical Reactions for Water Treatment and Energy Production",
+      "email": "yoongahyeon@kentech.ac.kr",
+      "image": "/images/member-5194.jpg",
+      "imageAlt": "Gahyeon Yoon",
+      "source": "https://epa.kentech.ac.kr/mboard_3_2",
+      "sortOrder": 2
+    }
+  },
+  {
+    "id": "person-5199",
+    "kind": "people",
+    "data": {
+      "title": "Ho-Sub Bae",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "Photoelectrochemical CO2 conversion",
+      "email": "ilho9078@postech.ac.kr",
+      "image": "/images/member-5199.jpg",
+      "imageAlt": "Ho-Sub Bae",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 3
+    }
+  },
+  {
+    "id": "person-5201",
+    "kind": "people",
+    "data": {
+      "title": "Zhao Shen",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "photocatalytic NO removal",
+      "email": "shenzhao@kentech.ac.kr",
+      "image": "/images/member-5201.jpg",
+      "imageAlt": "Zhao Shen",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 4
+    }
+  },
+  {
+    "id": "person-5203",
+    "kind": "people",
+    "data": {
+      "title": "Donglai Pan",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "electrocatalysis CO2/NOx conversion",
+      "email": "pandonglai@kentech.ac.kr",
+      "image": "/images/member-5203.jpg",
+      "imageAlt": "Donglai Pan",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 5
+    }
+  },
+  {
+    "id": "person-5205",
+    "kind": "people",
+    "data": {
+      "title": "Wu Yaohua",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "Ice chemistry",
+      "email": "yaohuawu1@gmail.com",
+      "image": "/images/member-5205.jpg",
+      "imageAlt": "Wu Yaohua",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 6
+    }
+  },
+  {
+    "id": "person-5206",
+    "kind": "people",
+    "data": {
+      "title": "Yin Xu",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "solar driven nitrogen conversion",
+      "email": "yinxu@kentech.ac.kr",
+      "image": "/images/member-5206.jpg",
+      "imageAlt": "Yin Xu",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 7
+    }
+  },
+  {
+    "id": "person-5213",
+    "kind": "people",
+    "data": {
+      "title": "Jenny Lee",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "Researcher",
+      "email": "jenny@kentech.ac.kr",
+      "image": "/images/member-5213.jpg",
+      "imageAlt": "Jenny Lee",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 8
+    }
+  },
+  {
+    "id": "person-5214",
+    "kind": "people",
+    "data": {
+      "title": "Chaeik joe",
+      "role": "Researcher",
+      "category": "Researchers",
+      "summary": "Researcher",
+      "email": "chaeikjoe@kentech.ac.kr",
+      "image": "/images/member-5214.jpg",
+      "imageAlt": "Chaeik joe",
+      "source": "https://epa.kentech.ac.kr/mboard_3_3",
+      "sortOrder": 9
+    }
+  }
+]
