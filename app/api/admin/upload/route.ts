@@ -1,9 +1,10 @@
 import { apiError, requireAdmin } from "@/lib/admin-auth";
 import { bucket, database, HttpError } from "@/lib/store";
-import { boundedBody } from "@/lib/request-body";
+import { boundedBody, discardRequestBody } from "@/lib/request-body";
 export async function POST(request: Request) {
   try {
     await requireAdmin(request);
+    bucket(); // Report unavailable uploads before reading a large body.
     const limit = 10 * 1024 * 1024;
     if (
       !request.headers.get("content-type")?.startsWith("multipart/form-data;")
@@ -67,6 +68,7 @@ export async function POST(request: Request) {
       { status: 201 },
     );
   } catch (e) {
+    await discardRequestBody(request);
     return apiError(e);
   }
 }

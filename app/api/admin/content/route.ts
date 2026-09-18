@@ -13,7 +13,7 @@ import {
   kinds,
   settingsSchema,
 } from "@/lib/content-model";
-import { boundedBody } from "@/lib/request-body";
+import { boundedBody, discardRequestBody } from "@/lib/request-body";
 export const dynamic = "force-dynamic";
 export async function GET() {
   try {
@@ -73,6 +73,7 @@ export async function POST(request: Request) {
     }
     return Response.json({ ok: true });
   } catch (e) {
+    await discardRequestBody(request);
     return apiError(e);
   }
 }

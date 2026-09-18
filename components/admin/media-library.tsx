@@ -10,12 +10,14 @@ export default function MediaLibrary({
   onUploaded,
   onSelect,
   only,
+  uploadsEnabled,
 }: {
   media: MediaItem[];
   records: RecordItem[];
   onUploaded: (m: MediaItem) => void;
   onSelect?: (a: Asset) => void;
   only?: "image" | "pdf";
+  uploadsEnabled: boolean;
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +57,7 @@ export default function MediaLibrary({
   );
   return (
     <div className="media-library">
-      <form
+      {uploadsEnabled ? <form
         className="upload-box"
         onSubmit={async (e) => {
           e.preventDefault();
@@ -130,7 +132,10 @@ export default function MediaLibrary({
             {error}
           </p>
         ) : null}
-      </form>
+      </form> : <div className="upload-box" role="status">
+        <strong>새 파일 업로드는 준비 중입니다.</strong>
+        <p>아래 기존 사진을 선택하거나 편집 화면에서 외부 이미지·PDF 주소를 입력할 수 있습니다.</p>
+      </div>}
       <p className="media-count">
         {assets.length}개 파일{onSelect ? " · 사용할 파일을 선택하세요." : ""}
       </p>

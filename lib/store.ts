@@ -17,7 +17,7 @@ export function database() {
   return env.DB;
 }
 export function bucket() {
-  if (!env.BUCKET) throw new Error("Media storage is unavailable.");
+  if (!env.BUCKET) throw new HttpError(503, "새 파일 업로드는 준비 중입니다. 기존 사진이나 외부 파일 주소를 사용해 주세요.");
   return env.BUCKET;
 }
 // Schema is migration-owned. Initial content is inserted once; existing edits are never overwritten.
@@ -127,6 +127,7 @@ export async function adminContent() {
   if (!s) throw new Error("Site settings unavailable.");
   return {
     records: rows.results.map(parseRecord),
+    uploadsEnabled: !!env.BUCKET,
     settings: {
       draft: settingsSchema.parse(JSON.parse(s.draft)),
       published: settingsSchema.parse(JSON.parse(s.published)),

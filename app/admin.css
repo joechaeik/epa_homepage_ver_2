@@ -1,4 +1,9 @@
 /* EPA Lab editorial workspace */
+.admin-password-form { display: grid; gap: 12px; margin-top: 24px; text-align: left; }
+.admin-password-form label { font-size: .875rem; font-weight: 600; }
+.admin-password-form input { width: 100%; padding: 12px 14px; border: 1px solid #cbd8d1; border-radius: 5px; background: white; }
+.admin-password-form input:focus-visible { outline: 2px solid #14664e; outline-offset: 2px; }
+.admin-password-form .button { justify-content: center; width: 100%; }
 .admin-app {
   background: #f5f7f7;
   min-height: 100vh;

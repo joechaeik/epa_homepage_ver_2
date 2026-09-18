@@ -94,6 +94,7 @@ type Data = {
   records: RecordItem[];
   settings: SettingsItem;
   media: MediaItem[];
+  uploadsEnabled: boolean;
   activity: { action: string; target: string; createdAt: string }[];
 };
 type Tab = "dashboard" | "settings" | "media" | Kind;
@@ -477,12 +478,11 @@ export default function AdminWorkspace({
               <strong>{displayName}</strong>
               <span>{local ? "이 컴퓨터의 미리보기" : "사이트 관리자"}</span>
             </div>
-            <a
-              aria-label="로그아웃"
-              href="/api/admin/session"
-            >
-              <LogOut size={16} />
-            </a>
+            {local ? <a aria-label="로그아웃" href="/signout-with-chatgpt?return_to=/admin"><LogOut size={16} /></a> :
+              <form action="/api/admin/session" method="post">
+                <input type="hidden" name="action" value="logout" />
+                <button type="submit" className="icon-button" aria-label="로그아웃"><LogOut size={16} /></button>
+              </form>}
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
@@ -717,6 +717,7 @@ export default function AdminWorkspace({
             ) : null}
             {tab === "media" ? (
               <MediaLibrary
+                uploadsEnabled={data.uploadsEnabled}
                 media={data.media}
                 records={data.records}
                 onUploaded={upload}
@@ -974,6 +975,7 @@ export default function AdminWorkspace({
             </DialogDescription>
           </DialogHeader>
           <MediaLibrary
+            uploadsEnabled={data.uploadsEnabled}
             media={data.media}
             records={data.records}
             onUploaded={upload}

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireChatGPTUser } from "@/app/chatgpt-auth";
+import { redirect } from "next/navigation";
 import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
 import HomePage from "@/components/home-page";
@@ -9,10 +9,9 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 export default async function Preview() {
-  await requireChatGPTUser("/admin/preview");
   const { allowed } = await adminIdentity();
   if (!allowed)
-    return <main className="section">관리자 권한이 필요합니다.</main>;
+    redirect("/admin");
   const data = await adminContent();
   return (
     <>

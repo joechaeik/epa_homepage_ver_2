@@ -73,14 +73,14 @@ npm run backup:local
 
 로컬 개발 서버에서는 Sites의 테스트 로그인으로 관리자 기능을 확인합니다. 비밀번호를 만들 필요가 없습니다. 서버는 이 컴퓨터의 `127.0.0.1`에서만 실행하세요.
 
-운영 인증은 Sites의 ChatGPT 로그인에서 전달하는 신원을 사용하며, `EPA_ADMIN_USER_ID`와 정확히 일치하는 **한 명**만 편집할 수 있습니다. 지금은 해당 값이 비어 있어 운영 빌드에서 관리자 권한을 부여하지 않습니다. 개발용 계정과 쿠키는 운영 빌드에서 관리자 인증으로 인정하지 않습니다.
+Cloudflare 검토 배포는 한 명의 관리자가 비밀번호로 로그인합니다. Worker의 런타임 Secret `EPA_ADMIN_PASSWORD`에 16자 이상의 고유한 임의 비밀번호를 설정하세요. 값이 없거나 짧으면 원격 관리자 로그인이 비활성화됩니다. 비밀번호는 GitHub나 빌드 변수에 넣지 않습니다. 개발용 계정·인증 헤더는 운영 빌드에서 신뢰하지 않습니다.
 
-인증 헤더의 신뢰 경계는 Sites 게이트웨이입니다. Sites를 통해 배포해야 하며, 별도 호스팅으로 바꿀 때는 검증된 인증 시스템을 연결해야 합니다. 공개 Worker에 인증 헤더만 그대로 신뢰하는 형태로 직접 배포하지 마세요.
+로그인은 서명된 HttpOnly/Secure/SameSite 쿠키를 사용하며 세션은 7일 뒤 만료됩니다. 비밀번호 변경은 기존 세션을 무효화합니다. 서버에서 동일 출처 요청과 로그인 빈도를 검사합니다. Cloudflare Access는 교수님 검토 링크 자체를 제한해야 할 때 별도로 설정할 수 있습니다.
 
 배포 시 남은 설정:
 
-1. 운영 관리자 계정의 고정 ID를 `EPA_ADMIN_USER_ID`에 등록.
-2. 호스팅 D1·R2 연결, 마이그레이션 적용, 검토한 로컬 편집 자료와 업로드 이관.
+1. [CLOUDFLARE_REVIEW.ko.md](CLOUDFLARE_REVIEW.ko.md)에 따라 검토용 Worker와 D1을 연결하고 런타임 Secret을 설정.
+2. 로컬 편집 자료와 업로드가 있다면 별도로 이관. R2는 보류 중이며 검토 배포에서는 새 파일 업로드가 비활성화됩니다.
 3. 최종 도메인·내용·이미지 검토 후 `app/layout.tsx`의 검토용 `noindex` 변경.
 4. 외부 환경에서 실제 로그인과 업로드를 최종 확인한 뒤 공개.
 
@@ -94,6 +94,8 @@ Sites의 portable Vinext 기반 React·TypeScript 앱입니다. Cloudflare D1에
 npm run typecheck
 npm run lint
 npm run build
+# 운영 빌드를 별도 로컬 D1에서 검증. 원격 리소스/기존 로컬 데이터는 변경하지 않음.
+npm run verify:review
 # 개발 서버 실행 중, 로컬 테스트용 콘텐츠를 만들고 보관하는 검증
 npm run verify:flows
 ```

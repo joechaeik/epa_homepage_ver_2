@@ -3,6 +3,7 @@ import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
 import AdminWorkspace from "@/components/admin/workspace";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
+import { chatGPTSignInPath } from "@/app/chatgpt-auth";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "관리자",
@@ -14,7 +15,7 @@ export default async function AdminPage({
   searchParams: Promise<{ login?: string }>;
 }) {
   const { user, allowed, local, passwordLoginAvailable } = await adminIdentity();
-  const loginFailed = (await searchParams).login === "failed";
+  const loginStatus = (await searchParams).login;
   if (!allowed)
     return (
       <main lang="ko" className="admin-login">
@@ -40,7 +41,8 @@ export default async function AdminPage({
               <form action="/api/admin/session" method="post" className="admin-password-form">
                 <label htmlFor="admin-password">관리자 비밀번호</label>
                 <input id="admin-password" name="password" type="password" autoComplete="current-password" required />
-                {loginFailed ? <p className="form-error">비밀번호를 확인해 주세요.</p> : null}
+                {loginStatus === "failed" ? <p className="form-error" role="alert">비밀번호를 확인해 주세요.</p> : null}
+                {loginStatus === "limited" ? <p className="form-error" role="alert">로그인 시도가 많습니다. 1분 후 다시 시도해 주세요.</p> : null}
                 <button className="button" type="submit">관리자 로그인</button>
               </form>
               <p className="login-note">
@@ -48,7 +50,8 @@ export default async function AdminPage({
               </p>
             </>
           ) : !user ? (
-            <p className="login-note">관리자 비밀번호가 아직 배포 환경에 설정되지 않았습니다.</p>
+            import.meta.env.DEV ? <a className="button" href={chatGPTSignInPath("/admin")}>로컬 관리자로 로그인</a> :
+            <p className="login-note">관리자 로그인이 아직 설정되지 않았습니다.</p>
           ) : (
             <>
               <p className="form-error">

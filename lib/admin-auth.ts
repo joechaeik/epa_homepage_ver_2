@@ -46,12 +46,17 @@ function equal(left: string, right: string) {
 }
 
 export function passwordLoginAvailable() {
-  return Boolean(env.EPA_ADMIN_PASSWORD);
+  return (env.EPA_ADMIN_PASSWORD?.length ?? 0) >= 16;
+}
+
+export async function verifyAdminPassword(password: string) {
+  if (!passwordLoginAvailable()) return false;
+  return equal(await sign(password, env.EPA_ADMIN_PASSWORD!), await sign(env.EPA_ADMIN_PASSWORD!, env.EPA_ADMIN_PASSWORD!));
 }
 
 export async function createAdminSession() {
   const secret = env.EPA_ADMIN_PASSWORD;
-  if (!secret) throw new HttpError(503, "관리자 로그인이 아직 설정되지 않았습니다.");
+  if (!passwordLoginAvailable() || !secret) throw new HttpError(503, "관리자 로그인이 아직 설정되지 않았습니다.");
   const expiresAt = Math.floor(Date.now() / 1000) + sessionLifetimeSeconds;
   const payload = `v1.${expiresAt}`;
   return `${payload}.${await sign(payload, secret)}`;
@@ -60,7 +65,7 @@ export async function createAdminSession() {
 async function passwordSession(header: string | null): Promise<AdminUser | null> {
   const secret = env.EPA_ADMIN_PASSWORD;
   const value = readCookie(header, sessionName);
-  if (!secret || !value) return null;
+  if (!passwordLoginAvailable() || !secret || !value || !/^v1\.\d{10}\.[A-Za-z0-9_-]{43}$/.test(value)) return null;
   const [version, expires, signature] = value.split(".");
   const payload = `${version}.${expires}`;
   if (version !== "v1" || !/^\d+$/.test(expires) || !signature || Number(expires) < Date.now() / 1000) return null;
@@ -73,13 +78,12 @@ export function sessionCookie(value: string, clear = false) {
 }
 
 export async function adminIdentity() {
-  const chatGPTUser = await getChatGPTUser();
-  const user = chatGPTUser ?? (await passwordSession((await headers()).get("cookie")));
+  // Only local Vite middleware authenticates these headers; they are untrusted
+  // client input on a standalone Cloudflare Worker.
+  const chatGPTUser = import.meta.env.DEV ? await getChatGPTUser() : null;
   const local = import.meta.env.DEV && chatGPTUser?.userId === "local_seedy";
-  const allowed =
-    !!user &&
-    (user.userId === "password-admin" || local ||
-      (!!env.EPA_ADMIN_USER_ID && user.userId === env.EPA_ADMIN_USER_ID));
+  const user = local ? chatGPTUser : await passwordSession((await headers()).get("cookie"));
+  const allowed = !!user;
   return { user, allowed, local: !!local, passwordLoginAvailable: passwordLoginAvailable() };
 }
 export async function requireAdmin(request?: Request) {
