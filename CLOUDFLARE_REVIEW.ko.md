@@ -1,5 +1,11 @@
 # Cloudflare 검토 사이트 설정
 
+검토 사이트: https://epa-homepage-ver-2.joe-chaeik.workers.dev
+
+관리자: https://epa-homepage-ver-2.joe-chaeik.workers.dev/admin
+
+2026-09-21 로컬 콘텐츠 39건·업로드 2개를 이관하고 R2 업로드까지 온라인 검증했습니다. 이제 공유할 내용은 온라인 관리자에서 수정합니다. 관리자 비밀번호는 로컬 백업 폴더에 별도로 보관하며 저장소에 포함하지 않습니다.
+
 ## GitHub 연결 화면
 
 | 항목 | 값 |
@@ -38,7 +44,7 @@ Worker → Settings → Variables and Secrets에서 **런타임 Secret**을 추�
 ## 데이터와 사진
 
 - D1: `epa-homepage-ver-2-review` (`37834724-9c98-4fb7-bce5-4b8533497a4a`)
-- R2: 보류. 새 파일 업로드는 비활성화하며 기존 사진/외부 주소를 사용합니다.
+- R2: `epa-homepage-ver-2-media`, Worker 바인딩 이름 `BUCKET`. Standard 저장소를 사용하며 버킷 자체의 공개 접근은 비활성화합니다. 파일은 사이트의 `/api/media/:id` 경로로 제공됩니다.
 - GitHub: 화면·기능 코드, 초기 콘텐츠, 포함된 사진을 보관합니다.
 - 온라인 관리자 편집: D1에 저장되며 공개 반영만으로 링크에 반영됩니다.
 - 로컬 관리자 편집: 이 컴퓨터의 D1에만 저장됩니다. Git push로 이관되지 않습니다.
@@ -47,4 +53,4 @@ Worker → Settings → Variables and Secrets에서 **런타임 Secret**을 추�
 
 ## 로컬 운영 빌드 검증
 
-`npm run build` 다음 `npm run verify:review`를 실행합니다. 임시 비밀번호와 별도 로컬 D1을 사용하고 R2는 연결하지 않습니다. 테스트 서버는 종료 시 닫히며 원격 Cloudflare 리소스는 변경하지 않습니다.
+`npm run build` 다음 `npm run verify:review -- --with-r2`를 실행합니다. 임시 비밀번호와 별도 로컬 D1·R2를 사용해 업로드까지 검사합니다. `npm run verify:review`는 R2가 없는 경우의 안내를 검사합니다. 테스트 서버는 종료 시 닫히며 원격 Cloudflare 리소스는 변경하지 않습니다.

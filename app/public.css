@@ -811,6 +811,7 @@
   margin-top: 13px;
 }
 .inquiry-form {
+  align-self: start;
   padding: 32px;
   background: #f3f7f4;
   border: 1px solid #e1ebe3;

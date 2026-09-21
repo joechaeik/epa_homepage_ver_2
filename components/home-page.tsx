@@ -1,3 +1,4 @@
+import Hero from "./hero";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -40,29 +41,7 @@ export default function HomePage({
     .slice(0, 3);
   return (
     <SiteFrame settings={settings}>
-      <section className="hero">
-        {settings.heroImage ? (
-          <img
-            className="hero-photo"
-            style={{ objectPosition: `${settings.heroPosition}% center` }}
-            src={settings.heroImage}
-            alt={settings.heroImageAlt}
-            fetchPriority="high"
-          />
-        ) : null}
-        <div className="hero-shade" />
-        <div className="hero-inner">
-          <p className="eyebrow light">{settings.heroEyebrow}</p>
-          <h1>
-            <span className="preserve-lines">{settings.heroTitle}</span>
-            {settings.heroAccent ? (
-              <>
-                <br />
-                <em>{settings.heroAccent}</em>
-              </>
-            ) : null}
-          </h1>
-          <p className="hero-description">{settings.heroDescription}</p>
+      <Hero settings={settings} page="home">
           <div className="hero-actions">
             <a
               className="button mint"
@@ -74,12 +53,7 @@ export default function HomePage({
               Our publications <ArrowRight size={18} />
             </Link>
           </div>
-        </div>
-        <div className="hero-caption">
-          <span>01 / {settings.heroCaption}</span>
-          <span>From fundamental questions to lasting impact</span>
-        </div>
-      </section>
+      </Hero>
       <div className="research-ribbon">
         <span>LIGHT-DRIVEN DISCOVERY</span>
         <span>Water & resources</span>
@@ -185,7 +159,7 @@ export default function HomePage({
           <div className="section-heading">
             <div>
               <p className="eyebrow">FROM THE LAB</p>
-              <h2>News & perspectives</h2>
+              <h2>News</h2>
             </div>
             <Link className="text-link" href="/news">
               All updates <ArrowRight size={18} />
@@ -212,7 +186,7 @@ export default function HomePage({
         <div className="section-heading">
           <div>
             <p className="eyebrow">BEYOND THE BENCH</p>
-            <h2>Life, together.</h2>
+            <h2>Lab Life</h2>
           </div>
           <p>
             The conversations, shared experiences, and people behind our

@@ -11,6 +11,7 @@ import type {
   MediaItem,
 } from "./content-model";
 import { settingsSchema } from "./content-model";
+import { mergeSettingsScope, type SettingsScope } from "./heroes";
 
 export function database() {
   if (!env.DB) throw new Error("Content database is unavailable.");
@@ -221,21 +222,25 @@ export async function saveSettings(
   version: number,
   intent: "draft" | "publish",
   actor: string,
+  scope?: SettingsScope,
 ) {
   const now = new Date().toISOString();
-  const json = JSON.stringify(data);
   const db = database();
+  const existing = await db.prepare("SELECT draft,published FROM site_settings WHERE id='main'").first<{ draft: string; published: string }>();
+  if (!existing) throw new HttpError(404, "사이트 설정을 찾지 못했습니다.");
+  const draft = JSON.stringify(mergeSettingsScope(settingsSchema.parse(JSON.parse(existing.draft)), data, scope));
+  const published = JSON.stringify(mergeSettingsScope(settingsSchema.parse(JSON.parse(existing.published)), data, scope));
   const result = await db.batch([
     db
       .prepare(
         "UPDATE site_settings SET draft=?,published=CASE WHEN ?='publish' THEN ? ELSE published END,version=version+1,updated_at=? WHERE id='main' AND version=?",
       )
-      .bind(json, intent, json, now, version),
+      .bind(draft, intent, published, now, version),
     db
       .prepare(
         "INSERT INTO audit (id,actor,action,target,created_at) SELECT ?,?,?,?,? WHERE changes()=1",
       )
-      .bind(crypto.randomUUID(), actor, intent, "홈·사이트 설정", now),
+      .bind(crypto.randomUUID(), actor, intent, scope ? `설정 · ${scope}` : "홈·사이트 설정", now),
   ]);
   if (result[0].meta.changes !== 1)
     throw new HttpError(

@@ -1,19 +1,17 @@
+import LocationMap from "@/components/location-map";
+import Hero from "@/components/hero";
 import { publicContent } from "@/lib/store";
-import { SiteFrame, PageIntro } from "@/components/site-frame";
+import { SiteFrame } from "@/components/site-frame";
 import InquiryForm from "@/components/inquiry-form";
 import { ArrowUpRight, MapPin, Mail, Phone } from "lucide-react";
-export const metadata = { title: "Join Us" };
+export const metadata = { title: "Join Our Lab" };
 export const dynamic = "force-dynamic";
 export default async function JoinUs() {
   const { settings, records } = await publicContent();
   const positions = records.filter((r) => r.kind === "positions");
   return (
     <SiteFrame settings={settings}>
-      <PageIntro
-        eyebrow="YOUR NEXT CHAPTER"
-        title="Bring your curiosity.\nBuild what comes next."
-        description="Interested in photoenergy, catalysis, or environmental chemistry? Start a conversation about research at EPA Lab."
-      />
+      <Hero settings={settings} page="join" />
       {positions.length ? (
         <section className="section">
           <div className="section-heading">
@@ -59,6 +57,7 @@ export default async function JoinUs() {
               {settings.phone}
             </a>
           </div>
+          <h3 className="location-label">Location</h3>
           <div className="contact-line">
             <MapPin size={21} />
             <p>
@@ -67,6 +66,7 @@ export default async function JoinUs() {
               {settings.address}
             </p>
           </div>
+          <LocationMap settings={settings} />
           <div className="contact-note">
             <h3>Before you get in touch</h3>
             <p>

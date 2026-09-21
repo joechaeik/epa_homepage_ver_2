@@ -1,4 +1,4 @@
-// Exercise the production Worker with isolated local D1, no R2, and a disposable secret.
+// Exercise the production Worker with isolated local storage and a disposable secret.
 import assert from 'node:assert/strict';
 import { randomBytes, createHmac } from 'node:crypto';
 import { readFile, writeFile, mkdir, mkdtemp, unlink } from 'node:fs/promises';
@@ -15,6 +15,9 @@ await mkdir(path.join(root, '.wrangler'), { recursive: true });
 const temp = await mkdtemp(path.join(root, '.wrangler/review-qa-'));
 const secret = randomBytes(32).toString('hex');
 const config = JSON.parse(await readFile(path.join(root, 'wrangler.jsonc'), 'utf8'));
+const withR2 = process.argv.includes('--with-r2');
+if (withR2) config.r2_buckets = [{ binding: 'BUCKET', bucket_name: 'epa-review-qa' }];
+else delete config.r2_buckets;
 config.main = path.join(root, 'dist/server/index.js');
 config.assets.directory = path.join(root, 'dist/client');
 config.d1_databases[0].migrations_dir = path.join(root, 'drizzle');
@@ -79,9 +82,9 @@ try {
   assert.match(setCookie, /HttpOnly/); assert.match(setCookie, /Secure/); assert.match(setCookie, /SameSite=Strict/);
   cookie = setCookie.split(';')[0];
   const initial = await content();
-  assert.equal(initial.uploadsEnabled, false);
+  assert.equal(initial.uploadsEnabled, withR2);
   assert.ok(initial.records.length >= 34);
-  mark('Password login and authenticated content read without R2');
+  mark('Password login and authenticated content read');
   const tampered = cookie.slice(0, -2) + (cookie.slice(-2, -1) === 'A' ? 'B' : 'A') + cookie.slice(-1);
   assert.equal((await request('/api/admin/content', { headers: { Cookie: tampered } })).status, 401);
   const expired = 'v1.' + (Math.floor(Date.now()/1000) - 10);
@@ -109,9 +112,61 @@ try {
   const html = await adminPage.text();
   assert.ok(!html.includes(secret));
   assert.ok(html.includes('action="logout"') || html.includes('value="logout"'));
-  const upload = await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: 'unused' });
-  assert.equal(upload.status, 503); assert.match((await upload.json()).error, /업로드는 준비 중/);
-  mark('Existing hero image can change; new uploads are explicitly unavailable');
+  if (withR2) {
+    const bytes = await readFile(path.join(root, 'public/images/main-01.jpg'));
+    const form = new FormData();
+    form.set('file', new File([bytes], 'qa-hero.jpg', { type: 'image/jpeg' }));
+    const upload = await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: form });
+    assert.equal(upload.status, 201, await upload.clone().text());
+    const media = await upload.json();
+    const asset = await request(media.url);
+    assert.equal(asset.status, 200);
+    assert.deepEqual(Buffer.from(await asset.arrayBuffer()), bytes);
+    const forged = new FormData();
+    forged.set('file', new File(['<script>invalid</script>'], 'fake.jpg', { type: 'image/jpeg' }));
+    assert.equal((await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: forged })).status, 415);
+    mark('R2 image upload serves original bytes; forged image rejected');
+  } else {
+    const upload = await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: 'unused' });
+    assert.equal(upload.status, 503); assert.match((await upload.json()).error, /업로드는 준비 중/);
+    mark('Missing R2 has an explicit unavailable state');
+  }
+  const editSettings = async (scope, intent, change) => {
+    const s = (await content()).settings;
+    const data = structuredClone(s.draft);
+    change(data);
+    const r = await save({ operation: 'settings', scope, intent, data, version: s.version });
+    assert.equal(r.status, 200, await r.text());
+  };
+  const original = (await content()).settings;
+  await editSettings('research', 'draft', s => { s.pageHeroes.research.title = 'Research hero QA'; s.pageHeroes.research.position = 22; s.pageHeroes.research.positionY = 73; });
+  assert.ok(!(await (await request('/research')).text()).includes('Research hero QA'));
+  assert.ok((await (await request('/admin/preview?page=research', { headers: { Cookie: cookie } })).text()).includes('Research hero QA'));
+  await editSettings('people', 'draft', s => { s.pageHeroes.people.title = 'People draft QA'; });
+  await editSettings('research', 'publish', () => {});
+  let scoped = (await content()).settings;
+  assert.equal(scoped.published.pageHeroes.research.title, 'Research hero QA');
+  assert.equal(scoped.published.pageHeroes.research.positionY, 73);
+  assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
+  assert.equal(scoped.draft.pageHeroes.people.title, 'People draft QA');
+  await editSettings('site', 'publish', s => { s.address = 'QA address'; });
+  scoped = (await content()).settings;
+  assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
+  assert.equal(scoped.published.pageHeroes.research.title, 'Research hero QA');
+  assert.ok((await (await request('/join')).text()).includes('output=embed'));
+  await editSettings('research', 'publish', s => { s.pageHeroes.research.image = ''; });
+  const research = await (await request('/research')).text();
+  assert.ok(research.includes('Research hero QA'));
+  assert.ok(!/<img[^>]*class="hero-photo"/.test(research));
+  const currentSettings = (await content()).settings;
+  assert.equal((await save({ operation: 'settings', scope: 'site', intent: 'draft', version: currentSettings.version, data: { ...currentSettings.draft, mapEmbedUrl: 'https://untrusted.invalid/maps/embed' } })).status, 400);
+  assert.deepEqual((await content()).records.filter(r => r.id !== draft.id), initial.records);
+  for (const route of ['/', '/research', '/people', '/publications', '/news', '/join', '/join-us']) {
+    const response = await request(route);
+    assert.equal(response.status, 200, route);
+    assert.ok((await response.text()).includes('<h1'), route);
+  }
+  mark('Per-page hero drafts, preview, independent publish, image removal, maps, and existing records preserved');
   const logout = await request('/api/admin/session', { method: 'POST', headers: { Origin: base, Cookie: cookie, 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'action=logout' });
   assert.equal(logout.status, 303); assert.match(logout.headers.get('set-cookie'), /Max-Age=0/);
   assert.equal((await request('/api/admin/content')).status, 401);

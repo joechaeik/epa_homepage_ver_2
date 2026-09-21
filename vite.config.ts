@@ -61,7 +61,11 @@ export default defineConfig(async () => {
       cloudflare({
         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
         inspectorPort: false,
-        config: localBindingConfig,
+        // Replace binding arrays instead of merging the deployment bindings.
+        // This keeps preview data local and avoids duplicate compatibility flags.
+        config(config) {
+          Object.assign(config, localBindingConfig);
+        },
       }),
     ],
   };

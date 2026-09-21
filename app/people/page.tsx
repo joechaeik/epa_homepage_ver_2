@@ -1,5 +1,6 @@
+import Hero from "@/components/hero";
 import { publicContent } from "@/lib/store";
-import { SiteFrame, PageIntro, JoinBanner } from "@/components/site-frame";
+import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
 import { Gallery } from "@/components/site-chrome";
 import { Mail, ArrowUpRight } from "lucide-react";
@@ -11,11 +12,7 @@ export default async function People() {
   const pi = people.find((r) => r.category === "Principal investigator");
   return (
     <SiteFrame settings={settings}>
-      <PageIntro
-        eyebrow="THE PEOPLE BEHIND THE SCIENCE"
-        title="Different perspectives.\nA shared curiosity."
-        description="Meet the researchers bringing new questions and ideas to photoenergy and environmental chemistry."
-      />
+      <Hero settings={settings} page="people" />
       {pi ? (
         <section className="section pi-section">
           <div className="pi-image">

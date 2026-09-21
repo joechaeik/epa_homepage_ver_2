@@ -90,6 +90,9 @@ import {
 import { Choice, EntryFields, categories } from "./fields";
 import MediaLibrary, { type Asset } from "./media-library";
 import SettingsEditor from "./settings-editor";
+import type { HeroPicker } from "./hero-editor";
+import type { HeroPage } from "@/lib/content-model";
+import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
 type Data = {
   records: RecordItem[];
   settings: SettingsItem;
@@ -100,7 +103,7 @@ type Data = {
 type Tab = "dashboard" | "settings" | "media" | Kind;
 const menu = [
   { id: "dashboard", name: "대시보드", icon: LayoutDashboard },
-  { id: "settings", name: "홈·히어로 설정", icon: PanelsTopLeft },
+  { id: "settings", name: "Hero·사이트 설정", icon: PanelsTopLeft },
   { id: "publications", name: "논문", icon: BookOpen },
   { id: "news", name: "뉴스", icon: Newspaper },
   { id: "people", name: "구성원", icon: Users },
@@ -184,7 +187,7 @@ export default function AdminWorkspace({
   } | null>(null);
   const [settings, setSettings] = useState(initial.settings.draft);
   const [picker, setPicker] = useState<
-    "image" | "pdf" | "hero" | "intro" | null
+    "image" | "pdf" | HeroPicker | "intro" | null
   >(null);
   const [confirm, setConfirm] = useState<{
     record: RecordItem;
@@ -349,26 +352,27 @@ export default function AdminWorkspace({
       setBusy(false);
     }
   }
-  async function saveSettings(intent: "draft" | "publish") {
+  async function saveSettings(intent: "draft" | "publish", scope: SettingsScope) {
     setError("");
-    const parsed = settingsSchema.safeParse(settings);
+    const parsed = settingsSchema.safeParse(mergeSettingsScope(data.settings.draft, settings, scope));
     if (!parsed.success) {
-      setError("설정의 필수 문구, 이메일, 주소 형식을 확인해 주세요.");
+      setError(parsed.error.issues[0]?.message || "설정의 필수 문구, 이메일, 주소 형식을 확인해 주세요.");
       return;
     }
     setBusy(true);
     try {
       await mutate({
         operation: "settings",
+        scope,
         data: parsed.data,
         version: data.settings.version,
         intent,
       });
       const latest = await refresh();
-      setSettings(latest.settings.draft);
+      setSettings(current => mergeSettingsScope(current, latest.settings.draft, scope));
       toast.success(
         intent === "publish"
-          ? "홈 화면에 공개 반영했습니다."
+          ? "선택한 설정을 공개 반영했습니다."
           : "설정 초안을 저장했습니다.",
       );
     } catch (e) {
@@ -425,12 +429,10 @@ export default function AdminWorkspace({
   const upload = (m: MediaItem) =>
     setData((d) => ({ ...d, media: [m, ...d.media] }));
   const chooseAsset = (a: Asset) => {
-    if (picker === "hero")
-      setSettings((s) => ({
-        ...s,
-        heroImage: a.url,
-        heroImageAlt: a.alt || a.name,
-      }));
+    if (picker?.startsWith("hero:")) {
+      const page = picker.slice(5) as HeroPage;
+      setSettings(s => setHero(s, page, { ...getHero(s, page), image: a.url, imageAlt: a.alt || a.name }));
+    }
     else if (picker === "intro")
       setSettings((s) => ({
         ...s,

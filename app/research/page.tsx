@@ -1,6 +1,7 @@
+import Hero from "@/components/hero";
 import Link from "next/link";
 import { publicContent } from "@/lib/store";
-import { SiteFrame, PageIntro, JoinBanner } from "@/components/site-frame";
+import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import { ArrowUpRight, ArrowDown, Sun } from "lucide-react";
 export const metadata = { title: "Research" };
 export const dynamic = "force-dynamic";
@@ -15,11 +16,7 @@ export default async function Research() {
   const entries = records.filter((r) => r.kind === "research");
   return (
     <SiteFrame settings={settings}>
-      <PageIntro
-        eyebrow="QUESTIONS THAT MOVE US"
-        title="Fundamental science.\nMeaningful possibilities."
-        description="From interfacial charge transfer to environmental transformation, we explore the chemistry that turns light into change."
-      >
+      <Hero settings={settings} page="research">
         <div className="anchor-nav">
           {entries.map((r, i) => (
             <a href={"#" + r.id} key={r.id}>
@@ -28,7 +25,7 @@ export default async function Research() {
             </a>
           ))}
         </div>
-      </PageIntro>
+      </Hero>
       <div className="section research-details">
         {entries.map((r, i) => (
           <section key={r.id} id={r.id} className="research-detail">

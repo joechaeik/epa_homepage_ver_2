@@ -80,11 +80,11 @@ Cloudflare 검토 배포는 한 명의 관리자가 비밀번호로 로그인합
 배포 시 남은 설정:
 
 1. [CLOUDFLARE_REVIEW.ko.md](CLOUDFLARE_REVIEW.ko.md)에 따라 검토용 Worker와 D1을 연결하고 런타임 Secret을 설정.
-2. 로컬 편집 자료와 업로드가 있다면 별도로 이관. R2는 보류 중이며 검토 배포에서는 새 파일 업로드가 비활성화됩니다.
+2. 로컬 편집 자료와 업로드가 있다면 별도로 이관. R2 버킷 `epa-homepage-ver-2-media`를 `BUCKET`으로 연결해 새 파일 업로드를 지원합니다.
 3. 최종 도메인·내용·이미지 검토 후 `app/layout.tsx`의 검토용 `noindex` 변경.
 4. 외부 환경에서 실제 로그인과 업로드를 최종 확인한 뒤 공개.
 
-이 단계들은 아직 실행하지 않았습니다. 현재 `.openai/hosting.json`에는 호스팅 프로젝트 ID가 없습니다.
+Cloudflare 검토 사이트는 https://epa-homepage-ver-2.joe-chaeik.workers.dev 에 배포되었습니다. 콘텐츠와 파일 이관, 관리자 로그인 및 R2 업로드를 확인했습니다. 최종 도메인과 정식 공개 검토는 별도입니다. `.openai/hosting.json`은 로컬 Sites 설정이며 Cloudflare 직접 배포 정보는 `wrangler.jsonc`에 있습니다.
 
 ## 개발 및 검증
 

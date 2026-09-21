@@ -9,6 +9,9 @@
   "ratelimits": [
     { "name": "LOGIN_RATE_LIMIT", "namespace_id": "2026091801", "simple": { "limit": 10, "period": 60 } }
   ],
+  "r2_buckets": [
+    { "binding": "BUCKET", "bucket_name": "epa-homepage-ver-2-media" }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

@@ -96,6 +96,36 @@ export type RecordItem = {
   updatedAt: string;
 };
 export type PublicEntry = Entry & { id: string; kind: Kind };
+export const heroPages = ["home", "research", "people", "publications", "news", "join"] as const;
+export type HeroPage = (typeof heroPages)[number];
+export const heroLabels: Record<HeroPage, string> = { home: "Home", research: "Research", people: "People", publications: "Publications", news: "News", join: "Join Our Lab" };
+export const heroSchema = z.object({
+  title: z.string().trim().min(1, "히어로 제목을 입력해 주세요.").max(180),
+  subtitle: z.string().max(700).default(""),
+  image: url,
+  imageAlt: short,
+  position: z.coerce.number().min(0).max(100).default(50),
+  positionY: z.coerce.number().min(0).max(100).default(50),
+});
+export type HeroSettings = z.infer<typeof heroSchema>;
+const pageHero = (title: string, subtitle: string, image: string, imageAlt: string) =>
+  heroSchema.default({ title, subtitle, image, imageAlt, position: 50, positionY: 50 });
+const pageHeroesSchema = z.object({
+  research: pageHero("Research", "From interfacial charge transfer to environmental transformation, we explore the chemistry that turns light into change.", "/images/main-02.jpg", "Concept illustration of photoenergy research"),
+  people: pageHero("People", "Meet the researchers bringing new questions and ideas to photoenergy and environmental chemistry.", "/images/lab-6.jpg", "EPA Lab group photograph, 2025"),
+  publications: pageHero("Publications", "Explore recent peer-reviewed work from EPA Lab, connecting photoenergy, catalytic materials, and environmental chemistry.", "/images/main-03.jpg", "Concept illustration of environmental chemistry"),
+  news: pageHero("News", "Research developments, recognition, and moments from our laboratory community.", "/images/lab-1.jpg", "EPA Lab seminar, 2025"),
+  join: pageHero("Join Our Lab", "Interested in photoenergy, catalysis, or environmental chemistry? Start a conversation about research at EPA Lab.", "/images/lab-2.jpg", "EPA Lab community, 2025"),
+});
+export const mapEmbedSchema = z.string().trim().max(5000).refine((value) => {
+  if (!value) return true;
+  try {
+    const u = new URL(value);
+    return u.protocol === "https:" && !u.username && !u.password && !u.port &&
+      ["www.google.com", "maps.google.com", "www.google.co.kr"].includes(u.hostname) &&
+      (u.pathname === "/maps/embed" || (u.pathname === "/maps" && u.searchParams.get("output") === "embed"));
+  } catch { return false; }
+}, "Google Maps의 지도 퍼가기 URL을 입력해 주세요. iframe 코드 전체가 아닌 src 주소만 사용합니다.").default("");
 export const settingsSchema = z.object({
   labName: z.string().trim().min(1).max(200),
   labFullName: short,
@@ -110,6 +140,9 @@ export const settingsSchema = z.object({
   heroButtonText: short,
   heroButtonLink: url,
   heroPosition: z.coerce.number().min(0).max(100),
+  heroPositionY: z.coerce.number().min(0).max(100).default(50),
+  pageHeroes: pageHeroesSchema.default({}),
+  mapEmbedUrl: mapEmbedSchema,
   email: z.string().email(),
   phone: short,
   address: z.string().max(1000),

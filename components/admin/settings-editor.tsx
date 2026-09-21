@@ -1,22 +1,10 @@
 "use client";
-import { ArrowUpRight, Save, Check, ImageIcon } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
+import { Save, Check } from "lucide-react";
+import HeroEditor, { type HeroPicker } from "./hero-editor";
+import type { SettingsScope } from "@/lib/heroes";
 import type { Settings } from "@/lib/content-model";
 type Field = { key: keyof Settings; label: string; area?: boolean };
 const groups: { title: string; description: string; fields: Field[] }[] = [
-  {
-    title: "히어로 문구",
-    description: "방문자가 처음 보는 메인 화면입니다.",
-    fields: [
-      { key: "heroEyebrow", label: "상단 작은 문구" },
-      { key: "heroTitle", label: "메인 제목", area: true },
-      { key: "heroAccent", label: "강조 문구" },
-      { key: "heroDescription", label: "소개 문장", area: true },
-      { key: "heroButtonText", label: "버튼 문구" },
-      { key: "heroButtonLink", label: "버튼 이동 주소" },
-      { key: "heroCaption", label: "이미지 하단 설명" },
-    ],
-  },
   {
     title: "연구실 소개",
     description: "홈 중간의 소개와 영상 링크입니다.",
@@ -46,6 +34,7 @@ const groups: { title: string; description: string; fields: Field[] }[] = [
       { key: "email", label: "연락 이메일" },
       { key: "phone", label: "연락 전화" },
       { key: "address", label: "주소", area: true },
+      { key: "mapEmbedUrl", label: "Google Map Embed URL (선택)" },
     ],
   },
 ];
@@ -59,13 +48,15 @@ export default function SettingsEditor({
 }: {
   value: Settings;
   onChange: (v: Settings) => void;
-  onPick: (target: "hero" | "intro") => void;
-  onSave: (intent: "draft" | "publish") => void;
+  onPick: (target: HeroPicker | "intro") => void;
+  onSave: (intent: "draft" | "publish", scope: SettingsScope) => void;
   busy: boolean;
   dirty: boolean;
 }) {
   return (
-    <div className="settings-layout">
+    <div className="settings-page">
+      <HeroEditor value={value} onChange={onChange} onPick={onPick} onSave={onSave} busy={busy} />
+      <div className="settings-layout">
       <div className="settings-form">
         {groups.map((g) => (
           <section className="admin-panel settings-group" key={g.title}>
@@ -107,91 +98,17 @@ export default function SettingsEditor({
       </div>
       <aside className="settings-preview">
         <section className="admin-panel">
-          <div className="panel-heading">
-            <h2>히어로 미리보기</h2>
-            <span className="status-chip">{dirty ? "수정 중" : "저장됨"}</span>
-          </div>
-          <div
-            className="mini-hero"
-            style={{
-              backgroundImage: `linear-gradient(90deg,#0b333bf5,#0b333b66),url("${value.heroImage.replace(/["\\\n\r]/g, "")}")`,
-              backgroundPosition: `${value.heroPosition}% center`,
-            }}
-          >
-            <span>{value.heroEyebrow}</span>
-            <h3 className="preserve-lines">
-              {value.heroTitle}
-              <br />
-              <em>{value.heroAccent}</em>
-            </h3>
-            <p>{value.heroDescription}</p>
-            <span className="mini-button">
-              {value.heroButtonText}
-              <ArrowUpRight size={11} />
-            </span>
-          </div>
-          <button
-            className="button outline full-width"
-            onClick={() => onPick("hero")}
-          >
-            <ImageIcon size={17} />
-            배경 이미지 변경
-          </button>
-          <div className="form-field">
-            <label htmlFor="hero-image">배경 이미지 주소</label>
-            <input
-              id="hero-image"
-              value={value.heroImage}
-              onChange={(e) =>
-                onChange({ ...value, heroImage: e.target.value })
-              }
-            />
-          </div>
-          <div className="form-field">
-            <label htmlFor="hero-image-alt">배경 이미지 설명</label>
-            <input
-              id="hero-image-alt"
-              value={value.heroImageAlt}
-              onChange={(e) =>
-                onChange({ ...value, heroImageAlt: e.target.value })
-              }
-            />
-          </div>
-          <div className="form-field">
-            <label>이미지 가로 위치 · {value.heroPosition}%</label>
-            <Slider
-              aria-label="히어로 이미지 가로 위치"
-              min={0}
-              max={100}
-              step={1}
-              value={[value.heroPosition]}
-              onValueChange={(v) => onChange({ ...value, heroPosition: v[0] })}
-            />
-          </div>
-          <p className="admin-note">
-            초안을 저장한 뒤 홈 초안 미리보기에서 실제 화면을 확인할 수
-            있습니다.
-          </p>
+          <h2>사이트 기본 설정</h2>
+          <p className="admin-note">연구실 소개·연락처·지도 설정을 저장합니다. Hero는 위의 페이지별 버튼으로 저장하세요.</p>
+          <p className="admin-note">지도 URL을 비워두면 현재 기관명과 주소로 Google 지도를 표시합니다. 특정 장소를 지정하려면 Google Maps의 공유 → 지도 퍼가기에서 src 주소만 입력하세요.</p>
+          <span className="status-chip">{dirty ? "수정 중" : "저장됨"}</span>
           <div className="settings-actions">
-            <button
-              className="button outline"
-              disabled={busy}
-              onClick={() => onSave("draft")}
-            >
-              <Save size={16} />
-              초안 저장
-            </button>
-            <button
-              className="button"
-              disabled={busy}
-              onClick={() => onSave("publish")}
-            >
-              <Check size={16} />
-              공개 반영
-            </button>
+            <button className="button outline" disabled={busy} onClick={() => onSave("draft", "site")}><Save size={16} />설정 초안 저장</button>
+            <button className="button" disabled={busy} onClick={() => onSave("publish", "site")}><Check size={16} />설정 공개 반영</button>
           </div>
         </section>
       </aside>
+      </div>
     </div>
   );
 }

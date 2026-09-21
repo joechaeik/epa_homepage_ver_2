@@ -12,6 +12,7 @@ import {
   entryProblem,
   kinds,
   settingsSchema,
+  heroPages,
 } from "@/lib/content-model";
 import { boundedBody, discardRequestBody } from "@/lib/request-body";
 export const dynamic = "force-dynamic";
@@ -43,11 +44,12 @@ export async function POST(request: Request) {
       const v = z
         .object({
           data: settingsSchema,
+          scope: z.enum([...heroPages, "site"]).optional(),
           version: z.number().int().positive(),
           intent: z.enum(["draft", "publish"]),
         })
         .parse(input);
-      await saveSettings(v.data, v.version, v.intent, user.userId);
+      await saveSettings(v.data, v.version, v.intent, user.userId, v.scope);
     } else if (input.operation === "save") {
       const v = z
         .object({
