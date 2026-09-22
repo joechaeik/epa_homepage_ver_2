@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
 import AdminWorkspace from "@/components/admin/workspace";

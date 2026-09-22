@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { ArrowUpRight } from "lucide-react";
 import { Header, BackToTop, Citation } from "./site-chrome";
 import type { Settings, PublicEntry } from "@/lib/content-model";

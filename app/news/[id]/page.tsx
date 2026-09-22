@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { notFound } from "next/navigation";
 import { publicContent } from "@/lib/store";
 import { SiteFrame } from "@/components/site-frame";

@@ -1,5 +1,5 @@
 import Hero from "@/components/hero";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import { ArrowUpRight, ArrowDown, Sun } from "lucide-react";

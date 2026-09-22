@@ -1,5 +1,5 @@
 import Hero from "./hero";
-import Link from "next/link";
+import Link from "@/components/site-link";
 import {
   ArrowRight,
   ArrowUpRight,

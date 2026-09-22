@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/site-link";
 import { redirect } from "next/navigation";
 import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
