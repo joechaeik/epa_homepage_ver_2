@@ -60,7 +60,7 @@ R2 구독이 활성화되었습니다. `epa-homepage-ver-2-media` 버킷을 생�
 | `lib/store.ts` | 초안·공개본을 선택한 범위만 병합해 기존 D1에 저장. |
 | `scripts/verify-review.mjs` | Hero 독립 공개·지도·자료 보존·R2 업로드 회귀 검사 확장. |
 | `ADMIN_GUIDE.ko.md` | Hero별 관리 및 지도 편집 사용법 갱신. |
-| `HERO_UPDATE.ko.md` | 이번 변경 파일 목록·검증·남은 R2 연결 상태 기록. |
+| `HERO_UPDATE.ko.md` | 이번 변경 파일 목록·검증·R2 연결 및 배포 완료 상태 기록. |
 | `wrangler.jsonc` | 실제 R2 버킷의 `BUCKET` 연결 추가. |
 | `vite.config.ts` | 로컬/배포 바인딩 배열 중복 병합 방지. 로컬 저장소와 운영 저장소 분리 유지. |
 | `CLOUDFLARE_REVIEW.ko.md` | R2 연결과 업로드 검증 방법 갱신. |
