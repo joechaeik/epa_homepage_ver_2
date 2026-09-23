@@ -104,6 +104,34 @@ try {
   assert.ok((await (await request('/news')).text()).includes(label));
   assert.equal((await save({ operation: 'save', id: draft.id, kind: 'news', version: draft.version, intent: 'publish', data: draft.draft })).status, 409);
   mark('Draft isolation, authenticated preview, publish, and stale-edit protection');
+  const firstPaper = label + ' release sort';
+  const secondPaper = label + ' posting sort';
+  const paperData = (title, date, releaseDate, publicationSortBy) => ({
+    title, authors: 'EPA QA', journal: 'EPA Test Journal', year: 2026,
+    date, releaseDate, publicationSortBy,
+  });
+  assert.equal((await save({ operation: 'save', kind: 'publications', intent: 'publish', data: paperData(firstPaper, '2026-01-10', '2026-12-10', 'releaseDate') })).status, 200);
+  assert.equal((await save({ operation: 'save', kind: 'publications', intent: 'publish', data: paperData(secondPaper, '2026-11-10', '2026-02-10', 'date') })).status, 200);
+  let papers = (await content()).records.filter(r => r.draft.title === firstPaper || r.draft.title === secondPaper);
+  assert.equal(papers.length, 2);
+  assert.equal(papers.find(r => r.draft.title === firstPaper)?.draft.releaseDate, '2026-12-10');
+  assert.equal(papers.find(r => r.draft.title === firstPaper)?.draft.publicationSortBy, 'releaseDate');
+  let publicationHtml = await (await request('/publications')).text();
+  assert.ok(publicationHtml.includes(firstPaper) && publicationHtml.includes(secondPaper));
+  assert.ok(publicationHtml.indexOf(firstPaper) < publicationHtml.indexOf(secondPaper));
+  const releasePaper = papers.find(r => r.draft.title === firstPaper);
+  assert.equal((await save({ operation: 'save', id: releasePaper.id, kind: 'publications', version: releasePaper.version, intent: 'draft', data: { ...releasePaper.draft, publicationSortBy: 'date' } })).status, 200);
+  publicationHtml = await (await request('/publications')).text();
+  assert.ok(publicationHtml.indexOf(firstPaper) < publicationHtml.indexOf(secondPaper));
+  const revisedPaper = (await content()).records.find(r => r.id === releasePaper.id);
+  assert.equal((await save({ operation: 'save', id: revisedPaper.id, kind: 'publications', version: revisedPaper.version, intent: 'publish', data: revisedPaper.draft })).status, 200);
+  publicationHtml = await (await request('/publications')).text();
+  assert.ok(publicationHtml.indexOf(secondPaper) < publicationHtml.indexOf(firstPaper));
+  assert.equal((await save({ operation: 'save', kind: 'publications', intent: 'draft', data: paperData(label + ' invalid date', '2026-01-10', '2026-02-30', 'releaseDate') })).status, 400);
+  assert.equal((await save({ operation: 'save', kind: 'publications', intent: 'draft', data: paperData(label + ' invalid basis', '2026-01-10', '2026-02-10', 'both') })).status, 400);
+  papers = (await content()).records.filter(r => r.draft.title === firstPaper || r.draft.title === secondPaper);
+  const qaPublicationIds = papers.map(r => r.id);
+  mark('Publication posting/release dates, per-paper sort choice, draft isolation, and input validation');
   const settings = (await content()).settings;
   assert.equal((await save({ operation: 'settings', version: settings.version, intent: 'publish', data: { ...settings.draft, heroImage: '/images/main-02.jpg' } })).status, 200);
   assert.ok((await (await request('/')).text()).includes('/images/main-02.jpg'));
@@ -173,7 +201,7 @@ try {
   assert.ok(!/<img[^>]*class="hero-photo"/.test(research));
   const currentSettings = (await content()).settings;
   assert.equal((await save({ operation: 'settings', scope: 'site', intent: 'draft', version: currentSettings.version, data: { ...currentSettings.draft, mapEmbedUrl: 'https://untrusted.invalid/maps/embed' } })).status, 400);
-  assert.deepEqual((await content()).records.filter(r => r.id !== draft.id), initial.records);
+  assert.deepEqual((await content()).records.filter(r => r.id !== draft.id && !qaPublicationIds.includes(r.id)), initial.records);
   for (const route of ['/', '/research', '/people', '/publications', '/news', '/join', '/join-us']) {
     const response = await request(route);
     assert.equal(response.status, 200, route);

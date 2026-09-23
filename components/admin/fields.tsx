@@ -39,7 +39,8 @@ export const fields: Record<Kind, Field[]> = {
     { key: "authors", label: "저자 *", hint: "쉼표로 구분해 입력하세요." },
     { key: "journal", label: "학술지 *" },
     { key: "year", label: "발행 연도", type: "number" },
-    { key: "date", label: "게재일", type: "date", hint: "게재일순으로 표시됩니다. 날짜 미정인 In press 논문은 분류를 'In press'로 선택하고 비워 두세요. 목록 맨 위에 표시됩니다." },
+    { key: "date", label: "게재일", type: "date" },
+    { key: "releaseDate", label: "발행일", type: "date" },
     { key: "citation", label: "권·호·페이지 / 서지 정보" },
     { key: "doi", label: "DOI", hint: "예: 10.1002/adfm.202600082" },
     { key: "summary", label: "연구 요약", type: "textarea" },
@@ -196,7 +197,7 @@ export function EntryFields({
             <input
               id={"edit-" + f.key}
               type={f.type || "text"}
-              value={String(data[f.key])}
+              value={String(data[f.key] ?? "")}
               onChange={(e) =>
                 setData({
                   ...data,
@@ -209,6 +210,34 @@ export function EntryFields({
             />
           )}{" "}
           {f.hint ? <small>{f.hint}</small> : null}
+          {kind === "publications" && f.key === "releaseDate" ? (
+            <fieldset className="publication-date-choice">
+              <legend>논문 정렬 기준</legend>
+              <div className="publication-date-options">
+                <label>
+                  <input
+                    type="radio"
+                    name="publication-sort-by"
+                    value="date"
+                    checked={(data.publicationSortBy ?? "date") === "date"}
+                    onChange={() => setData({ ...data, publicationSortBy: "date" })}
+                  />
+                  게재일 기준
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="publication-sort-by"
+                    value="releaseDate"
+                    checked={data.publicationSortBy === "releaseDate"}
+                    onChange={() => setData({ ...data, publicationSortBy: "releaseDate" })}
+                  />
+                  발행일 기준
+                </label>
+              </div>
+              <small>선택한 날짜로 논문을 정렬합니다. 날짜가 없는 In press 논문은 목록 맨 위에 표시됩니다.</small>
+            </fieldset>
+          ) : null}
         </div>
       ))}
       <div className="form-field">

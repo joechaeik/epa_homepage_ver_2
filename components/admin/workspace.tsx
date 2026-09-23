@@ -93,7 +93,14 @@ import SettingsEditor from "./settings-editor";
 import type { HeroPicker } from "./hero-editor";
 import type { HeroPage } from "@/lib/content-model";
 import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
-import { comparePublications, isUndatedInPress } from "@/lib/publication-order";
+import { comparePublications, isUndatedInPress, publicationSortDate } from "@/lib/publication-order";
+
+function publicationListDate(entry: Entry) {
+  if (isUndatedInPress(entry)) return "In press";
+  const label = entry.publicationSortBy === "releaseDate" ? "발행일" : "게재일";
+  return `${label} ${publicationSortDate(entry) || "미입력"}`;
+}
+
 type Data = {
   records: RecordItem[];
   settings: SettingsItem;
@@ -699,8 +706,8 @@ export default function AdminWorkspace({
                   <div>
                     <strong>기존 홈페이지 자료를 가져왔습니다.</strong>
                     <p>
-                      논문은 게재일순으로 표시됩니다. 날짜가 미정인 In press
-                      논문은 목록 맨 위에 표시됩니다.
+                      논문은 항목마다 선택한 게재일 또는 발행일 기준으로 표시됩니다.
+                      선택한 날짜가 미정인 In press 논문은 목록 맨 위에 표시됩니다.
                       이전 논문은 공개 페이지의 전체 아카이브 링크로 연결됩니다.
                       히어로는 스티치 콘셉트 이미지이며, 모집 공고는 확정 후
                       등록하세요.
@@ -785,7 +792,7 @@ export default function AdminWorkspace({
                               <strong>{r.draft.title}</strong>
                               <small>
                                 {currentKind === "publications"
-                                  ? `${r.draft.journal} · ${isUndatedInPress(r.draft) ? "In press" : r.draft.date || r.draft.year}`
+                                  ? `${r.draft.journal} · ${publicationListDate(r.draft)}`
                                   : r.draft.role ||
                                     r.draft.date ||
                                     `표시 순서 ${r.draft.sortOrder}`}

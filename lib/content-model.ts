@@ -53,6 +53,8 @@ export const entrySchema = z.object({
   body: z.string().trim().max(30000).default(""),
   category: short,
   date: z.string().refine(validDate, "날짜를 확인해 주세요.").default(""),
+  releaseDate: z.string().refine(validDate, "발행일을 확인해 주세요.").default(""),
+  publicationSortBy: z.enum(["date", "releaseDate"]).default("date"),
   year: z.coerce.number().int().min(1900).max(2100).default(2026),
   authors: z.string().trim().max(2500).default(""),
   journal: short,
