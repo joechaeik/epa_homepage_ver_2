@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/pagination";
 import { PublicationRow, EmptyContent } from "./site-frame";
 import type { PublicEntry } from "@/lib/content-model";
+import { comparePublications, isUndatedInPress } from "@/lib/publication-order";
 export default function PublicationBrowser({
   entries,
 }: {
@@ -41,10 +42,11 @@ export default function PublicationBrowser({
         )
         .sort((a, b) =>
           sort === "journal"
-            ? a.journal.localeCompare(b.journal)
+            ? Number(isUndatedInPress(b)) - Number(isUndatedInPress(a)) ||
+              a.journal.localeCompare(b.journal)
             : sort === "oldest"
-              ? a.year - b.year || a.sortOrder - b.sortOrder
-              : b.year - a.year || a.sortOrder - b.sortOrder,
+              ? comparePublications(a, b, "oldest")
+              : comparePublications(a, b),
         ),
     [entries, query, year, sort],
   );

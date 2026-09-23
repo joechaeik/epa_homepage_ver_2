@@ -93,6 +93,7 @@ import SettingsEditor from "./settings-editor";
 import type { HeroPicker } from "./hero-editor";
 import type { HeroPage } from "@/lib/content-model";
 import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
+import { comparePublications, isUndatedInPress } from "@/lib/publication-order";
 type Data = {
   records: RecordItem[];
   settings: SettingsItem;
@@ -215,7 +216,7 @@ export default function AdminWorkspace({
         title: "New entry",
         category: categories[kind][0],
         year: new Date().getFullYear(),
-        date: new Date().toISOString().slice(0, 10),
+        date: kind === "publications" ? "" : new Date().toISOString().slice(0, 10),
       }),
       title,
     };
@@ -415,11 +416,9 @@ export default function AdminWorkspace({
           .toLowerCase()
           .includes(query.toLowerCase()),
     )
-    .sort(
-      (a, b) =>
-        a.draft.sortOrder - b.draft.sortOrder ||
-        b.draft.date.localeCompare(a.draft.date),
-    );
+    .sort((a, b) => currentKind === "publications"
+      ? comparePublications(a.draft, b.draft)
+      : a.draft.sortOrder - b.draft.sortOrder || b.draft.date.localeCompare(a.draft.date));
   const published = data.records.filter(
     (r) => !r.archived && r.published,
   ).length;
@@ -698,7 +697,8 @@ export default function AdminWorkspace({
                   <div>
                     <strong>기존 홈페이지 자료를 가져왔습니다.</strong>
                     <p>
-                      최근 논문 10편, 구성원 10명, 소식 4건, 사진 6장입니다.
+                      논문은 게재일순으로 표시됩니다. 날짜가 미정인 In press
+                      논문은 목록 맨 위에 표시됩니다.
                       이전 논문은 공개 페이지의 전체 아카이브 링크로 연결됩니다.
                       히어로는 스티치 콘셉트 이미지이며, 모집 공고는 확정 후
                       등록하세요.
@@ -781,7 +781,7 @@ export default function AdminWorkspace({
                               <strong>{r.draft.title}</strong>
                               <small>
                                 {currentKind === "publications"
-                                  ? `${r.draft.journal} · ${r.draft.year}`
+                                  ? `${r.draft.journal} · ${isUndatedInPress(r.draft) ? "In press" : r.draft.date || r.draft.year}`
                                   : r.draft.role ||
                                     r.draft.date ||
                                     `표시 순서 ${r.draft.sortOrder}`}

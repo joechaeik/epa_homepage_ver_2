@@ -295,7 +295,7 @@ svg {
 .hero-inner {
   max-width: 1290px;
   margin: auto;
-  padding: 76px 5% 124px;
+  padding: 76px 5% 94px;
 }
 .hero :is(h1, h2) {
   font-family: var(--serif);
@@ -320,25 +320,6 @@ svg {
   gap: 28px;
   align-items: center;
   flex-wrap: wrap;
-}
-.hero-caption {
-  position: absolute;
-  bottom: 27px;
-  left: 5%;
-  right: 5%;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  border-top: 1px solid #ffffff38;
-  padding-top: 20px;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: #cfdfdf;
-}
-.hero-caption span:first-child {
-  font-weight: 600;
-  font-size: 0.75rem;
-  letter-spacing: 0.13em;
 }
 .section {
   max-width: 1280px;
@@ -507,14 +488,6 @@ svg {
   }
   .hero :is(h1, h2) {
     font-size: 3.35rem;
-  }
-  .hero-caption {
-    left: 27px;
-    right: 27px;
-    bottom: 23px;
-  }
-  .hero-caption span:last-child {
-    display: none;
   }
   .hero-description {
     font-size: 0.9375rem;

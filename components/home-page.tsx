@@ -1,4 +1,5 @@
 import Hero from "./hero";
+import { comparePublications } from "@/lib/publication-order";
 import Link from "@/components/site-link";
 import {
   ArrowRight,
@@ -27,7 +28,7 @@ export default function HomePage({
   const research = records.filter((r) => r.kind === "research");
   const papers = records
     .filter((r) => r.kind === "publications")
-    .sort((a, b) => Number(b.featured) - Number(a.featured) || b.year - a.year)
+    .sort(comparePublications)
     .slice(0, 3);
   const news = records
     .filter((r) => r.kind === "news")

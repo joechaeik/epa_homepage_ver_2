@@ -14,6 +14,5 @@ export default function Hero({ settings, page, children, headingLevel = "h1" }: 
       {hero.subtitle ? <p className="hero-description">{hero.subtitle}</p> : null}
       {children}
     </div>
-    {home ? <div className="hero-caption"><span>01 / {settings.heroCaption}</span><span>From fundamental questions to lasting impact</span></div> : null}
   </section>;
 }

@@ -23,7 +23,7 @@ export default function HeroEditor({ value, onChange, onPick, onSave, busy }: {
           <div className="form-field"><label htmlFor="hero-title">Hero Title</label><textarea id="hero-title" rows={3} maxLength={180} value={hero.title} onChange={e => update({ title: e.target.value })} /></div>
           <div className="form-field"><label htmlFor="hero-subtitle">Hero Subtitle</label><textarea id="hero-subtitle" rows={3} maxLength={700} value={hero.subtitle} onChange={e => update({ subtitle: e.target.value })} /></div>
           {page === "home" ? <details className="hero-home-extra"><summary>Home 추가 문구·버튼</summary>{([
-            ["heroEyebrow", "상단 작은 문구"], ["heroAccent", "강조 문구"], ["heroCaption", "이미지 하단 설명"], ["heroButtonText", "버튼 문구"], ["heroButtonLink", "버튼 이동 주소"],
+            ["heroEyebrow", "상단 작은 문구"], ["heroAccent", "강조 문구"], ["heroButtonText", "버튼 문구"], ["heroButtonLink", "버튼 이동 주소"],
           ] as const).map(([key,label]) => <div className="form-field" key={key}><label htmlFor={key}>{label}</label><input id={key} value={value[key]} onChange={e => onChange({ ...value, [key]: e.target.value })} /></div>)}</details> : null}
           <div className="form-field"><label htmlFor="hero-image">Hero Image URL</label><input id="hero-image" value={hero.image} onChange={e => update({ image: e.target.value })} /></div>
           <div className="hero-image-actions">

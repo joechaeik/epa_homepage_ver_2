@@ -9,7 +9,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import type { Entry, Kind } from "@/lib/content-model";
 export const categories: Record<Kind, string[]> = {
-  publications: ["Journal article", "Review", "Perspective", "Patent"],
+  publications: ["Journal article", "Review", "Perspective", "Patent", "In press"],
   news: ["Research", "Awards", "Lab life", "Media", "Events"],
   people: [
     "Principal investigator",
@@ -39,6 +39,7 @@ export const fields: Record<Kind, Field[]> = {
     { key: "authors", label: "저자 *", hint: "쉼표로 구분해 입력하세요." },
     { key: "journal", label: "학술지 *" },
     { key: "year", label: "발행 연도", type: "number" },
+    { key: "date", label: "게재일", type: "date", hint: "게재일순으로 표시됩니다. 날짜 미정인 In press 논문은 분류를 'In press'로 선택하고 비워 두세요. 목록 맨 위에 표시됩니다." },
     { key: "citation", label: "권·호·페이지 / 서지 정보" },
     { key: "doi", label: "DOI", hint: "예: 10.1002/adfm.202600082" },
     { key: "summary", label: "연구 요약", type: "textarea" },
@@ -218,11 +219,11 @@ export function EntryFields({
           onChange={(e) => setData({ ...data, source: e.target.value })}
         />
       </div>
-      {["publications", "news", "photos"].includes(kind) ? (
+      {["news", "photos"].includes(kind) ? (
         <div className="editor-options">
           <div>
             <label htmlFor="edit-featured">홈에 우선 노출</label>
-            <p>홈에 표시할 논문·뉴스·사진을 우선 선택합니다.</p>
+            <p>홈에 표시할 뉴스·사진을 우선 선택합니다.</p>
           </div>
           <Switch
             id="edit-featured"
@@ -231,7 +232,7 @@ export function EntryFields({
           />
         </div>
       ) : null}
-      <div className="form-field">
+      {kind !== "publications" ? <div className="form-field">
         <label htmlFor="edit-order">표시 순서</label>
         <input
           id="edit-order"
@@ -246,7 +247,7 @@ export function EntryFields({
         <small>
           작은 숫자가 먼저 표시됩니다. 뉴스는 날짜순으로 정렬됩니다.
         </small>
-      </div>
+      </div> : null}
     </>
   );
 }
