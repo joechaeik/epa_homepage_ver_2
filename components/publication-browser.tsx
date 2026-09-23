@@ -13,10 +13,27 @@ import {
   PaginationContent,
   PaginationItem,
   PaginationLink,
+  PaginationEllipsis,
 } from "@/components/ui/pagination";
 import { PublicationRow, EmptyContent } from "./site-frame";
 import type { PublicEntry } from "@/lib/content-model";
 import { comparePublications, isUndatedInPress } from "@/lib/publication-order";
+
+function visiblePageNumbers(current: number, total: number) {
+  const numbers = new Set([1, 2, current - 1, current, current + 1, total - 1, total]);
+  const sorted = [...numbers].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+  const items: (number | "ellipsis")[] = [];
+  for (const number of sorted) {
+    const previous = items.at(-1);
+    if (typeof previous === "number") {
+      if (number - previous === 2) items.push(previous + 1);
+      else if (number - previous > 2) items.push("ellipsis");
+    }
+    items.push(number);
+  }
+  return items;
+}
+
 export default function PublicationBrowser({
   entries,
 }: {
@@ -142,15 +159,17 @@ export default function PublicationBrowser({
                 <ChevronLeft size={18} />
               </button>
             </PaginationItem>
-            {Array.from({ length: pages }, (_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink
-                  href="#publications"
-                  isActive={page === i + 1}
-                  onClick={() => setPage(i + 1)}
-                >
-                  {i + 1}
-                </PaginationLink>
+            {visiblePageNumbers(page, pages).map((item, index) => (
+              <PaginationItem key={`${item}-${index}`}>
+                {item === "ellipsis" ? <PaginationEllipsis /> : (
+                  <PaginationLink
+                    href="#publications"
+                    isActive={page === item}
+                    onClick={() => setPage(item)}
+                  >
+                    {item}
+                  </PaginationLink>
+                )}
               </PaginationItem>
             ))}
             <PaginationItem>
