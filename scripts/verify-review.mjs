@@ -126,6 +126,19 @@ try {
     forged.set('file', new File(['<script>invalid</script>'], 'fake.jpg', { type: 'image/jpeg' }));
     assert.equal((await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: forged })).status, 415);
     mark('R2 image upload serves original bytes; forged image rejected');
+    const remove = (headers = {}) => request(`/api/admin/media/${media.id}`, { method: 'DELETE', headers: { Cookie: cookie, Origin: base, ...headers } });
+    assert.equal((await request(`/api/admin/media/${media.id}`, { method: 'DELETE', headers: { Origin: base } })).status, 401);
+    assert.equal((await remove({ Origin: 'https://untrusted.invalid' })).status, 403);
+    const beforeLink = (await content()).settings;
+    assert.equal((await save({ operation: 'settings', version: beforeLink.version, intent: 'draft', data: { ...beforeLink.draft, heroImage: media.url } })).status, 200);
+    assert.equal((await remove()).status, 409);
+    const linked = (await content()).settings;
+    assert.equal((await save({ operation: 'settings', version: linked.version, intent: 'publish', data: { ...linked.draft, heroImage: '/images/main-02.jpg' } })).status, 200);
+    assert.equal((await remove()).status, 200);
+    assert.equal((await request(media.url)).status, 404);
+    assert.ok(!(await content()).media.some(item => item.id === media.id));
+    assert.equal((await remove()).status, 404);
+    mark('Media deletion rejects unauthorized and linked files, then removes unused R2 and D1 data');
   } else {
     const upload = await request('/api/admin/upload', { method: 'POST', headers: { Cookie: cookie, Origin: base }, body: 'unused' });
     assert.equal(upload.status, 503); assert.match((await upload.json()).error, /업로드는 준비 중/);

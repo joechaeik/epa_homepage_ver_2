@@ -427,6 +427,8 @@ export default function AdminWorkspace({
   ).length;
   const upload = (m: MediaItem) =>
     setData((d) => ({ ...d, media: [m, ...d.media] }));
+  const deleteMedia = (id: string) =>
+    setData((d) => ({ ...d, media: d.media.filter((item) => item.id !== id) }));
   const chooseAsset = (a: Asset) => {
     if (picker?.startsWith("hero:")) {
       const page = picker.slice(5) as HeroPage;
@@ -722,7 +724,9 @@ export default function AdminWorkspace({
                 uploadsEnabled={data.uploadsEnabled}
                 media={data.media}
                 records={data.records}
+                settings={data.settings}
                 onUploaded={upload}
+                onDeleted={deleteMedia}
               />
             ) : null}
             {currentKind ? (
@@ -980,6 +984,7 @@ export default function AdminWorkspace({
             uploadsEnabled={data.uploadsEnabled}
             media={data.media}
             records={data.records}
+            settings={data.settings}
             onUploaded={upload}
             onSelect={chooseAsset}
             only={picker === "pdf" ? "pdf" : "image"}
