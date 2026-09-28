@@ -2,7 +2,7 @@ import Hero from "@/components/hero";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
-import { comparePeople } from "@/lib/people-order";
+import { compareDisplayOrder, comparePeople } from "@/lib/people-order";
 import { Gallery } from "@/components/site-chrome";
 import { Mail, ArrowUpRight } from "lucide-react";
 export const metadata = { title: "People & Lab Life" };
@@ -72,7 +72,7 @@ export default async function People() {
           </div>
           <p>Shared moments from our laboratory archive.</p>
         </div>
-        <Gallery photos={records.filter((r) => r.kind === "photos")} />
+        <Gallery photos={records.filter((r) => r.kind === "photos").sort((a, b) => compareDisplayOrder(a, b, settings.photosSortDirection))} />
       </section>
       <JoinBanner settings={settings} />
     </SiteFrame>

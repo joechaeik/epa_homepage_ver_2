@@ -3,8 +3,9 @@ import { useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { dateLabel, type PublicEntry } from "@/lib/content-model";
+import { compareDisplayOrder } from "@/lib/people-order";
 import { EmptyContent } from "./site-frame";
-export default function NewsBrowser({ entries }: { entries: PublicEntry[] }) {
+export default function NewsBrowser({ entries, orderDirection = "asc" }: { entries: PublicEntry[]; orderDirection?: "asc" | "desc" }) {
   const [filter, setFilter] = useState("All");
   const [query, setQuery] = useState("");
   const categories = [
@@ -17,7 +18,10 @@ export default function NewsBrowser({ entries }: { entries: PublicEntry[] }) {
         (filter === "All" || n.category === filter) &&
         `${n.title} ${n.summary}`.toLowerCase().includes(query.toLowerCase()),
     )
-    .sort((a, b) => a.sortOrder - b.sortOrder || b.date.localeCompare(a.date));
+    .sort((a, b) => {
+      const order = orderDirection === "desc" ? b.sortOrder - a.sortOrder : a.sortOrder - b.sortOrder;
+      return order || b.date.localeCompare(a.date) || compareDisplayOrder(a, b, orderDirection);
+    });
   return (
     <>
       <div className="news-filters">

@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import type { Entry, Kind } from "@/lib/content-model";
+import { kindLabels, type Entry, type Kind } from "@/lib/content-model";
 export const categories: Record<Kind, string[]> = {
   publications: ["Journal article", "Review", "Perspective", "Patent", "In press"],
   news: ["Research", "Awards", "Lab life", "Media", "Events"],
@@ -127,13 +127,13 @@ export function EntryFields({
   data,
   setData,
   onPick,
-  peopleSortDirection,
+  sortDirection,
 }: {
   kind: Kind;
   data: Entry;
   setData: (d: Entry) => void;
   onPick: (key: "image" | "pdf") => void;
-  peopleSortDirection?: "asc" | "desc";
+  sortDirection?: "asc" | "desc";
 }) {
   return (
     <>
@@ -263,7 +263,7 @@ export function EntryFields({
           />
         </div>
       ) : null}
-      {kind !== "publications" ? <div className="form-field">
+      <div className="form-field">
         <label htmlFor="edit-order">표시 순서</label>
         <input
           id="edit-order"
@@ -276,11 +276,11 @@ export function EntryFields({
           }
         />
         <small>
-          {kind === "people"
-            ? `현재 구성원 정렬: ${peopleSortDirection === "desc" ? "큰 숫자 먼저" : "작은 숫자 먼저"}. 구성원 목록에서 변경할 수 있습니다.`
-            : "작은 숫자가 먼저 표시됩니다. 뉴스는 날짜순으로 정렬됩니다."}
+          {["people", "news", "photos", "publications"].includes(kind)
+            ? `${kind === "publications" ? "날짜가 같은 논문 사이에서 적용됩니다. " : ""}현재 정렬: ${sortDirection === "desc" ? "큰 숫자 먼저" : "작은 숫자 먼저"}. ${kindLabels[kind]} 목록에서 변경할 수 있습니다.`
+            : "작은 숫자가 먼저 표시됩니다."}
         </small>
-      </div> : null}
+      </div>
     </>
   );
 }

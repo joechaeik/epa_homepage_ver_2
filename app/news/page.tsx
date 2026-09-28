@@ -10,7 +10,7 @@ export default async function News() {
     <SiteFrame settings={settings}>
       <Hero settings={settings} page="news" />
       <section className="section">
-        <NewsBrowser entries={records.filter((r) => r.kind === "news")} />
+        <NewsBrowser entries={records.filter((r) => r.kind === "news")} orderDirection={settings.newsSortDirection} />
       </section>
     </SiteFrame>
   );

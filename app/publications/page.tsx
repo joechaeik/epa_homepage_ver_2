@@ -12,6 +12,7 @@ export default async function Publications() {
       <section className="section publication-section" id="publications">
         <PublicationBrowser
           entries={records.filter((r) => r.kind === "publications")}
+          orderDirection={settings.publicationsSortDirection}
         />
       </section>
     </SiteFrame>

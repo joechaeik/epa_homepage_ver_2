@@ -36,8 +36,10 @@ function visiblePageNumbers(current: number, total: number) {
 
 export default function PublicationBrowser({
   entries,
+  orderDirection = "asc",
 }: {
   entries: PublicEntry[];
+  orderDirection?: "asc" | "desc";
 }) {
   const [query, setQuery] = useState("");
   const [year, setYear] = useState("all");
@@ -60,12 +62,13 @@ export default function PublicationBrowser({
         .sort((a, b) =>
           sort === "journal"
             ? Number(isUndatedInPress(b)) - Number(isUndatedInPress(a)) ||
-              a.journal.localeCompare(b.journal)
+              a.journal.localeCompare(b.journal) ||
+              comparePublications(a, b, "newest", orderDirection)
             : sort === "oldest"
-              ? comparePublications(a, b, "oldest")
-              : comparePublications(a, b),
+              ? comparePublications(a, b, "oldest", orderDirection)
+              : comparePublications(a, b, "newest", orderDirection),
         ),
-    [entries, query, year, sort],
+    [entries, query, year, sort, orderDirection],
   );
   const pages = Math.ceil(results.length / 6);
   const visible = results.slice((page - 1) * 6, page * 6);

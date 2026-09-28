@@ -27,6 +27,7 @@ export function comparePublications(
   a: PublicationOrder,
   b: PublicationOrder,
   direction: "newest" | "oldest" = "newest",
+  orderDirection: "asc" | "desc" = "asc",
 ) {
   const inPress = Number(isUndatedInPress(b)) - Number(isUndatedInPress(a));
   if (inPress) return inPress;
@@ -36,7 +37,7 @@ export function comparePublications(
   const chronological = aDate.localeCompare(bDate);
   return (
     (direction === "newest" ? -chronological : chronological) ||
-    a.sortOrder - b.sortOrder ||
+    (orderDirection === "desc" ? b.sortOrder - a.sortOrder : a.sortOrder - b.sortOrder) ||
     a.title.localeCompare(b.title)
   );
 }

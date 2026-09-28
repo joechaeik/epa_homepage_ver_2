@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { comparePublications, isUndatedInPress, publicationSortDate } from '../lib/publication-order.ts';
+import { compareDisplayOrder } from '../lib/people-order.ts';
+import { mergeSettingsScope } from '../lib/heroes.ts';
 const rows = [
   {title:'Older publication',year:2025,date:'2025-04-28',sortOrder:0},
   {title:'Newest publication',year:2026,date:'2026-09-03',sortOrder:99},
@@ -31,3 +33,25 @@ assert.deepEqual([...mixedDates].sort((a,b)=>comparePublications(a,b,'oldest')).
   'Undated selected release in press', 'Existing record defaults to posting date', 'Posting date selected', 'Release date selected',
 ]);
 console.log('Per-publication date basis, legacy default, and in-press priority passed.');
+const sameDate = [
+  { title: 'Low number', year: 2026, date: '2026-05-01', sortOrder: 1 },
+  { title: 'High number', year: 2026, date: '2026-05-01', sortOrder: 9 },
+  { title: 'Earlier date', year: 2026, date: '2026-04-01', sortOrder: 99 },
+  { title: 'In press', year: 2026, date: '', category: 'In press', sortOrder: 0 },
+];
+assert.deepEqual([...sameDate].sort((a, b) => comparePublications(a, b, 'newest', 'asc')).map(x => x.title),
+  ['In press', 'Low number', 'High number', 'Earlier date']);
+assert.deepEqual([...sameDate].sort((a, b) => comparePublications(a, b, 'newest', 'desc')).map(x => x.title),
+  ['In press', 'High number', 'Low number', 'Earlier date']);
+assert.deepEqual([...sameDate.slice(0, 2)].sort((a, b) => compareDisplayOrder(a, b, 'desc')).map(x => x.title),
+  ['High number', 'Low number']);
+const currentSettings = { peopleSortDirection: 'asc', newsSortDirection: 'asc', publicationsSortDirection: 'asc', photosSortDirection: 'asc' };
+const incomingSettings = { peopleSortDirection: 'desc', newsSortDirection: 'desc', publicationsSortDirection: 'desc', photosSortDirection: 'desc' };
+for (const [scope, key] of [
+  ['newsOrder', 'newsSortDirection'],
+  ['publicationsOrder', 'publicationsSortDirection'],
+  ['photosOrder', 'photosSortDirection'],
+]) {
+  assert.deepEqual(mergeSettingsScope(currentSettings, incomingSettings, scope), { ...currentSettings, [key]: 'desc' });
+}
+console.log('Number direction, date priority, In press priority, and isolated settings scopes passed.');

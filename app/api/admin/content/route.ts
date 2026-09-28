@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       const v = z
         .object({
           data: settingsSchema,
-          scope: z.enum([...heroPages, "site", "peopleOrder"]).optional(),
+          scope: z.enum([...heroPages, "site", "peopleOrder", "newsOrder", "publicationsOrder", "photosOrder"]).optional(),
           version: z.number().int().positive(),
           intent: z.enum(["draft", "publish"]),
         })

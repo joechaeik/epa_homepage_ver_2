@@ -1,5 +1,6 @@
 import Hero from "./hero";
 import { comparePublications } from "@/lib/publication-order";
+import { compareDisplayOrder } from "@/lib/people-order";
 import Link from "@/components/site-link";
 import {
   ArrowRight,
@@ -28,17 +29,20 @@ export default function HomePage({
   const research = records.filter((r) => r.kind === "research");
   const papers = records
     .filter((r) => r.kind === "publications")
-    .sort(comparePublications)
+    .sort((a, b) => comparePublications(a, b, "newest", settings.publicationsSortDirection))
     .slice(0, 3);
   const news = records
     .filter((r) => r.kind === "news")
     .sort(
       (a, b) =>
-        Number(b.featured) - Number(a.featured) || b.date.localeCompare(a.date),
+        Number(b.featured) - Number(a.featured) ||
+        (settings.newsSortDirection === "desc" ? b.sortOrder - a.sortOrder : a.sortOrder - b.sortOrder) ||
+        b.date.localeCompare(a.date) || a.title.localeCompare(b.title),
     )
     .slice(0, 3);
   const photos = records
     .filter((r) => r.kind === "photos" && r.featured)
+    .sort((a, b) => compareDisplayOrder(a, b, settings.photosSortDirection))
     .slice(0, 3);
   return (
     <SiteFrame settings={settings}>
