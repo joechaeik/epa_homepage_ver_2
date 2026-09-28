@@ -140,7 +140,7 @@ try {
   assert.equal(adminPage.status, 200);
   const html = await adminPage.text();
   assert.ok(!html.includes(secret));
-  assert.ok(html.includes('action="logout"') || html.includes('value="logout"'));
+  assert.ok(html.includes('콘텐츠를 불러오는 중입니다.'));
   if (withR2) {
     const bytes = await readFile(path.join(root, 'public/images/main-01.jpg'));
     const form = new FormData();

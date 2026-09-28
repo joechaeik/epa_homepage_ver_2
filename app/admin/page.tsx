@@ -1,7 +1,6 @@
 import Link from "@/components/site-link";
 import { adminIdentity } from "@/lib/admin-auth";
-import { adminContent } from "@/lib/store";
-import AdminWorkspace from "@/components/admin/workspace";
+import AdminWorkspaceLoader from "@/components/admin/workspace-loader";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 import { chatGPTSignInPath } from "@/app/chatgpt-auth";
 export const dynamic = "force-dynamic";
@@ -69,8 +68,7 @@ export default async function AdminPage({
       </main>
     );
   return (
-    <AdminWorkspace
-      initial={await adminContent()}
+    <AdminWorkspaceLoader
       displayName={local ? "로컬 관리자" : user!.displayName}
       local={local}
     />

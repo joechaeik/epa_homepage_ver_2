@@ -102,7 +102,7 @@ function publicationListDate(entry: Entry) {
   return `${label} ${publicationSortDate(entry) || "미입력"}`;
 }
 
-type Data = {
+export type AdminData = {
   records: RecordItem[];
   settings: SettingsItem;
   media: MediaItem[];
@@ -177,7 +177,7 @@ export default function AdminWorkspace({
   displayName,
   local,
 }: {
-  initial: Data;
+  initial: AdminData;
   displayName: string;
   local: boolean;
 }) {
@@ -301,10 +301,10 @@ export default function AdminWorkspace({
   }, [data.records, dirty]);
   async function refresh() {
     const r = await fetch("/api/admin/content", { cache: "no-store" });
-    const result = (await r.json()) as Data & { error?: string };
+    const result = (await r.json()) as AdminData & { error?: string };
     if (!r.ok) throw new Error(result.error);
     setData(result);
-    return result as Data;
+    return result as AdminData;
   }
   function changeTab(next: Tab) {
     if (settingsDirty) {
