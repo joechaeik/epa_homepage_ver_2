@@ -1,5 +1,5 @@
 import type { HeroPage, HeroSettings, Settings } from "./content-model";
-export type SettingsScope = HeroPage | "site";
+export type SettingsScope = HeroPage | "site" | "peopleOrder";
 export const homeHeroKeys = ["heroTitle", "heroDescription", "heroImage", "heroImageAlt", "heroPosition", "heroPositionY", "heroEyebrow", "heroAccent", "heroCaption", "heroButtonText", "heroButtonLink"] as const;
 export function getHero(settings: Settings, page: HeroPage): HeroSettings {
   return page === "home" ? {
@@ -16,7 +16,8 @@ export function setHero(settings: Settings, page: HeroPage, hero: HeroSettings):
 // Scope saves so publishing one page never releases another page's draft.
 export function mergeSettingsScope(current: Settings, incoming: Settings, scope?: SettingsScope): Settings {
   if (!scope) return incoming;
-  if (scope === "site") return { ...incoming, ...Object.fromEntries(homeHeroKeys.map(key => [key, current[key]])), pageHeroes: current.pageHeroes };
+  if (scope === "site") return { ...incoming, ...Object.fromEntries(homeHeroKeys.map(key => [key, current[key]])), pageHeroes: current.pageHeroes, peopleSortDirection: current.peopleSortDirection };
+  if (scope === "peopleOrder") return { ...current, peopleSortDirection: incoming.peopleSortDirection };
   if (scope === "home") return { ...current, ...Object.fromEntries(homeHeroKeys.map(key => [key, incoming[key]])) };
   return { ...current, pageHeroes: { ...current.pageHeroes, [scope]: incoming.pageHeroes[scope] } };
 }

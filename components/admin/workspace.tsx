@@ -94,6 +94,7 @@ import type { HeroPicker } from "./hero-editor";
 import type { HeroPage } from "@/lib/content-model";
 import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
 import { comparePublications, isUndatedInPress, publicationSortDate } from "@/lib/publication-order";
+import { comparePeople } from "@/lib/people-order";
 
 function publicationListDate(entry: Entry) {
   if (isUndatedInPress(entry)) return "In press";
@@ -425,6 +426,8 @@ export default function AdminWorkspace({
     )
     .sort((a, b) => currentKind === "publications"
       ? comparePublications(a.draft, b.draft)
+      : currentKind === "people"
+        ? comparePeople(a.draft, b.draft, settings.peopleSortDirection)
       : a.draft.sortOrder - b.draft.sortOrder || b.draft.date.localeCompare(a.draft.date));
   const published = data.records.filter(
     (r) => !r.archived && r.published,
@@ -767,6 +770,25 @@ export default function AdminWorkspace({
                     <RefreshCw size={17} />
                   </button>
                 </div>
+                {currentKind === "people" ? (
+                  <div className="people-order-controls">
+                    <div>
+                      <strong>구성원 표시 순서</strong>
+                      <p>번호는 그대로 두고 정렬 방향만 바꿉니다. 현재 공개: {data.settings.published.peopleSortDirection === "desc" ? "큰 숫자 먼저" : "작은 숫자 먼저"}</p>
+                    </div>
+                    <Choice
+                      value={settings.peopleSortDirection}
+                      onChange={(value) => setSettings((current) => ({ ...current, peopleSortDirection: value as "asc" | "desc" }))}
+                      label="구성원 표시 순서"
+                      options={[
+                        { value: "asc", label: "작은 숫자 먼저" },
+                        { value: "desc", label: "큰 숫자 먼저" },
+                      ]}
+                    />
+                    <button className="button outline small" disabled={busy} onClick={() => saveSettings("draft", "peopleOrder")}><Save size={16} />초안 저장</button>
+                    <button className="button small" disabled={busy} onClick={() => saveSettings("publish", "peopleOrder")}><Check size={16} />사이트 반영</button>
+                  </div>
+                ) : null}
                 <div className="content-summary">
                   {rows.length}개 항목 · 공개 반영을 눌러야 사이트에 변경 사항이
                   표시됩니다.
@@ -934,6 +956,7 @@ export default function AdminWorkspace({
                 <EntryFields
                   kind={editing.kind}
                   data={editing.draft}
+                  peopleSortDirection={settings.peopleSortDirection}
                   setData={(d) => setEditing({ ...editing, draft: d })}
                   onPick={setPicker}
                 />

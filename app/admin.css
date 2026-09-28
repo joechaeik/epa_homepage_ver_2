@@ -428,6 +428,21 @@
 .content-toolbar .admin-select {
   max-width: 175px;
 }
+.people-order-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 25px 0;
+  padding: 16px 18px;
+  border: 1px solid #dbe7df;
+  border-radius: 8px;
+  background: #f6faf7;
+}
+.people-order-controls > div:first-child { flex: 1 1 250px; }
+.people-order-controls strong { font-size: 0.875rem; }
+.people-order-controls p { margin: 4px 0 0; color: #5d7167; font-size: 0.75rem; }
+.people-order-controls .admin-select { flex: 0 1 190px; }
 .content-summary {
   font-size: 0.75rem;
   color: #91a08f;
@@ -1182,6 +1197,8 @@
     max-width: none;
     flex: 1;
   }
+  .people-order-controls { margin: 16px 18px 0; }
+  .people-order-controls .admin-select { flex: 1 1 100%; }
   .record-title {
     min-width: 190px;
   }

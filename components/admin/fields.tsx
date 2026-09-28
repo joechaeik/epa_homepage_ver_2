@@ -127,11 +127,13 @@ export function EntryFields({
   data,
   setData,
   onPick,
+  peopleSortDirection,
 }: {
   kind: Kind;
   data: Entry;
   setData: (d: Entry) => void;
   onPick: (key: "image" | "pdf") => void;
+  peopleSortDirection?: "asc" | "desc";
 }) {
   return (
     <>
@@ -274,7 +276,9 @@ export function EntryFields({
           }
         />
         <small>
-          작은 숫자가 먼저 표시됩니다. 뉴스는 날짜순으로 정렬됩니다.
+          {kind === "people"
+            ? `현재 구성원 정렬: ${peopleSortDirection === "desc" ? "큰 숫자 먼저" : "작은 숫자 먼저"}. 구성원 목록에서 변경할 수 있습니다.`
+            : "작은 숫자가 먼저 표시됩니다. 뉴스는 날짜순으로 정렬됩니다."}
         </small>
       </div> : null}
     </>

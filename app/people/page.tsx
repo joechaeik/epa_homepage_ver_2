@@ -2,13 +2,16 @@ import Hero from "@/components/hero";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
+import { comparePeople } from "@/lib/people-order";
 import { Gallery } from "@/components/site-chrome";
 import { Mail, ArrowUpRight } from "lucide-react";
 export const metadata = { title: "People & Lab Life" };
 export const dynamic = "force-dynamic";
 export default async function People() {
   const { settings, records } = await publicContent();
-  const people = records.filter((r) => r.kind === "people");
+  const people = records
+    .filter((r) => r.kind === "people")
+    .sort((a, b) => comparePeople(a, b, settings.peopleSortDirection));
   const pi = people.find((r) => r.category === "Principal investigator");
   return (
     <SiteFrame settings={settings}>

@@ -144,6 +144,7 @@ export const settingsSchema = z.object({
   heroPosition: z.coerce.number().min(0).max(100),
   heroPositionY: z.coerce.number().min(0).max(100).default(50),
   pageHeroes: pageHeroesSchema.default({}),
+  peopleSortDirection: z.enum(["asc", "desc"]).default("asc"),
   mapEmbedUrl: mapEmbedSchema,
   email: z.string().email(),
   phone: short,

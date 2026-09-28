@@ -84,6 +84,7 @@ try {
   const initial = await content();
   assert.equal(initial.uploadsEnabled, withR2);
   assert.ok(initial.records.length >= 34);
+  assert.equal(initial.settings.published.peopleSortDirection, 'asc');
   mark('Password login and authenticated content read');
   const tampered = cookie.slice(0, -2) + (cookie.slice(-2, -1) === 'A' ? 'B' : 'A') + cookie.slice(-1);
   assert.equal((await request('/api/admin/content', { headers: { Cookie: tampered } })).status, 401);
@@ -195,6 +196,20 @@ try {
   assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
   assert.equal(scoped.published.pageHeroes.research.title, 'Research hero QA');
   assert.ok((await (await request('/join')).text()).includes('output=embed'));
+  let peopleHtml = await (await request('/people')).text();
+  assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
+  await editSettings('peopleOrder', 'draft', s => { s.peopleSortDirection = 'desc'; });
+  peopleHtml = await (await request('/people')).text();
+  assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
+  await editSettings('site', 'publish', s => { s.address = 'QA address updated'; });
+  assert.equal((await content()).settings.published.peopleSortDirection, 'asc');
+  await editSettings('peopleOrder', 'publish', () => {});
+  peopleHtml = await (await request('/people')).text();
+  assert.ok(peopleHtml.indexOf('Chaeik joe') < peopleHtml.indexOf('Ho-Sub Bae'));
+  await editSettings('peopleOrder', 'publish', s => { s.peopleSortDirection = 'asc'; });
+  peopleHtml = await (await request('/people')).text();
+  assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
+  mark('People order defaults ascending; draft and site scope stay isolated; descending and ascending publish work');
   await editSettings('research', 'publish', s => { s.pageHeroes.research.image = ''; });
   const research = await (await request('/research')).text();
   assert.ok(research.includes('Research hero QA'));
