@@ -17,7 +17,7 @@ export default function NewsBrowser({ entries }: { entries: PublicEntry[] }) {
         (filter === "All" || n.category === filter) &&
         `${n.title} ${n.summary}`.toLowerCase().includes(query.toLowerCase()),
     )
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort((a, b) => a.sortOrder - b.sortOrder || b.date.localeCompare(a.date));
   return (
     <>
       <div className="news-filters">

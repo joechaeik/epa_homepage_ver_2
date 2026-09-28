@@ -103,8 +103,9 @@ export function PublicationRow({
   entry: PublicEntry;
   compact?: boolean;
 }) {
+  const destination = entry.doi ? "https://doi.org/" + entry.doi : entry.link || entry.pdf;
   return (
-    <article className={"publication-row " + (compact ? "compact" : "")}>
+    <article id={entry.id} className={"publication-row " + (compact ? "compact" : "")}>
       <div className="paper-year">
         {entry.year}
         <span>RESEARCH ARTICLE</span>
@@ -116,19 +117,9 @@ export function PublicationRow({
             <span className="tag">{entry.category}</span>
           ) : null}
         </p>
-        <h3>
-          <a
-            href={
-              entry.doi
-                ? "https://doi.org/" + entry.doi
-                : entry.link || `/publications#${entry.id}`
-            }
-            target={entry.doi || entry.link ? "_blank" : undefined}
-            rel="noreferrer"
-          >
-            {entry.title}
-          </a>
-        </h3>
+        <h3>{destination ? (
+          <a href={destination} target="_blank" rel="noreferrer">{entry.title}</a>
+        ) : entry.title}</h3>
         <p className="paper-authors">{entry.authors}</p>
         {!compact && entry.citation ? (
           <p className="paper-citation">{entry.citation}</p>
@@ -154,19 +145,17 @@ export function PublicationRow({
           <Citation entry={entry} />
         </div>
       </div>
-      <a
-        aria-label={"Read " + entry.title}
-        className="paper-arrow"
-        href={
-          entry.doi
-            ? "https://doi.org/" + entry.doi
-            : entry.link || "/publications"
-        }
-        target="_blank"
-        rel="noreferrer"
-      >
-        <ArrowUpRight size={24} />
-      </a>
+      {destination ? (
+        <a
+          aria-label={"Read " + entry.title}
+          className="paper-arrow"
+          href={destination}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <ArrowUpRight size={24} />
+        </a>
+      ) : null}
     </article>
   );
 }
