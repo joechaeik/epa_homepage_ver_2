@@ -11,7 +11,7 @@ export function SiteFrame({
 }) {
   return (
     <>
-      <Header />
+      <Header labFullName={settings.labFullName} />
       <main id="main">{children}</main>
       <footer className="footer-wrap">
         <div className="footer-grid">

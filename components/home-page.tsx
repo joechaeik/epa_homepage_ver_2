@@ -9,6 +9,7 @@ import {
   Sun,
   Wind,
   Snowflake,
+  Zap,
   Play,
 } from "lucide-react";
 import { SiteFrame, JoinBanner, PublicationRow } from "./site-frame";
@@ -19,7 +20,7 @@ import {
   type Settings,
   type PublicEntry,
 } from "@/lib/content-model";
-const icons = [Droplets, Sun, Wind, Snowflake];
+const icons = { Water: Droplets, "Solar energy": Sun, Air: Wind, Electrochemical: Zap, "Redox chemistry": Snowflake } as const;
 export default function HomePage({
   settings,
   records,
@@ -88,16 +89,15 @@ export default function HomePage({
         <i />
         <span>Cleaner air</span>
         <i />
+        <span>Electrochemical conversion</span>
+        <i />
         <span>Environmental redox</span>
       </div>
       <section className="section">
-        <div className="section-heading">
+        <div className="section-heading research-overview-heading">
           <div>
             <p className="eyebrow">OUR RESEARCH</p>
-            <h2>
-              One source of energy.
-              <br />A world of possibilities.
-            </h2>
+            <h2>One source of energy. A world of possibilities.</h2>
           </div>
           <p>
             We study how light and catalysts work together—connecting
@@ -106,10 +106,10 @@ export default function HomePage({
         </div>
         <div className="research-grid">
           {research.map((track, i) => {
-            const Icon = icons[i % 4];
+            const Icon = icons[track.category as keyof typeof icons] || Sun;
             return (
               <a
-                href={`/research#${track.id}`}
+                href={`/research/${track.id}`}
                 className="research-card"
                 key={track.id}
               >

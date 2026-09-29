@@ -25,7 +25,7 @@ export default function NewsBrowser({ entries, orderDirection = "asc" }: { entri
   return (
     <>
       <div className="news-filters">
-        <Tabs value={filter} onValueChange={setFilter}>
+        <Tabs value={filter} onValueChange={setFilter} className="news-tabs">
           <TabsList>
             {categories.map((c) => (
               <TabsTrigger key={c} value={c}>

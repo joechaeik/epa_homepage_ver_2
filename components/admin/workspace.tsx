@@ -196,7 +196,7 @@ export default function AdminWorkspace({
   } | null>(null);
   const [settings, setSettings] = useState(initial.settings.draft);
   const [picker, setPicker] = useState<
-    "image" | "pdf" | HeroPicker | "intro" | `alumni:${number}` | null
+    "image" | "pdf" | HeroPicker | "intro" | "professorCv" | `alumni:${number}` | null
   >(null);
   const [confirm, setConfirm] = useState<{
     record: RecordItem;
@@ -467,6 +467,8 @@ export default function AdminWorkspace({
         introImage: a.url,
         introImageAlt: a.alt || a.name,
       }));
+    else if (picker === "professorCv")
+      setSettings((s) => ({ ...s, professorCvUrl: a.url }));
     else if (editing && picker)
       setEditing({
         ...editing,
@@ -1022,7 +1024,7 @@ export default function AdminWorkspace({
         <DialogContent className="media-dialog">
           <DialogHeader>
             <DialogTitle>
-              {picker === "pdf" ? "논문 PDF 선택" : "이미지 선택"}
+              {picker === "pdf" ? "논문 PDF 선택" : picker === "professorCv" ? "교수 CV PDF 선택" : "이미지 선택"}
             </DialogTitle>
             <DialogDescription>
               파일을 추가하거나 보관함에서 선택하세요.
@@ -1035,7 +1037,7 @@ export default function AdminWorkspace({
             settings={data.settings}
             onUploaded={upload}
             onSelect={chooseAsset}
-            only={picker === "pdf" ? "pdf" : "image"}
+            only={picker === "pdf" || picker === "professorCv" ? "pdf" : "image"}
           />
         </DialogContent>
       </Dialog>

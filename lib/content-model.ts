@@ -189,6 +189,8 @@ export const settingsSchema = z.object({
     { period: "1990", title: "M.S. in Physical Chemistry", detail: "Pohang University of Science and Technology (POSTECH)" },
     { period: "1988", title: "B.S. in Chemical Technology", detail: "Seoul National University" },
   ]),
+  professorScholarUrl: url.default("https://scholar.google.com/citations?user=BvtyVgIAAAAJ"),
+  professorCvUrl: url.default("/files/wonyong-choi-cv-2025.pdf"),
   professorCareer: z.array(careerItemSchema).max(30).default([
     { period: "2022–present", title: "Distinguished Professor & Director", detail: "Center for Environmental & Climate Technology, KENTECH" },
     { period: "1998–2022", title: "Professor", detail: "Division of Environmental Science and Engineering, POSTECH" },

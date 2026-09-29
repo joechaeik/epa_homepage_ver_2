@@ -5,12 +5,13 @@ import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import { ArrowUpRight, ArrowDown, Sun } from "lucide-react";
 export const metadata = { title: "Research" };
 export const dynamic = "force-dynamic";
-const reactions = [
-  ["Sunlight + water", "Cleaner water + resources"],
-  ["Sunlight + H₂O + O₂", "H₂O₂ + solar chemicals"],
-  ["Light + photocatalyst", "VOC transformation"],
-  ["Water → ice", "New redox pathways"],
-];
+const reactions: Record<string, [string, string]> = {
+  Water: ["Sunlight + water", "Cleaner water + resources"],
+  "Solar energy": ["Sunlight + H₂O + O₂", "H₂O₂ + solar chemicals"],
+  Air: ["Light + photocatalyst", "VOC transformation"],
+  Electrochemical: ["CO₂ + NO", "Selective chemical conversion"],
+  "Redox chemistry": ["Water → ice", "New redox pathways"],
+};
 export default async function Research() {
   const { settings, records } = await publicContent();
   const entries = records.filter((r) => r.kind === "research");
@@ -62,9 +63,9 @@ export default async function Research() {
                 <>
                   <span className="eyebrow">RESEARCH PATHWAY</span>
                   <Sun size={32} strokeWidth={1} />
-                  <strong>{reactions[i % 4][0]}</strong>
+                  <strong>{(reactions[r.category] || reactions.Water)[0]}</strong>
                   <ArrowDown size={27} strokeWidth={1} />
-                  <div>{reactions[i % 4][1]}</div>
+                  <div>{(reactions[r.category] || reactions.Water)[1]}</div>
                   <small>A conceptual overview</small>
                 </>
               )}

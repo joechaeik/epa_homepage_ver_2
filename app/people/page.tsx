@@ -4,7 +4,7 @@ import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
 import { compareDisplayOrder, comparePeople } from "@/lib/people-order";
 import { Gallery } from "@/components/site-chrome";
-import { Mail, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight, Download } from "lucide-react";
 export const metadata = { title: "People & Lab Life" };
 export const dynamic = "force-dynamic";
 export default async function People() {
@@ -36,6 +36,8 @@ export default async function People() {
                 <Mail size={16} />
                 Contact Professor Choi
               </a>
+              {settings.professorScholarUrl ? <a className="text-link" href={settings.professorScholarUrl} target="_blank" rel="noreferrer">Google Scholar <ArrowUpRight size={16} /></a> : null}
+              {settings.professorCvUrl ? <a className="text-link" href={settings.professorCvUrl} target="_blank" rel="noreferrer" download={settings.professorCvUrl.startsWith("/") ? "Wonyong_Choi_CV.pdf" : undefined}>Download CV <Download size={16} /></a> : null}
               {pi.link ? (
                 <a
                   className="text-link"

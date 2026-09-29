@@ -31,7 +31,7 @@ const nav = [
   ["People", "/people"],
   ["News", "/news"],
 ];
-export function Header() {
+export function Header({ labFullName }: { labFullName: string }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   return (
@@ -42,7 +42,7 @@ export function Header() {
       <header className="site-header">
         <Link aria-label="EPA Lab home" className="wordmark" href="/">
           EPA<span>LAB</span>
-          <small>PHOTOENERGY & ENVIRONMENT</small>
+          <small>{labFullName}</small>
         </Link>
         <nav aria-label="Main navigation">
           {nav.map(([label, url]) => (

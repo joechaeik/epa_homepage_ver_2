@@ -19,7 +19,7 @@ export const categories: Record<Kind, string[]> = {
     "Alumni",
     "Visitors",
   ],
-  research: ["Water", "Solar energy", "Air", "Redox chemistry"],
+  research: ["Water", "Solar energy", "Air", "Electrochemical", "Redox chemistry"],
   photos: ["Lab life", "Seminars", "Awards", "Field work"],
   positions: [
     "Graduate research",
@@ -139,10 +139,20 @@ export function EntryFields({
   publicationOptions?: { id: string; title: string; year: number }[];
 }) {
   const [publicationQuery, setPublicationQuery] = useState("");
-  const visiblePublicationOptions = publicationOptions.filter(p =>
-    (data.relatedPublicationIds ?? []).includes(p.id) ||
-    (publicationQuery.trim() && `${p.title} ${p.year}`.toLowerCase().includes(publicationQuery.toLowerCase()))
-  ).slice(0, 18);
+  const selectedPublicationIds = data.relatedPublicationIds ?? [];
+  const selectedPublicationOptions = publicationOptions
+    .filter(p => selectedPublicationIds.includes(p.id))
+    .sort((a, b) => selectedPublicationIds.indexOf(a.id) - selectedPublicationIds.indexOf(b.id));
+  const publicationSearchResults = publicationQuery.trim() ? publicationOptions.filter(p =>
+    !selectedPublicationIds.includes(p.id) && `${p.title} ${p.year}`.toLowerCase().includes(publicationQuery.trim().toLowerCase())
+  ).slice(0, 12) : [];
+  function movePublication(index: number, offset: number) {
+    const next = [...selectedPublicationIds];
+    const target = index + offset;
+    if (target < 0 || target >= next.length) return;
+    [next[index], next[target]] = [next[target], next[index]];
+    setData({ ...data, relatedPublicationIds: next });
+  }
   return (
     <>
       <div className="form-field">
@@ -252,11 +262,17 @@ export function EntryFields({
       ))}
       {kind === "research" ? <div className="form-field">
         <label htmlFor="related-publication-search">관련 논문</label>
-        <small>논문이 준비되면 제목을 검색해 선택하세요. 선택한 논문만 이 연구 분야 상세페이지에 표시됩니다.</small>
+        <small>선택한 순서대로 연구 분야 상세페이지에 표시됩니다. 논문 제목은 DOI 원문으로 연결됩니다.</small>
+        {selectedPublicationOptions.length ? <div className="related-publication-picker selected-publications">
+          {selectedPublicationOptions.map((p, index) => <div className="related-publication-choice" key={p.id}>
+            <span>{index + 1}. {p.title} <small>({p.year})</small></span>
+            <div><button type="button" disabled={index === 0} onClick={() => movePublication(index, -1)}>위로</button><button type="button" disabled={index === selectedPublicationOptions.length - 1} onClick={() => movePublication(index, 1)}>아래로</button><button type="button" onClick={() => setData({ ...data, relatedPublicationIds: selectedPublicationIds.filter(id => id !== p.id) })}>제거</button></div>
+          </div>)}
+        </div> : null}
         <input id="related-publication-search" value={publicationQuery} onChange={e => setPublicationQuery(e.target.value)} placeholder="논문 제목 또는 연도 검색" />
-        {visiblePublicationOptions.length ? <div className="related-publication-picker">
-          {visiblePublicationOptions.map(p => <label key={p.id}>
-            <input type="checkbox" checked={(data.relatedPublicationIds ?? []).includes(p.id)} onChange={e => setData({ ...data, relatedPublicationIds: e.target.checked ? [...(data.relatedPublicationIds ?? []), p.id].slice(0, 30) : (data.relatedPublicationIds ?? []).filter(id => id !== p.id) })} />
+        {publicationSearchResults.length ? <div className="related-publication-picker">
+          {publicationSearchResults.map(p => <label key={p.id}>
+            <input type="checkbox" checked={false} disabled={selectedPublicationIds.length >= 30} onChange={() => setData({ ...data, relatedPublicationIds: [...selectedPublicationIds, p.id] })} />
             <span>{p.title} <small>({p.year})</small></span>
           </label>)}
         </div> : null}

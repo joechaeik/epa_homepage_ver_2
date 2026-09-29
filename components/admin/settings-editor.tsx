@@ -62,7 +62,7 @@ export default function SettingsEditor({
 }: {
   value: Settings;
   onChange: (v: Settings) => void;
-  onPick: (target: HeroPicker | "intro" | `alumni:${number}`) => void;
+  onPick: (target: HeroPicker | "intro" | "professorCv" | `alumni:${number}`) => void;
   onSave: (intent: "draft" | "publish", scope: SettingsScope) => void;
   busy: boolean;
   dirty: boolean;
@@ -133,15 +133,24 @@ export default function SettingsEditor({
           <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 30} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
         </section>
         <section className="admin-panel settings-group">
+          <h2>교수 프로필 링크</h2>
+          <p>Google Scholar와 People 페이지의 CV 다운로드 링크를 관리합니다. 새 CV를 업로드한 뒤 보관함에서 선택하면 교체됩니다.</p>
+          <div className="form-field"><label htmlFor="professor-scholar-url">Google Scholar URL</label><input id="professor-scholar-url" value={value.professorScholarUrl} onChange={e => onChange({ ...value, professorScholarUrl: e.target.value })} /></div>
+          <div className="form-field"><label htmlFor="professor-cv-url">CV PDF URL</label><input id="professor-cv-url" value={value.professorCvUrl} onChange={e => onChange({ ...value, professorCvUrl: e.target.value })} /></div>
+          <div className="settings-repeat-controls"><button className="button outline small" type="button" onClick={() => onPick("professorCv")}>미디어 보관함에서 CV 선택</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, professorCvUrl: "" })}>CV 링크 비우기</button></div>
+        </section>
+        <section className="admin-panel settings-group">
           <h2>교수 성과</h2>
-          <p>People 페이지의 학력·경력·수상을 관리합니다. 화살표 버튼으로 표시 순서를 바꿀 수 있습니다.</p>
+          <p>People 페이지의 학력·경력·수상을 행 단위로 관리합니다. 행을 추가하고 위·아래 버튼으로 순서를 바꿀 수 있습니다.</p>
           {([ ["professorEducation", "학력"], ["professorCareer", "주요 경력"], ["professorAwards", "수상·선정" ] ] as const).map(([key, title]) => <div className="settings-career-list" key={key}>
             <h3>{title}</h3>
-            {value[key].map((item, index) => <div className="settings-repeat-item" key={index}>
-              <div className="settings-repeat-heading"><strong>{index + 1}. {item.title || "새 항목"}</strong><div className="settings-repeat-controls"><button className="button outline small" type="button" disabled={index === 0} onClick={() => moveItem(key, index, -1)}>위로</button><button className="button outline small" type="button" disabled={index === value[key].length - 1} onClick={() => moveItem(key, index, 1)}>아래로</button><button className="button outline small" type="button" onClick={() => removeCareer(key, index)}>삭제</button></div></div>
-              {([ ["period", "연도·기간"], ["title", "제목"], ["detail", "기관·설명"] ] as const).map(([field, label]) => <div className="form-field" key={field}><label htmlFor={`${key}-${index}-${field}`}>{label}</label><input id={`${key}-${index}-${field}`} value={item[field]} onChange={e => updateCareer(key, index, field, e.target.value)} /></div>)}
-            </div>)}
-            <button className="button outline small" type="button" onClick={() => onChange({ ...value, [key]: [...value[key], { period: "", title: "", detail: "" }] })}>항목 추가</button>
+            <div className="settings-table-wrap"><table className="settings-career-table"><thead><tr><th scope="col">연도·기간</th><th scope="col">제목</th><th scope="col">기관·설명</th><th scope="col">순서·관리</th></tr></thead><tbody>
+              {value[key].map((item, index) => <tr key={index}>
+                {([ ["period", "연도·기간"], ["title", "제목"], ["detail", "기관·설명"] ] as const).map(([field, label]) => <td key={field}><label className="sr-only" htmlFor={`${key}-${index}-${field}`}>{title} {index + 1}행 {label}</label><input id={`${key}-${index}-${field}`} value={item[field]} onChange={e => updateCareer(key, index, field, e.target.value)} /></td>)}
+                <td><div className="settings-table-actions"><button type="button" disabled={index === 0} onClick={() => moveItem(key, index, -1)}>↑</button><button type="button" disabled={index === value[key].length - 1} onClick={() => moveItem(key, index, 1)}>↓</button><button type="button" onClick={() => removeCareer(key, index)}>삭제</button></div></td>
+              </tr>)}
+            </tbody></table></div>
+            <button className="button outline small" type="button" disabled={value[key].length >= (key === "professorEducation" ? 15 : key === "professorCareer" ? 30 : 60)} onClick={() => onChange({ ...value, [key]: [...value[key], { period: "", title: "", detail: "" }] })}>행 추가</button>
           </div>)}
         </section>
       </div>

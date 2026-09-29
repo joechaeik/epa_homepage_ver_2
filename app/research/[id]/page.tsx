@@ -12,7 +12,8 @@ export default async function ResearchTopic({ params }: { params: Promise<{ id: 
   const topic = records.find(record => record.kind === "research" && record.id === id);
   if (!topic) notFound();
   const relatedIds = topic.relatedPublicationIds || [];
-  const related = records.filter(record => record.kind === "publications" && relatedIds.includes(record.id));
+  const related = records.filter(record => record.kind === "publications" && relatedIds.includes(record.id))
+    .sort((a, b) => relatedIds.indexOf(a.id) - relatedIds.indexOf(b.id));
   return <SiteFrame settings={settings}>
     <article className="research-topic-page">
       <header className="section research-topic-header">

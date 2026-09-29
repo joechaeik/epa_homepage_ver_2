@@ -1382,6 +1382,22 @@
 @media (max-width: 620px) { .settings-repeat-heading { align-items: flex-start; flex-direction: column; } }
 .settings-career-list { margin: 28px 0; }
 .settings-career-list h3 { font-size: 1.1rem; margin-bottom: 12px; }
+.settings-table-wrap { max-width: 100%; overflow-x: auto; margin-bottom: 14px; border: 1px solid #dce8de; border-radius: 7px; }
+.settings-career-table { border-collapse: collapse; width: 100%; min-width: 680px; table-layout: fixed; }
+.settings-career-table th { padding: 10px 12px; background: #edf4ef; color: #315b53; text-align: left; font-size: .76rem; }
+.settings-career-table th:first-child { width: 17%; }
+.settings-career-table th:nth-child(2) { width: 30%; }
+.settings-career-table th:nth-child(3) { width: 33%; }
+.settings-career-table th:last-child { width: 20%; }
+.settings-career-table td { padding: 8px; border-top: 1px solid #e3ebe5; vertical-align: top; }
+.settings-career-table input { width: 100%; min-width: 0; padding: 10px; background: #fff; }
+.settings-table-actions { display: flex; gap: 4px; }
+.settings-table-actions button, .related-publication-choice button { border: 1px solid #cadbd0; border-radius: 4px; background: #fff; color: #245a51; padding: 8px; cursor: pointer; }
+.settings-table-actions button:disabled, .related-publication-choice button:disabled { opacity: .4; cursor: default; }
 .related-publication-picker { max-height: 240px; overflow-y: auto; border: 1px solid #dce8de; border-radius: 7px; margin-top: 10px; }
 .related-publication-picker label { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid #e8efe9; cursor: pointer; }
 .related-publication-picker input { width: auto; margin-top: 4px; }
+.related-publication-choice { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid #e8efe9; }
+.related-publication-choice > span { min-width: 0; font-size: .84rem; }
+.related-publication-choice > div { display: flex; gap: 4px; flex-shrink: 0; }
+@media (max-width: 760px) { .related-publication-choice { display: block; } .related-publication-choice > div { margin-top: 8px; } }

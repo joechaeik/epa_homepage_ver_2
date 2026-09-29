@@ -84,6 +84,12 @@ try {
   const initial = await content();
   assert.equal(initial.uploadsEnabled, withR2);
   assert.ok(initial.records.length >= 34);
+  assert.equal(initial.records.filter(r => r.kind === 'research').length, 5);
+  assert.equal(initial.settings.published.professorCvUrl, '/files/wonyong-choi-cv-2025.pdf');
+  assert.equal((await request('/files/wonyong-choi-cv-2025.pdf')).status, 200);
+  assert.ok((await (await request('/')).text()).includes('Eco-friendly Photoenergy Application Laboratory'));
+  assert.ok((await (await request('/research')).text()).includes('Electrochemical Conversion'));
+  assert.equal((await request('/research/research-electrochemical')).status, 200);
   assert.equal(initial.settings.published.peopleSortDirection, 'asc');
   mark('Password login and authenticated content read');
   const tampered = cookie.slice(0, -2) + (cookie.slice(-2, -1) === 'A' ? 'B' : 'A') + cookie.slice(-1);
@@ -217,6 +223,7 @@ try {
   assert.ok((await (await request('/')).text()).includes('EPA research QA'));
   assert.ok((await (await request('/')).text()).includes('QA University'));
   assert.ok((await (await request('/people')).text()).includes('QA recognition'));
+  assert.ok((await (await request('/people')).text()).includes('Download CV'));
   assert.ok((await (await request('/join')).text()).includes('output=embed'));
   let peopleHtml = await (await request('/people')).text();
   assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
