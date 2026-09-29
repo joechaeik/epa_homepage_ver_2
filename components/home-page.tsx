@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { SiteFrame, JoinBanner, PublicationRow } from "./site-frame";
 import { Gallery } from "./site-chrome";
+import AlumniStrip from "./alumni-strip";
 import {
   dateLabel,
   type Settings,
@@ -44,6 +45,7 @@ export default function HomePage({
     .filter((r) => r.kind === "photos" && r.featured)
     .sort((a, b) => compareDisplayOrder(a, b, settings.photosSortDirection))
     .slice(0, 3);
+  const publicationCount = records.filter((r) => r.kind === "publications").length;
   return (
     <SiteFrame settings={settings}>
       <Hero settings={settings} page="home">
@@ -55,10 +57,29 @@ export default function HomePage({
               {settings.heroButtonText} <ArrowUpRight size={18} />
             </a>
             <Link className="text-link light" href="/publications">
-              Our publications <ArrowRight size={18} />
+              Our publications <span className="hero-publication-count">{publicationCount}</span> <ArrowRight size={18} />
             </Link>
           </div>
+          <div className="hero-proof">
+            <Link className="hero-proof-item hero-proof-research" href="/research">
+              <span>SELECTED RESEARCH</span>
+              <strong>{settings.homeResearchHighlightTitle}</strong>
+              <small>{settings.homeResearchHighlightBody}</small>
+            </Link>
+            <div className="hero-proof-item">
+              <span>RESEARCH INFLUENCE</span>
+              <strong>{settings.homeHIndex}</strong>
+              <small>{settings.homeHIndexNote}</small>
+            </div>
+            <div className="hero-proof-item">
+              <span>WONYONG CHOI</span>
+              <strong>{settings.homeHcrYears}</strong>
+              <small>Highly Cited Researcher · Clarivate</small>
+            </div>
+          </div>
+          {settings.homeFacilitiesUrl ? <a className="hero-facilities" href={settings.homeFacilitiesUrl} target="_blank" rel="noreferrer">KENTECH facilities <ArrowUpRight size={15} /></a> : null}
       </Hero>
+      <AlumniStrip title={settings.alumniHeading} destinations={settings.alumniDestinations} />
       <div className="research-ribbon">
         <span>LIGHT-DRIVEN DISCOVERY</span>
         <span>Water & resources</span>

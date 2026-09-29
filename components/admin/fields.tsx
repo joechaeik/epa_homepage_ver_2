@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -128,13 +129,20 @@ export function EntryFields({
   setData,
   onPick,
   sortDirection,
+  publicationOptions = [],
 }: {
   kind: Kind;
   data: Entry;
   setData: (d: Entry) => void;
   onPick: (key: "image" | "pdf") => void;
   sortDirection?: "asc" | "desc";
+  publicationOptions?: { id: string; title: string; year: number }[];
 }) {
+  const [publicationQuery, setPublicationQuery] = useState("");
+  const visiblePublicationOptions = publicationOptions.filter(p =>
+    (data.relatedPublicationIds ?? []).includes(p.id) ||
+    (publicationQuery.trim() && `${p.title} ${p.year}`.toLowerCase().includes(publicationQuery.toLowerCase()))
+  ).slice(0, 18);
   return (
     <>
       <div className="form-field">
@@ -242,6 +250,17 @@ export function EntryFields({
           ) : null}
         </div>
       ))}
+      {kind === "research" ? <div className="form-field">
+        <label htmlFor="related-publication-search">관련 논문</label>
+        <small>논문이 준비되면 제목을 검색해 선택하세요. 선택한 논문만 이 연구 분야 상세페이지에 표시됩니다.</small>
+        <input id="related-publication-search" value={publicationQuery} onChange={e => setPublicationQuery(e.target.value)} placeholder="논문 제목 또는 연도 검색" />
+        {visiblePublicationOptions.length ? <div className="related-publication-picker">
+          {visiblePublicationOptions.map(p => <label key={p.id}>
+            <input type="checkbox" checked={(data.relatedPublicationIds ?? []).includes(p.id)} onChange={e => setData({ ...data, relatedPublicationIds: e.target.checked ? [...(data.relatedPublicationIds ?? []), p.id].slice(0, 30) : (data.relatedPublicationIds ?? []).filter(id => id !== p.id) })} />
+            <span>{p.title} <small>({p.year})</small></span>
+          </label>)}
+        </div> : null}
+      </div> : null}
       <div className="form-field">
         <label htmlFor="edit-source">자료 출처 링크</label>
         <input

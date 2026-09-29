@@ -76,6 +76,7 @@ export const entrySchema = z.object({
   email: z.union([z.literal(""), z.string().email()]).default(""),
   role: short,
   tags: z.string().max(500).default(""),
+  relatedPublicationIds: z.array(z.string().max(120)).max(30).default([]),
   featured: z.boolean().default(false),
   sortOrder: z.coerce.number().int().min(0).max(99999).default(0),
 });
@@ -128,6 +129,19 @@ export const mapEmbedSchema = z.string().trim().max(5000).refine((value) => {
       (u.pathname === "/maps/embed" || (u.pathname === "/maps" && u.searchParams.get("output") === "embed"));
   } catch { return false; }
 }, "Google Maps의 지도 퍼가기 URL을 입력해 주세요. iframe 코드 전체가 아닌 src 주소만 사용합니다.").default("");
+const careerItemSchema = z.object({
+  period: z.string().trim().max(80),
+  title: z.string().trim().max(300),
+  detail: z.string().trim().max(600).default(""),
+});
+const alumniDestinationSchema = z.object({
+  name: z.string().trim().max(160),
+  alumnus: z.string().trim().max(160).default(""),
+  logo: url,
+  link: url,
+});
+export type CareerItem = z.infer<typeof careerItemSchema>;
+export type AlumniDestination = z.infer<typeof alumniDestinationSchema>;
 export const settingsSchema = z.object({
   labName: z.string().trim().min(1).max(200),
   labFullName: short,
@@ -157,6 +171,69 @@ export const settingsSchema = z.object({
   videoUrl: url,
   introImage: url.default("/images/lab-6.jpg"),
   introImageAlt: short.default("EPA Lab group photograph, 2025"),
+  homeHIndex: z.string().trim().max(20).default("132"),
+  homeHIndexNote: z.string().trim().max(150).default("H-index"),
+  homeHcrYears: z.string().trim().max(80).default("2019–2025"),
+  homeFacilitiesUrl: url.default("https://ksrf.kentech.ac.kr/hm/equipReservation/list"),
+  homeResearchHighlightTitle: short.default("Light-driven solutions for water, fuels & air"),
+  homeResearchHighlightBody: z.string().max(700).default("Explore EPA Lab’s work in photoelectrochemistry, solar chemicals, and environmental catalysis."),
+  alumniHeading: short.default("Where our alumni go"),
+  alumniDestinations: z.array(alumniDestinationSchema).max(30).default([
+    { name: "Sookmyung Women's University", alumnus: "Wooyul Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4211" },
+    { name: "Samsung Electronics", alumnus: "Sujeong Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4237" },
+    { name: "KIST", alumnus: "Gunhee Moon", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4237" },
+    { name: "SK Innovation", alumnus: "Taehong Seok", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4211" },
+  ]),
+  professorEducation: z.array(careerItemSchema).max(15).default([
+    { period: "1996", title: "Ph.D. in Environmental Chemistry", detail: "California Institute of Technology (Caltech)" },
+    { period: "1990", title: "M.S. in Physical Chemistry", detail: "Pohang University of Science and Technology (POSTECH)" },
+    { period: "1988", title: "B.S. in Chemical Technology", detail: "Seoul National University" },
+  ]),
+  professorCareer: z.array(careerItemSchema).max(30).default([
+    { period: "2022–present", title: "Distinguished Professor & Director", detail: "Center for Environmental & Climate Technology, KENTECH" },
+    { period: "1998–2022", title: "Professor", detail: "Division of Environmental Science and Engineering, POSTECH" },
+    { period: "2020–present", title: "Editor-in-Chief", detail: "ACS ES&T Engineering" },
+    { period: "2020–present", title: "Director, Leading Researcher Project", detail: "National Research Foundation of Korea" },
+    { period: "2017–2019", title: "Associate Editor", detail: "Environmental Science & Technology" },
+    { period: "2008–2017", title: "Editor", detail: "Journal of Hazardous Materials" },
+    { period: "1996–1998", title: "Postdoctoral Scholar", detail: "NASA/Caltech Jet Propulsion Laboratory" },
+    { period: "2020–present", title: "Editorial Advisory Panel", detail: "Nature Sustainability" },
+    { period: "2008–present", title: "Editorial Advisory Board", detail: "Energy & Environmental Science" },
+    { period: "2017–present", title: "Editorial Advisory Board", detail: "ACS Earth and Space Chemistry" },
+    { period: "2015–2017", title: "Editorial Advisory Board", detail: "Environmental Science & Technology" },
+    { period: "2009–2011", title: "Editorial Advisory Board", detail: "Journal of Physical Chemistry" },
+  ]),
+  professorAwards: z.array(careerItemSchema).max(60).default([
+    { period: "2019–2025", title: "Highly Cited Researcher", detail: "Clarivate Analytics" },
+    { period: "2024", title: "Korea Toray Science and Technology Prize", detail: "" },
+    { period: "2024", title: "KENTECH Award for Research Excellence", detail: "" },
+    { period: "2024", title: "International member, U.S. National Academy of Engineering", detail: "" },
+    { period: "2024–2026", title: "Guest Professor", detail: "Zhejiang University, China" },
+    { period: "2023", title: "Hyundai E&C Technology Contest Award", detail: "" },
+    { period: "2023–2026", title: "Chair Professor", detail: "Xi’an Jiaotong University, China" },
+    { period: "2023", title: "Member, National Academy of Engineering of Korea", detail: "" },
+    { period: "2020", title: "Proud Postechian Award (Research)", detail: "" },
+    { period: "2020", title: "Doosan Yonkang Environment Award", detail: "" },
+    { period: "2019", title: "Academic Award", detail: "Korean Society of Environmental Engineers" },
+    { period: "2018", title: "Korea Engineering Award", detail: "" },
+    { period: "2017", title: "Environment & Energy Award", detail: "Korean Chemical Society" },
+    { period: "2017–2024", title: "Invited Visiting Professor", detail: "Guangdong University of Technology, China" },
+    { period: "2015", title: "KAST Science and Technology Award", detail: "" },
+    { period: "2014", title: "KIST Excellent Researcher Award", detail: "" },
+    { period: "2014", title: "Fellow of the Royal Society of Chemistry", detail: "" },
+    { period: "2014", title: "Member, Korean Academy of Science and Technology", detail: "" },
+    { period: "2012", title: "Namgo Chair Professor", detail: "POSTECH" },
+    { period: "2012", title: "Pohang MBC-Samil Munhwa Special Award", detail: "" },
+    { period: "2011", title: "Invited Visiting Professor", detail: "University Lille 1, France" },
+    { period: "2011", title: "Rising Star Faculty Special Support Program", detail: "POSTECH" },
+    { period: "2011", title: "Erudite Visiting Professor", detail: "Kerala State Higher Education Council / Mahatma Gandhi University, India" },
+    { period: "2008", title: "Lectureship Award for Asian and Oceanian Photochemist", detail: "Japanese Photochemistry Association" },
+    { period: "2006", title: "LG Yonam Research Fellow", detail: "" },
+    { period: "2005", title: "Young Scientist Award", detail: "KAST" },
+    { period: "2003", title: "Associate member, Korean Academy of Science and Technology", detail: "" },
+    { period: "2001", title: "Best Paper Award", detail: "Korean Society of Industrial and Engineering Chemistry" },
+    { period: "1988", title: "President of SNU Alumni Association Award for Outstanding Engineering Students", detail: "" },
+  ]),
   recruitmentTitle: short,
   recruitmentBody: z.string().max(2000),
 });

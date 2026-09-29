@@ -133,6 +133,19 @@ try {
   papers = (await content()).records.filter(r => r.draft.title === firstPaper || r.draft.title === secondPaper);
   const qaPublicationIds = papers.map(r => r.id);
   mark('Publication posting/release dates, per-paper sort choice, draft isolation, and input validation');
+  const publicPaperCount = (await content()).records.filter(r => r.kind === 'publications' && r.published && !r.archived).length;
+  assert.match(await (await request('/')).text(), new RegExp(`hero-publication-count[^>]*>${publicPaperCount}<`));
+  const researchRecord = (await content()).records.find(r => r.kind === 'research' && r.published);
+  assert.ok(researchRecord);
+  const researchPath = `/research/${researchRecord.id}`;
+  assert.equal((await request(researchPath)).status, 200);
+  assert.ok(!(await (await request(researchPath)).text()).includes(firstPaper));
+  assert.equal((await save({ operation: 'save', id: researchRecord.id, kind: 'research', version: researchRecord.version, intent: 'draft', data: { ...researchRecord.draft, relatedPublicationIds: [qaPublicationIds[0]] } })).status, 200);
+  assert.ok(!(await (await request(researchPath)).text()).includes(firstPaper));
+  const researchDraft = (await content()).records.find(r => r.id === researchRecord.id);
+  assert.equal((await save({ operation: 'save', id: researchRecord.id, kind: 'research', version: researchDraft.version, intent: 'publish', data: researchDraft.draft })).status, 200);
+  assert.ok((await (await request(researchPath)).text()).includes(firstPaper));
+  mark('Home publication count and independently published research topic links');
   const settings = (await content()).settings;
   assert.equal((await save({ operation: 'settings', version: settings.version, intent: 'publish', data: { ...settings.draft, heroImage: '/images/main-02.jpg' } })).status, 200);
   assert.ok((await (await request('/')).text()).includes('/images/main-02.jpg'));
@@ -191,10 +204,19 @@ try {
   assert.equal(scoped.published.pageHeroes.research.positionY, 73);
   assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
   assert.equal(scoped.draft.pageHeroes.people.title, 'People draft QA');
-  await editSettings('site', 'publish', s => { s.address = 'QA address'; });
+  await editSettings('site', 'publish', s => {
+    s.address = 'QA address';
+    s.homeResearchHighlightTitle = 'EPA research QA';
+    s.alumniDestinations = [{ name: 'QA University', alumnus: 'QA Alumnus', logo: '', link: '' }];
+    s.professorAwards = [{ period: '2026', title: 'QA recognition', detail: 'QA source' }];
+  });
   scoped = (await content()).settings;
   assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
   assert.equal(scoped.published.pageHeroes.research.title, 'Research hero QA');
+  assert.equal(scoped.published.alumniDestinations[0].name, 'QA University');
+  assert.ok((await (await request('/')).text()).includes('EPA research QA'));
+  assert.ok((await (await request('/')).text()).includes('QA University'));
+  assert.ok((await (await request('/people')).text()).includes('QA recognition'));
   assert.ok((await (await request('/join')).text()).includes('output=embed'));
   let peopleHtml = await (await request('/people')).text();
   assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
@@ -235,7 +257,7 @@ try {
   assert.ok(!/<img[^>]*class="hero-photo"/.test(research));
   const currentSettings = (await content()).settings;
   assert.equal((await save({ operation: 'settings', scope: 'site', intent: 'draft', version: currentSettings.version, data: { ...currentSettings.draft, mapEmbedUrl: 'https://untrusted.invalid/maps/embed' } })).status, 400);
-  assert.deepEqual((await content()).records.filter(r => r.id !== draft.id && !qaPublicationIds.includes(r.id)), initial.records);
+  assert.deepEqual((await content()).records.filter(r => r.id !== draft.id && r.id !== researchRecord.id && !qaPublicationIds.includes(r.id)), initial.records.filter(r => r.id !== researchRecord.id));
   for (const route of ['/', '/research', '/people', '/publications', '/news', '/join', '/join-us']) {
     const response = await request(route);
     assert.equal(response.status, 200, route);

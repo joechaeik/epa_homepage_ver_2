@@ -3,8 +3,22 @@ import { Save, Check } from "lucide-react";
 import HeroEditor, { type HeroPicker } from "./hero-editor";
 import type { SettingsScope } from "@/lib/heroes";
 import type { Settings } from "@/lib/content-model";
+type CareerListKey = "professorEducation" | "professorCareer" | "professorAwards";
 type Field = { key: keyof Settings; label: string; area?: boolean };
 const groups: { title: string; description: string; fields: Field[] }[] = [
+  {
+    title: "Home 연구 성과",
+    description: "논문 수는 공개 논문 목록에서 자동 계산됩니다. 이곳의 수치와 문구는 직접 관리합니다.",
+    fields: [
+      { key: "homeResearchHighlightTitle", label: "대표 연구 제목" },
+      { key: "homeResearchHighlightBody", label: "대표 연구 소개", area: true },
+      { key: "homeHIndex", label: "H-index 값" },
+      { key: "homeHIndexNote", label: "H-index 설명·출처" },
+      { key: "homeHcrYears", label: "Highly Cited Researcher 기간" },
+      { key: "homeFacilitiesUrl", label: "KENTECH 연구 인프라 링크" },
+      { key: "alumniHeading", label: "동문 진로 영역 제목" },
+    ],
+  },
   {
     title: "연구실 소개",
     description: "홈 중간의 소개와 영상 링크입니다.",
@@ -48,11 +62,24 @@ export default function SettingsEditor({
 }: {
   value: Settings;
   onChange: (v: Settings) => void;
-  onPick: (target: HeroPicker | "intro") => void;
+  onPick: (target: HeroPicker | "intro" | `alumni:${number}`) => void;
   onSave: (intent: "draft" | "publish", scope: SettingsScope) => void;
   busy: boolean;
   dirty: boolean;
 }) {
+  function updateCareer(key: CareerListKey, index: number, field: "period" | "title" | "detail", text: string) {
+    onChange({ ...value, [key]: value[key].map((item, i) => i === index ? { ...item, [field]: text } : item) });
+  }
+  function removeCareer(key: CareerListKey, index: number) {
+    onChange({ ...value, [key]: value[key].filter((_, i) => i !== index) });
+  }
+  function moveItem(key: CareerListKey | "alumniDestinations", index: number, offset: number) {
+    const items = [...value[key]];
+    const next = index + offset;
+    if (next < 0 || next >= items.length) return;
+    [items[index], items[next]] = [items[next], items[index]];
+    onChange({ ...value, [key]: items });
+  }
   return (
     <div className="settings-page">
       <HeroEditor value={value} onChange={onChange} onPick={onPick} onSave={onSave} busy={busy} />
@@ -95,6 +122,28 @@ export default function SettingsEditor({
             ))}
           </section>
         ))}
+        <section className="admin-panel settings-group">
+          <h2>동문 진로 배너</h2>
+          <p>최대 6개가 한 화면에 보입니다. 로고가 없으면 기관명이 표시됩니다. 졸업생과 기관의 연결을 확인한 뒤 공개하세요.</p>
+          {value.alumniDestinations.map((item, index) => <div className="settings-repeat-item" key={index}>
+            <div className="settings-repeat-heading"><strong>{index + 1}. {item.name || "새 기관"}</strong><div className="settings-repeat-controls"><button className="button outline small" type="button" disabled={index === 0} onClick={() => moveItem("alumniDestinations", index, -1)}>위로</button><button className="button outline small" type="button" disabled={index === value.alumniDestinations.length - 1} onClick={() => moveItem("alumniDestinations", index, 1)}>아래로</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, alumniDestinations: value.alumniDestinations.filter((_, i) => i !== index) })}>삭제</button></div></div>
+            {([ ["name", "기관명"], ["alumnus", "졸업생"], ["link", "졸업생 소개 링크"], ["logo", "로고 이미지 URL"] ] as const).map(([key, label]) => <div className="form-field" key={key}><label htmlFor={`alumni-${index}-${key}`}>{label}</label><input id={`alumni-${index}-${key}`} value={item[key]} onChange={e => onChange({ ...value, alumniDestinations: value.alumniDestinations.map((entry, i) => i === index ? { ...entry, [key]: e.target.value } : entry) })} /></div>)}
+            <button className="button outline small" type="button" onClick={() => onPick(`alumni:${index}`)}>미디어 보관함에서 로고 선택</button>
+          </div>)}
+          <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 30} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
+        </section>
+        <section className="admin-panel settings-group">
+          <h2>교수 성과</h2>
+          <p>People 페이지의 학력·경력·수상을 관리합니다. 화살표 버튼으로 표시 순서를 바꿀 수 있습니다.</p>
+          {([ ["professorEducation", "학력"], ["professorCareer", "주요 경력"], ["professorAwards", "수상·선정" ] ] as const).map(([key, title]) => <div className="settings-career-list" key={key}>
+            <h3>{title}</h3>
+            {value[key].map((item, index) => <div className="settings-repeat-item" key={index}>
+              <div className="settings-repeat-heading"><strong>{index + 1}. {item.title || "새 항목"}</strong><div className="settings-repeat-controls"><button className="button outline small" type="button" disabled={index === 0} onClick={() => moveItem(key, index, -1)}>위로</button><button className="button outline small" type="button" disabled={index === value[key].length - 1} onClick={() => moveItem(key, index, 1)}>아래로</button><button className="button outline small" type="button" onClick={() => removeCareer(key, index)}>삭제</button></div></div>
+              {([ ["period", "연도·기간"], ["title", "제목"], ["detail", "기관·설명"] ] as const).map(([field, label]) => <div className="form-field" key={field}><label htmlFor={`${key}-${index}-${field}`}>{label}</label><input id={`${key}-${index}-${field}`} value={item[field]} onChange={e => updateCareer(key, index, field, e.target.value)} /></div>)}
+            </div>)}
+            <button className="button outline small" type="button" onClick={() => onChange({ ...value, [key]: [...value[key], { period: "", title: "", detail: "" }] })}>항목 추가</button>
+          </div>)}
+        </section>
       </div>
       <aside className="settings-preview">
         <section className="admin-panel">

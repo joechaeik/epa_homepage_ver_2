@@ -1376,3 +1376,12 @@
 .hero-editor .settings-actions { flex-wrap: wrap; }
 .hero-editor input[type=range] { accent-color: #075462; padding: 0; }
 @media (max-width: 900px) { .hero-editor-grid { grid-template-columns: 1fr; } .hero-editor { padding: 20px; } .hero-editor-preview .hero :is(h1, h2) { font-size: 2.15rem; } }
+.settings-repeat-item { padding: 18px; margin: 14px 0; background: #f6f9f7; border: 1px solid #dce8de; border-radius: 7px; }
+.settings-repeat-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 14px; }
+.settings-repeat-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+@media (max-width: 620px) { .settings-repeat-heading { align-items: flex-start; flex-direction: column; } }
+.settings-career-list { margin: 28px 0; }
+.settings-career-list h3 { font-size: 1.1rem; margin-bottom: 12px; }
+.related-publication-picker { max-height: 240px; overflow-y: auto; border: 1px solid #dce8de; border-radius: 7px; margin-top: 10px; }
+.related-publication-picker label { display: flex; gap: 12px; align-items: flex-start; padding: 10px 12px; border-bottom: 1px solid #e8efe9; cursor: pointer; }
+.related-publication-picker input { width: auto; margin-top: 4px; }

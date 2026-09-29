@@ -20,9 +20,11 @@ export const defaultSettings = settingsSchema.parse({
   email: "wchoi@kentech.ac.kr",
   phone: "+82-61-320-9237",
   address: "21 Kentech-gil, Naju, Jeonnam 58330, Republic of Korea",
-  introTitle: "Where light meets\na sustainable question.",
+  introTitle: "Light-driven chemistry\nfor energy and the environment.",
   introBody:
-    "At EPA Lab, we investigate the reactions that connect sunlight, materials, and the environment. Our work spans photoelectrochemical water treatment, solar chemicals, air purification, and redox chemistry in ice.",
+    "EPA Lab investigates how light, catalytic materials, and redox reactions can address environmental and energy challenges. Our research connects fundamental reaction mechanisms with water and air purification, solar-fuel production, and resource recovery. We also study chemical transformations in ice to understand reactions in frozen environments.",
+  introImage: "/images/epa-research-photochemistry.jpg",
+  introImageAlt: "Photochemical experiments in the EPA laboratory",
   videoUrl: "https://www.youtube.com/watch?v=ml-G6XyS9Yo",
   recruitmentTitle: "Your next question\ncould change what’s next.",
   recruitmentBody:

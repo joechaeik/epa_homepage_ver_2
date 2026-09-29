@@ -51,8 +51,8 @@ export default async function Research() {
                     </span>
                   ))}
               </div>
-              <Link className="text-link" href="/publications">
-                Related publications <ArrowUpRight size={17} />
+              <Link className="text-link" href={`/research/${r.id}`}>
+                Explore this research <ArrowUpRight size={17} />
               </Link>
             </div>
             <div className="research-diagram">

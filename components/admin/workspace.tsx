@@ -196,7 +196,7 @@ export default function AdminWorkspace({
   } | null>(null);
   const [settings, setSettings] = useState(initial.settings.draft);
   const [picker, setPicker] = useState<
-    "image" | "pdf" | HeroPicker | "intro" | null
+    "image" | "pdf" | HeroPicker | "intro" | `alumni:${number}` | null
   >(null);
   const [confirm, setConfirm] = useState<{
     record: RecordItem;
@@ -456,6 +456,10 @@ export default function AdminWorkspace({
     if (picker?.startsWith("hero:")) {
       const page = picker.slice(5) as HeroPage;
       setSettings(s => setHero(s, page, { ...getHero(s, page), image: a.url, imageAlt: a.alt || a.name }));
+    }
+    else if (picker?.startsWith("alumni:")) {
+      const index = Number(picker.slice(7));
+      setSettings(s => ({ ...s, alumniDestinations: s.alumniDestinations.map((item, i) => i === index ? { ...item, logo: a.url } : item) }));
     }
     else if (picker === "intro")
       setSettings((s) => ({
@@ -972,6 +976,7 @@ export default function AdminWorkspace({
                   sortDirection={editing.kind === "people" ? settings.peopleSortDirection : editing.kind === "news" ? settings.newsSortDirection : editing.kind === "publications" ? settings.publicationsSortDirection : settings.photosSortDirection}
                   setData={(d) => setEditing({ ...editing, draft: d })}
                   onPick={setPicker}
+                  publicationOptions={data.records.filter(r => r.kind === "publications" && !r.archived && r.published).map(r => ({ id: r.id, title: r.published!.title, year: r.published!.year }))}
                 />
               </div>
               <div className="entry-sheet-footer">
