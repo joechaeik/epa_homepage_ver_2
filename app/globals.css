@@ -664,7 +664,7 @@ svg {
 @media (max-width: 760px) { .people-alumni { margin-inline: 0; } .people-alumni-link { width: 100%; padding-inline: 25px; } }
 @media (min-width: 1051px) {
   .hero-page.hero-with-evidence .hero-proof { transform: translateY(56px); }
-  .alumni-heading, .alumni-window { max-width: calc(var(--alumni-visible, 5) * 176px); margin-inline: auto; }
+  .alumni-heading, .alumni-window { max-width: calc(var(--alumni-visible, 6) * 176px); margin-inline: auto; }
   .alumni-section .alumni-slide { padding-inline: 4px; }
   .alumni-section .alumni-destination { min-height: 72px; padding: 12px 10px; gap: 10px; }
   .alumni-section .alumni-mark { flex-basis: 32px; width: 32px; height: 32px; }

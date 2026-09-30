@@ -14,9 +14,11 @@ export default function AlumniStrip(props: Props) {
 function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interval, direction }: Props) {
   const id = useId();
   const count = items.length;
-  const [capacity, setCapacity] = useState(5);
-  const visible = Math.min(capacity, count);
+  const [capacity, setCapacity] = useState(6);
+  const visible = capacity === 6 && count > 1 ? 6 : Math.min(capacity, count);
   const [position, setPosition] = useState({ index: count, animate: false });
+  const displayIndex = position.index - (capacity === 6 && count > 1 ? 1 : 0);
+  const copies = Math.max(3, Math.ceil(visible / count) + 2);
   const [paused, setPaused] = useState(!autoplay);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -31,7 +33,7 @@ function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interva
     const fold = matchMedia("(max-width: 360px)");
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => {
-      setCapacity(fold.matches ? 1 : narrow.matches ? 2 : tablet.matches ? 3 : 5);
+      setCapacity(fold.matches ? 1 : narrow.matches ? 2 : tablet.matches ? 3 : 6);
       setReduced(motion.matches);
       locked.current = false;
       setPosition(p => ({ index: count + ((p.index % count) + count) % count, animate: false }));
@@ -84,11 +86,11 @@ function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interva
       onTouchStart={e => { touchX.current = e.touches[0].clientX; }}
       onTouchEnd={e => { if (touchX.current !== null) { const delta = e.changedTouches[0].clientX - touchX.current; if (Math.abs(delta) > 40) move(delta < 0 ? 1 : -1); } touchX.current = null; }}>
       <div className={`alumni-track${position.animate ? " is-animating" : ""}`}
-        style={{ "--alumni-visible": visible, transform: `translateX(${-position.index * 100 / visible}%)` } as CSSProperties}
+        style={{ "--alumni-visible": visible, transform: `translateX(${-displayIndex * 100 / visible}%)` } as CSSProperties}
         onTransitionEnd={e => { if (e.target === e.currentTarget && e.propertyName === "transform") finish(); }}>
-        {[0, 1, 2].flatMap(copy => items.map((item, index) => {
+        {Array.from({ length: copies }, (_, copy) => copy).flatMap(copy => items.map((item, index) => {
           const slot = copy * count + index;
-          const active = slot >= position.index && slot < position.index + visible;
+          const active = slot >= displayIndex && slot < displayIndex + visible;
           const content = <>
             <span className={`alumni-mark${item.logo ? " has-logo" : ""}`}>{item.logo ? <img src={item.logo} alt="" /> : <GraduationCap size={23} />}</span>
             <span className="alumni-name"><strong>{item.name}</strong>{item.alumnus ? <small>{item.alumnus}</small> : null}</span>
