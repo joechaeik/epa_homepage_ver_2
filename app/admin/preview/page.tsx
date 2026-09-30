@@ -6,7 +6,7 @@ import HomePage from "@/components/home-page";
 import Hero from "@/components/hero";
 import ProfessorAchievements from "@/components/professor-achievements";
 import PeopleAlumni from "@/components/people-alumni";
-import LocationMap from "@/components/location-map";
+import JoinPage from "@/components/join-page";
 import { SiteFrame } from "@/components/site-frame";
 import { heroPages, type HeroPage } from "@/lib/content-model";
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
   return (
     <>
       <div className="preview-banner" lang="ko">
-        저장된 {page === "home" ? "홈" : page === "people" ? "People·교수 성과" : "Hero"} 초안 미리보기 · 편집 내용은 공개 반영 버튼을 눌러야
+        저장된 {page === "home" ? "홈" : page === "people" ? "People·교수 성과" : page === "join" ? "Join Our Lab·모집 안내" : "Hero"} 초안 미리보기 · 편집 내용은 공개 반영 버튼을 눌러야
         공개됩니다.
         <Link href="/admin">관리자로 돌아가기 →</Link>
       </div>
@@ -33,11 +33,10 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
         records={data.records
           .filter((r) => !r.archived)
           .map((r) => ({ ...r.draft, id: r.id, kind: r.kind }))}
-      /> : <SiteFrame settings={data.settings.draft}>
+      /> : page === "join" ? <JoinPage settings={data.settings.draft} records={data.records.filter(r => !r.archived).map(r => ({ ...r.draft, id: r.id, kind: r.kind }))} /> : <SiteFrame settings={data.settings.draft}>
         <Hero settings={data.settings.draft} page={page} />
         {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview /><ProfessorAchievements settings={data.settings.draft} /></> : null}
         {page !== "people" ? <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
-          {page === "join" ? <><h2>Location</h2><p>{data.settings.draft.address}</p><LocationMap settings={data.settings.draft} /></> : null}
         </section> : null}
       </SiteFrame>}
     </>

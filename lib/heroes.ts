@@ -1,6 +1,7 @@
 import type { HeroPage, HeroSettings, Settings } from "./content-model";
-export type SettingsScope = HeroPage | "site" | "peopleOrder" | "newsOrder" | "publicationsOrder" | "photosOrder" | "homeEvidence" | "alumni" | "professor";
+export type SettingsScope = HeroPage | "site" | "peopleOrder" | "newsOrder" | "publicationsOrder" | "photosOrder" | "homeEvidence" | "alumni" | "professor" | "joinContent";
 const sectionKeys = {
+  joinContent: ["joinContent"],
   homeEvidence: ["homeInfluenceLabel", "homeHIndex", "homeHIndexNote", "homeHcrLabel", "homeHcrYears", "homeHcrNote", "homePublicationsLabel", "homeFacilitiesLabel", "homeFacilitiesUrl"],
   alumni: ["alumniHeading", "alumniEyebrow", "alumniDestinations", "alumniAutoplay", "alumniInterval", "alumniDirection", "alumniShowHome", "alumniShowPeople"],
   professor: ["professorScholarUrl", "professorCvUrl", "professorAchievementsEyebrow", "professorAchievementsTitle", "professorAchievementsDescription", "professorEducationHeading", "professorCareerHeading", "professorAwardsHeading", "professorEducation", "professorCareer", "professorAwards"],
@@ -22,8 +23,8 @@ export function setHero(settings: Settings, page: HeroPage, hero: HeroSettings):
 // Scope saves so publishing one page never releases another page's draft.
 export function mergeSettingsScope(current: Settings, incoming: Settings, scope?: SettingsScope): Settings {
   if (!scope) return incoming;
-  if (scope === "homeEvidence" || scope === "alumni" || scope === "professor") return { ...current, ...Object.fromEntries(sectionKeys[scope].map(key => [key, incoming[key]])) };
-  if (scope === "site") return { ...incoming, ...Object.fromEntries([...homeHeroKeys, ...orderKeys, ...sectionKeys.professor].map(key => [key, current[key]])), pageHeroes: current.pageHeroes };
+  if (scope === "homeEvidence" || scope === "alumni" || scope === "professor" || scope === "joinContent") return { ...current, ...Object.fromEntries(sectionKeys[scope].map(key => [key, incoming[key]])) };
+  if (scope === "site") return { ...incoming, ...Object.fromEntries([...homeHeroKeys, ...orderKeys, ...sectionKeys.professor, ...sectionKeys.joinContent].map(key => [key, current[key]])), pageHeroes: current.pageHeroes };
   if (scope === "peopleOrder") return { ...current, peopleSortDirection: incoming.peopleSortDirection };
   if (scope === "newsOrder") return { ...current, newsSortDirection: incoming.newsSortDirection };
   if (scope === "publicationsOrder") return { ...current, publicationsSortDirection: incoming.publicationsSortDirection };

@@ -91,6 +91,7 @@ import { Choice, EntryFields, categories } from "./fields";
 import MediaLibrary, { type Asset } from "./media-library";
 import SettingsEditor from "./settings-editor";
 import ProfessorEditor from "./professor-editor";
+import JoinEditor from "./join-editor";
 import type { HeroPicker } from "./hero-editor";
 import type { HeroPage } from "@/lib/content-model";
 import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
@@ -200,7 +201,7 @@ export default function AdminWorkspace({
   } | null>(null);
   const [settings, setSettings] = useState(initial.settings.draft);
   const [picker, setPicker] = useState<
-    "image" | "pdf" | HeroPicker | "intro" | "professorCv" | `alumni:${number}` | null
+    "image" | "pdf" | HeroPicker | "intro" | "professorCv" | "joinPhoto" | `alumni:${number}` | null
   >(null);
   const [confirm, setConfirm] = useState<{
     record: RecordItem;
@@ -481,6 +482,8 @@ export default function AdminWorkspace({
         introImage: a.url,
         introImageAlt: a.alt || a.name,
       }));
+    else if (picker === "joinPhoto")
+      setSettings(s => ({ ...s, joinContent: { ...s.joinContent, photo: a.url, photoAlt: a.alt || a.name } }));
     else if (picker === "professorCv")
       setSettings((s) => ({ ...s, professorCvUrl: a.url }));
     else if (editing && picker)
@@ -765,6 +768,7 @@ export default function AdminWorkspace({
               />
             ) : null}
             {tab === "professor" ? <ProfessorEditor value={settings} onChange={setSettings} onPick={() => setPicker("professorCv")} onSave={intent => saveSettings(intent, "professor")} busy={busy} /> : null}
+            {tab === "positions" ? <JoinEditor value={settings} onChange={setSettings} onPick={() => setPicker("joinPhoto")} onSave={intent => saveSettings(intent, "joinContent")} busy={busy} /> : null}
             {tab === "media" ? (
               <MediaLibrary
                 uploadsEnabled={data.uploadsEnabled}

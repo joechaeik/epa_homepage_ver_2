@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { joinContentSchema } from "./join-content";
 
 export const kinds = [
   "publications",
@@ -146,6 +147,7 @@ const alumniDestinationSchema = z.object({
 export type CareerItem = z.infer<typeof careerItemSchema>;
 export type AlumniDestination = z.infer<typeof alumniDestinationSchema>;
 export const settingsSchema = z.object({
+  joinContent: joinContentSchema,
   labName: z.string().trim().min(1).max(200),
   labFullName: short,
   institution: short,

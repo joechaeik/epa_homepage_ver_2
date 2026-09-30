@@ -612,6 +612,11 @@ svg {
   .hero-page .hero-description { font-size: .9375rem; }
   .location-map iframe { height: 320px; }
 }
+.join-admin-editor { margin-bottom: 28px; }
+.join-admin-editor > details { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 18px; }
+.join-admin-editor summary { cursor: pointer; font-weight: 600; margin-bottom: 18px; }
+.join-admin-card { border: 1px solid var(--border); background: #f6f9f6; padding: 20px; margin: 18px 0; }
+.join-admin-editor .settings-actions { margin-top: 26px; }
 
 /* Home hero: a quiet editorial panel and a carousel inside the photograph. */
 .hero-home { min-height: 0; --hero-label-size: .875rem; --hero-number-size: calc(var(--hero-label-size) + 2pt); }
