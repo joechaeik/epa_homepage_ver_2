@@ -635,6 +635,9 @@ svg {
 .hero-facilities { position: absolute; top: 26px; right: 5%; display: inline-flex; align-items: center; gap: 9px; padding: 10px 14px; border: 1px solid #c9eece6b; border-radius: 3px; background: #0b333b99; color: #eff8ed; text-decoration: none; font-size: .74rem; }
 .hero-facilities:hover { background: #c9eece; color: #0b333b; }
 .alumni-section { position: relative; max-width: 1440px; margin: 0 auto; padding: 20px 5% 28px; border-top: 1px solid #b7d6cf38; background: #062c343b; }
+@media (min-width: 1051px) {
+  .alumni-section { max-width: 1140px; width: 90%; padding-inline: 24px; }
+}
 .alumni-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
 .alumni-heading > div:first-child { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
 .alumni-heading .eyebrow { color: #b5decd; font-size: .63rem; margin: 0; }
