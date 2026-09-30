@@ -190,6 +190,7 @@ export default function AdminWorkspace({
   const [filter, setFilter] = useState("active");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [settingsSaveError, setSettingsSaveError] = useState<{ scope: SettingsScope; message: string } | null>(null);
   const [editing, setEditing] = useState<{
     id?: string;
     kind: Kind;
@@ -366,9 +367,19 @@ export default function AdminWorkspace({
   }
   async function saveSettings(intent: "draft" | "publish", scope: SettingsScope) {
     setError("");
+    setSettingsSaveError(null);
+    function report(message: string) {
+      setError(message);
+      setSettingsSaveError({ scope, message });
+      toast.error(message);
+    }
     const parsed = settingsSchema.safeParse(mergeSettingsScope(data.settings.draft, settings, scope));
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message || "설정의 필수 문구, 이메일, 주소 형식을 확인해 주세요.");
+      const issue = parsed.error.issues[0];
+      const fieldNames: Record<string, string> = { name: "기관명", alumnus: "졸업생", logo: "로고 이미지 URL", link: "졸업생 소개 링크", alumniInterval: "배너 이동 간격 (2~15초)", alumniHeading: "배너 제목", alumniEyebrow: "배너 상단 문구" };
+      const field = String(issue?.path.at(-1) || "설정");
+      const prefix = issue?.path[0] === "alumniDestinations" ? `동문 배너 ${Number(issue.path[1]) + 1}번째 기관 · ` : "";
+      report(`${prefix}${fieldNames[field] || field}: ${issue?.message || "입력을 확인해 주세요."}`);
       return;
     }
     setBusy(true);
@@ -388,7 +399,7 @@ export default function AdminWorkspace({
           : "설정 초안을 저장했습니다.",
       );
     } catch (e) {
-      setError(e instanceof Error ? e.message : "설정을 저장하지 못했습니다.");
+      report(e instanceof Error ? e.message : "설정을 저장하지 못했습니다.");
     } finally {
       setBusy(false);
     }
@@ -749,6 +760,8 @@ export default function AdminWorkspace({
                 onSave={saveSettings}
                 busy={busy}
                 dirty={settingsDirty}
+                savedSettings={data.settings}
+                saveError={settingsSaveError}
               />
             ) : null}
             {tab === "professor" ? <ProfessorEditor value={settings} onChange={setSettings} onPick={() => setPicker("professorCv")} onSave={intent => saveSettings(intent, "professor")} busy={busy} /> : null}

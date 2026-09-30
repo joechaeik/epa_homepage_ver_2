@@ -1,8 +1,8 @@
 "use client";
 import { Save, Check } from "lucide-react";
 import HeroEditor, { type HeroPicker } from "./hero-editor";
-import type { SettingsScope } from "@/lib/heroes";
-import type { Settings } from "@/lib/content-model";
+import { mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
+import type { Settings, SettingsItem } from "@/lib/content-model";
 type Field = { key: keyof Settings; label: string; area?: boolean };
 const groups: { title: string; description: string; fields: Field[] }[] = [
   {
@@ -60,6 +60,8 @@ export default function SettingsEditor({
   onSave,
   busy,
   dirty,
+  savedSettings,
+  saveError,
 }: {
   value: Settings;
   onChange: (v: Settings) => void;
@@ -67,6 +69,8 @@ export default function SettingsEditor({
   onSave: (intent: "draft" | "publish", scope: SettingsScope) => void;
   busy: boolean;
   dirty: boolean;
+  savedSettings: SettingsItem;
+  saveError: { scope: SettingsScope; message: string } | null;
 }) {
   function moveItem(key: "alumniDestinations", index: number, offset: number) {
     const items = [...value[key]];
@@ -76,11 +80,15 @@ export default function SettingsEditor({
     onChange({ ...value, [key]: items });
   }
   function sectionActions(scope: SettingsScope, label: string) {
-    return <div className="settings-actions">
+    const changed = JSON.stringify(mergeSettingsScope(savedSettings.draft, value, scope)) !== JSON.stringify(savedSettings.draft);
+    const unpublished = JSON.stringify(mergeSettingsScope(savedSettings.published, savedSettings.draft, scope)) !== JSON.stringify(savedSettings.published);
+    return <><p className="admin-note" role="status">{changed ? `${label}: 저장하지 않은 변경 사항` : unpublished ? `${label}: 초안 저장됨 · 공개 미반영` : `${label}: 공개 반영됨`}</p>
+    {saveError?.scope === scope ? <p className="form-error" role="alert">{saveError.message}</p> : null}
+    <div className="settings-actions">
       <button className="button outline small" type="button" disabled={busy} onClick={() => onSave("draft", scope)}><Save size={15} />{label} 초안 저장</button>
       <button className="button small" type="button" disabled={busy} onClick={() => onSave("publish", scope)}><Check size={15} />{label} 공개 반영</button>
       <a className="text-link" href={`/admin/preview?page=${scope === "professor" ? "people" : "home"}`} target="_blank" rel="noreferrer">저장한 초안 보기 ↗</a>
-    </div>;
+    </div></>;
   }
   return (
     <div className="settings-page">
@@ -147,7 +155,8 @@ export default function SettingsEditor({
           <h2>사이트 기본 설정</h2>
           <p className="admin-note">연구실 소개·연락처·지도와 아래의 전체 설정을 저장합니다. 성과·동문 배너는 각 영역의 버튼으로 따로 저장할 수도 있습니다. 교수 정보는 좌측 교수 프로필·성과 탭에서 관리합니다. Hero 이미지·제목은 위의 페이지별 버튼을 사용하세요.</p>
           <p className="admin-note">지도 URL을 비워두면 현재 기관명과 주소로 Google 지도를 표시합니다. 특정 장소를 지정하려면 Google Maps의 공유 → 지도 퍼가기에서 src 주소만 입력하세요.</p>
-          <span className="status-chip">{dirty ? "수정 중" : "저장됨"}</span>
+          <span className="status-chip">{dirty ? "전체 설정에 저장하지 않은 변경 사항 있음" : "변경 사항 저장됨"}</span>
+          {saveError?.scope === "site" ? <p className="form-error" role="alert">{saveError.message}</p> : null}
           <div className="settings-actions">
             <button className="button outline" disabled={busy} onClick={() => onSave("draft", "site")}><Save size={16} />설정 초안 저장</button>
             <button className="button" disabled={busy} onClick={() => onSave("publish", "site")}><Check size={16} />설정 공개 반영</button>
