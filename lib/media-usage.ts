@@ -8,6 +8,7 @@ export const mediaCategories = [
   { id: "people", label: "구성원" },
   { id: "research", label: "연구 분야" },
   { id: "photos", label: "연구실 사진" },
+  { id: "banner", label: "배너" },
   { id: "other", label: "기타·미사용" },
 ] as const;
 export type MediaCategory = (typeof mediaCategories)[number]["id"];
@@ -31,8 +32,9 @@ export function mediaUsage(
       setting.heroImage === media.url ||
       Object.values(setting.pageHeroes).some((hero) => hero.image === media.url)
     ) used.add("hero");
+    if (setting.alumniDestinations.some((item) => item.logo === media.url)) used.add("banner");
     if (setting.introImage === media.url) used.add("other");
-    if (containsUrl(setting, media.url) && !used.has("hero") && !used.has("other"))
+    if (containsUrl(setting, media.url) && !used.has("hero") && !used.has("banner") && !used.has("other"))
       used.add("other");
   }
   for (const record of records) {
