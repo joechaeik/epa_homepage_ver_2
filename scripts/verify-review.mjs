@@ -234,6 +234,7 @@ try {
   assert.ok((await (await request('/admin/preview?page=home', { headers: { Cookie: cookie } })).text()).includes('Featured science QA'));
   await editSettings('homeEvidence', 'publish', () => {});
   assert.ok((await (await request('/')).text()).includes('Featured science QA'));
+  assert.ok((await (await request('/publications')).text()).includes('Featured science QA'));
   assert.ok((await (await request('/')).text()).includes('Clarivate distinction QA'));
   assert.ok(!(await (await request('/people')).text()).includes('Unpublished professor title QA'));
   await editSettings('alumni', 'draft', s => {

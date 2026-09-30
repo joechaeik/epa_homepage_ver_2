@@ -7,7 +7,7 @@ type Field = { key: keyof Settings; label: string; area?: boolean };
 const groups: { title: string; description: string; fields: Field[] }[] = [
   {
     title: "Home 연구 성과",
-    description: "논문 수는 공개 논문 목록에서 자동 계산됩니다. 이곳의 수치와 문구는 직접 관리합니다.",
+    description: "Research influence·Wonyong Choi 문구와 수치는 Home과 Publications 히어로가 함께 사용합니다. 공개 반영하면 두 페이지에 적용됩니다. 논문 수는 공개 목록에서 자동 계산됩니다.",
     fields: [
       { key: "homeInfluenceLabel", label: "H-index 상단 문구 (Research influence)" },
       { key: "homeHIndex", label: "H-index 값" },

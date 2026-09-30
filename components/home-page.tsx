@@ -1,4 +1,5 @@
 import Hero from "./hero";
+import HeroAchievements from "./hero-achievements";
 import { comparePublications } from "@/lib/publication-order";
 import { compareDisplayOrder } from "@/lib/people-order";
 import Link from "@/components/site-link";
@@ -52,20 +53,7 @@ export default function HomePage({
     <SiteFrame settings={settings}>
       <Hero settings={settings} page="home"
         utility={settings.homeFacilitiesUrl ? <a className="hero-facilities" href={settings.homeFacilitiesUrl} target="_blank" rel="noreferrer"><Microscope size={17} />{settings.homeFacilitiesLabel}<ArrowUpRight size={15} /></a> : null}
-        aside={<aside className="hero-proof" aria-label="Research highlights">
-          <div className="hero-proof-metrics">
-            <div className="hero-proof-metric">
-              <span className="hero-proof-label">{settings.homeInfluenceLabel}</span>
-              <strong>{settings.homeHIndex}</strong>
-              <span className="hero-proof-note">{settings.homeHIndexNote}</span>
-            </div>
-            <div className="hero-proof-metric">
-              <span className="hero-proof-label">{settings.homeHcrLabel}</span>
-              <strong className="hero-proof-years">{settings.homeHcrYears}</strong>
-              <span className="hero-proof-note">{settings.homeHcrNote}</span>
-            </div>
-          </div>
-        </aside>}
+        aside={<HeroAchievements settings={settings} />}
         footer={settings.alumniShowHome ? <AlumniStrip title={settings.alumniHeading} eyebrow={settings.alumniEyebrow} destinations={settings.alumniDestinations} autoplay={settings.alumniAutoplay} interval={settings.alumniInterval} direction={settings.alumniDirection} /> : null}
       >
           <div className="hero-actions">

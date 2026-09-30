@@ -69,6 +69,7 @@ function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interva
   }
 
   return <section className="alumni-section" aria-label={eyebrow || title} aria-roledescription="carousel"
+    style={{ "--alumni-visible": visible } as CSSProperties}
     onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
     onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
     <div className="alumni-heading">
