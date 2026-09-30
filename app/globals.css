@@ -640,6 +640,9 @@ svg {
 .people-alumni-link { max-width: 1140px; width: 90%; margin: 0 auto; padding: 0 30px; }
 .people-alumni-link .text-link { font-size: .8rem; }
 #team-members { scroll-margin-top: 100px; }
+.people-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.person-info { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 760px) { .people-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 760px) { .people-alumni { margin-inline: 0; } .people-alumni-link { width: 100%; padding-inline: 25px; } }
 @media (min-width: 1051px) {
   .alumni-section { max-width: 1140px; width: 90%; padding-inline: 24px; }
