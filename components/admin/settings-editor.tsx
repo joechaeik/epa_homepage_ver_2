@@ -10,13 +10,19 @@ const groups: { title: string; description: string; fields: Field[] }[] = [
     title: "Home 연구 성과",
     description: "논문 수는 공개 논문 목록에서 자동 계산됩니다. 이곳의 수치와 문구는 직접 관리합니다.",
     fields: [
+      { key: "homeResearchHighlightLabel", label: "대표 연구 상단 문구 (Selected research)" },
       { key: "homeResearchHighlightTitle", label: "대표 연구 제목" },
       { key: "homeResearchHighlightBody", label: "대표 연구 소개", area: true },
+      { key: "homeResearchHighlightLink", label: "대표 연구 연결 링크" },
+      { key: "homeInfluenceLabel", label: "H-index 상단 문구 (Research influence)" },
       { key: "homeHIndex", label: "H-index 값" },
       { key: "homeHIndexNote", label: "H-index 설명·출처" },
+      { key: "homeHcrLabel", label: "교수 성과 상단 문구 (Wonyong Choi)" },
       { key: "homeHcrYears", label: "Highly Cited Researcher 기간" },
+      { key: "homeHcrNote", label: "교수 성과 설명" },
+      { key: "homePublicationsLabel", label: "논문 바로가기 문구 (논문 수는 자동 연동)" },
+      { key: "homeFacilitiesLabel", label: "연구 인프라 버튼 문구" },
       { key: "homeFacilitiesUrl", label: "KENTECH 연구 인프라 링크" },
-      { key: "alumniHeading", label: "동문 진로 영역 제목" },
     ],
   },
   {
@@ -80,6 +86,13 @@ export default function SettingsEditor({
     [items[index], items[next]] = [items[next], items[index]];
     onChange({ ...value, [key]: items });
   }
+  function sectionActions(scope: SettingsScope, label: string) {
+    return <div className="settings-actions">
+      <button className="button outline small" type="button" disabled={busy} onClick={() => onSave("draft", scope)}><Save size={15} />{label} 초안 저장</button>
+      <button className="button small" type="button" disabled={busy} onClick={() => onSave("publish", scope)}><Check size={15} />{label} 공개 반영</button>
+      <a className="text-link" href={`/admin/preview?page=${scope === "professor" ? "people" : "home"}`} target="_blank" rel="noreferrer">저장한 초안 보기 ↗</a>
+    </div>;
+  }
   return (
     <div className="settings-page">
       <HeroEditor value={value} onChange={onChange} onPick={onPick} onSave={onSave} busy={busy} />
@@ -120,17 +133,24 @@ export default function SettingsEditor({
                 )}
               </div>
             ))}
+            {g.title === "Home 연구 성과" ? sectionActions("homeEvidence", "성과 영역") : null}
           </section>
         ))}
         <section className="admin-panel settings-group">
           <h2>동문 진로 배너</h2>
-          <p>최대 6개가 한 화면에 보입니다. 로고가 없으면 기관명이 표시됩니다. 졸업생과 기관의 연결을 확인한 뒤 공개하세요.</p>
+          <p>Home 히어로 안에서 자동 순환합니다. PC는 최대 5개, 태블릿은 3개, 모바일은 1~2개가 보입니다. 기관 추가·순서·로고·링크를 관리할 수 있습니다.</p>
+          <div className="form-field"><label htmlFor="alumni-eyebrow">상단 문구 (Alumni pathways)</label><input id="alumni-eyebrow" value={value.alumniEyebrow} onChange={e => onChange({ ...value, alumniEyebrow: e.target.value })} /></div>
+          <div className="form-field"><label htmlFor="alumni-heading">배너 제목</label><input id="alumni-heading" value={value.alumniHeading} onChange={e => onChange({ ...value, alumniHeading: e.target.value })} /></div>
+          <div className="form-field"><label htmlFor="alumni-autoplay">자동 순환</label><select id="alumni-autoplay" value={String(value.alumniAutoplay)} onChange={e => onChange({ ...value, alumniAutoplay: e.target.value === "true" })}><option value="true">사용</option><option value="false">사용 안 함</option></select></div>
+          <div className="form-field"><label htmlFor="alumni-interval">다음 항목으로 이동하는 간격 (초)</label><input id="alumni-interval" type="number" min="2" max="15" value={value.alumniInterval} onChange={e => onChange({ ...value, alumniInterval: Number(e.target.value) })} /></div>
+          <div className="form-field"><label htmlFor="alumni-direction">자동 이동 방향</label><select id="alumni-direction" value={value.alumniDirection} onChange={e => onChange({ ...value, alumniDirection: e.target.value as Settings["alumniDirection"] })}><option value="right">오른쪽으로 이동 (PPT 기준)</option><option value="left">왼쪽으로 이동</option></select></div>
           {value.alumniDestinations.map((item, index) => <div className="settings-repeat-item" key={index}>
             <div className="settings-repeat-heading"><strong>{index + 1}. {item.name || "새 기관"}</strong><div className="settings-repeat-controls"><button className="button outline small" type="button" disabled={index === 0} onClick={() => moveItem("alumniDestinations", index, -1)}>위로</button><button className="button outline small" type="button" disabled={index === value.alumniDestinations.length - 1} onClick={() => moveItem("alumniDestinations", index, 1)}>아래로</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, alumniDestinations: value.alumniDestinations.filter((_, i) => i !== index) })}>삭제</button></div></div>
             {([ ["name", "기관명"], ["alumnus", "졸업생"], ["link", "졸업생 소개 링크"], ["logo", "로고 이미지 URL"] ] as const).map(([key, label]) => <div className="form-field" key={key}><label htmlFor={`alumni-${index}-${key}`}>{label}</label><input id={`alumni-${index}-${key}`} value={item[key]} onChange={e => onChange({ ...value, alumniDestinations: value.alumniDestinations.map((entry, i) => i === index ? { ...entry, [key]: e.target.value } : entry) })} /></div>)}
             <button className="button outline small" type="button" onClick={() => onPick(`alumni:${index}`)}>미디어 보관함에서 로고 선택</button>
           </div>)}
           <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 30} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
+          {sectionActions("alumni", "동문 배너")}
         </section>
         <section className="admin-panel settings-group">
           <h2>교수 프로필 링크</h2>
@@ -142,6 +162,14 @@ export default function SettingsEditor({
         <section className="admin-panel settings-group">
           <h2>교수 성과</h2>
           <p>People 페이지의 학력·경력·수상을 행 단위로 관리합니다. 행을 추가하고 위·아래 버튼으로 순서를 바꿀 수 있습니다.</p>
+          {([
+            ["professorAchievementsEyebrow", "성과 영역 상단 문구"],
+            ["professorAchievementsTitle", "성과 영역 제목 (Academic career & recognition)"],
+            ["professorAchievementsDescription", "성과 영역 소개"],
+            ["professorEducationHeading", "학력 제목"],
+            ["professorCareerHeading", "경력 제목"],
+            ["professorAwardsHeading", "수상 제목"],
+          ] as const).map(([key, label]) => <div className="form-field" key={key}><label htmlFor={`setting-${key}`}>{label}</label><input id={`setting-${key}`} value={value[key]} onChange={e => onChange({ ...value, [key]: e.target.value })} /></div>)}
           {([ ["professorEducation", "학력"], ["professorCareer", "주요 경력"], ["professorAwards", "수상·선정" ] ] as const).map(([key, title]) => <div className="settings-career-list" key={key}>
             <h3>{title}</h3>
             <div className="settings-table-wrap"><table className="settings-career-table"><thead><tr><th scope="col">연도·기간</th><th scope="col">제목</th><th scope="col">기관·설명</th><th scope="col">순서·관리</th></tr></thead><tbody>
@@ -152,12 +180,13 @@ export default function SettingsEditor({
             </tbody></table></div>
             <button className="button outline small" type="button" disabled={value[key].length >= (key === "professorEducation" ? 15 : key === "professorCareer" ? 30 : 60)} onClick={() => onChange({ ...value, [key]: [...value[key], { period: "", title: "", detail: "" }] })}>행 추가</button>
           </div>)}
+          {sectionActions("professor", "교수 프로필·성과")}
         </section>
       </div>
       <aside className="settings-preview">
         <section className="admin-panel">
           <h2>사이트 기본 설정</h2>
-          <p className="admin-note">연구실 소개·연락처·지도 설정을 저장합니다. Hero는 위의 페이지별 버튼으로 저장하세요.</p>
+          <p className="admin-note">연구실 소개·연락처·지도와 아래의 전체 설정을 저장합니다. 성과·동문 배너·교수 프로필은 각 영역의 버튼으로 따로 저장할 수도 있습니다. Hero 이미지·제목은 위의 페이지별 버튼을 사용하세요.</p>
           <p className="admin-note">지도 URL을 비워두면 현재 기관명과 주소로 Google 지도를 표시합니다. 특정 장소를 지정하려면 Google Maps의 공유 → 지도 퍼가기에서 src 주소만 입력하세요.</p>
           <span className="status-chip">{dirty ? "수정 중" : "저장됨"}</span>
           <div className="settings-actions">

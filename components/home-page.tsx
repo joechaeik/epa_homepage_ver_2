@@ -11,6 +11,7 @@ import {
   Snowflake,
   Zap,
   Play,
+  Microscope,
 } from "lucide-react";
 import { SiteFrame, JoinBanner, PublicationRow } from "./site-frame";
 import { Gallery } from "./site-chrome";
@@ -49,7 +50,29 @@ export default function HomePage({
   const publicationCount = records.filter((r) => r.kind === "publications").length;
   return (
     <SiteFrame settings={settings}>
-      <Hero settings={settings} page="home">
+      <Hero settings={settings} page="home"
+        utility={settings.homeFacilitiesUrl ? <a className="hero-facilities" href={settings.homeFacilitiesUrl} target="_blank" rel="noreferrer"><Microscope size={17} />{settings.homeFacilitiesLabel}<ArrowUpRight size={15} /></a> : null}
+        aside={<aside className="hero-proof" aria-label="Research highlights">
+          <a className="hero-proof-research" href={settings.homeResearchHighlightLink || "/research"}>
+            <span className="hero-proof-label">{settings.homeResearchHighlightLabel}<ArrowUpRight size={17} /></span>
+            <strong>{settings.homeResearchHighlightTitle}</strong>
+            {settings.homeResearchHighlightBody ? <p>{settings.homeResearchHighlightBody}</p> : null}
+          </a>
+          <div className="hero-proof-metrics">
+            <div className="hero-proof-metric">
+              <span className="hero-proof-label">{settings.homeInfluenceLabel}</span>
+              <strong>{settings.homeHIndex}</strong>
+              <span className="hero-proof-note">{settings.homeHIndexNote}</span>
+            </div>
+            <div className="hero-proof-metric">
+              <span className="hero-proof-label">{settings.homeHcrLabel}</span>
+              <strong className="hero-proof-years">{settings.homeHcrYears}</strong>
+              <span className="hero-proof-note">{settings.homeHcrNote}</span>
+            </div>
+          </div>
+        </aside>}
+        footer={<AlumniStrip title={settings.alumniHeading} eyebrow={settings.alumniEyebrow} destinations={settings.alumniDestinations} autoplay={settings.alumniAutoplay} interval={settings.alumniInterval} direction={settings.alumniDirection} />}
+      >
           <div className="hero-actions">
             <a
               className="button mint"
@@ -58,29 +81,10 @@ export default function HomePage({
               {settings.heroButtonText} <ArrowUpRight size={18} />
             </a>
             <Link className="text-link light" href="/publications">
-              Our publications <span className="hero-publication-count">{publicationCount}</span> <ArrowRight size={18} />
+              <span>{settings.homePublicationsLabel}<strong className="hero-publication-count">{publicationCount}</strong></span><ArrowRight size={18} />
             </Link>
           </div>
-          <div className="hero-proof">
-            <Link className="hero-proof-item hero-proof-research" href="/research">
-              <span>SELECTED RESEARCH</span>
-              <strong>{settings.homeResearchHighlightTitle}</strong>
-              <small>{settings.homeResearchHighlightBody}</small>
-            </Link>
-            <div className="hero-proof-item">
-              <span>RESEARCH INFLUENCE</span>
-              <strong>{settings.homeHIndex}</strong>
-              <small>{settings.homeHIndexNote}</small>
-            </div>
-            <div className="hero-proof-item">
-              <span>WONYONG CHOI</span>
-              <strong>{settings.homeHcrYears}</strong>
-              <small>Highly Cited Researcher · Clarivate</small>
-            </div>
-          </div>
-          {settings.homeFacilitiesUrl ? <a className="hero-facilities" href={settings.homeFacilitiesUrl} target="_blank" rel="noreferrer">KENTECH facilities <ArrowUpRight size={15} /></a> : null}
       </Hero>
-      <AlumniStrip title={settings.alumniHeading} destinations={settings.alumniDestinations} />
       <div className="research-ribbon">
         <span>LIGHT-DRIVEN DISCOVERY</span>
         <span>Water & resources</span>

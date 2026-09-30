@@ -225,6 +225,47 @@ try {
   assert.ok((await (await request('/people')).text()).includes('QA recognition'));
   assert.ok((await (await request('/people')).text()).includes('Download CV'));
   assert.ok((await (await request('/join')).text()).includes('output=embed'));
+  await editSettings('homeEvidence', 'draft', s => {
+    s.homeResearchHighlightLabel = 'Featured science QA';
+    s.homeHcrNote = 'Clarivate distinction QA';
+    s.professorAchievementsTitle = 'Unpublished professor title QA';
+  });
+  assert.ok(!(await (await request('/')).text()).includes('Featured science QA'));
+  assert.ok((await (await request('/admin/preview?page=home', { headers: { Cookie: cookie } })).text()).includes('Featured science QA'));
+  await editSettings('homeEvidence', 'publish', () => {});
+  assert.ok((await (await request('/')).text()).includes('Featured science QA'));
+  assert.ok((await (await request('/')).text()).includes('Clarivate distinction QA'));
+  assert.ok(!(await (await request('/people')).text()).includes('Unpublished professor title QA'));
+  await editSettings('alumni', 'draft', s => {
+    s.alumniEyebrow = 'Alumni careers QA';
+    s.alumniInterval = 3;
+    s.alumniAutoplay = false;
+    s.alumniDestinations = Array.from({ length: 8 }, (_, i) => ({ name: `QA Institution ${i + 1}`, alumnus: `QA Alumni ${i + 1}`, logo: '', link: '' }));
+  });
+  assert.ok(!(await (await request('/')).text()).includes('Alumni careers QA'));
+  await editSettings('professor', 'publish', s => {
+    s.professorAchievementsTitle = 'Academic leadership QA';
+    s.professorEducationHeading = 'Qualifications QA';
+    s.professorAchievementsDescription = 'Updated achievements QA';
+  });
+  const achievementsHtml = await (await request('/people')).text();
+  assert.ok(achievementsHtml.includes('Academic leadership QA'));
+  assert.ok(achievementsHtml.includes('Qualifications QA'));
+  assert.ok(achievementsHtml.includes('Updated achievements QA'));
+  assert.ok(!(await (await request('/')).text()).includes('Alumni careers QA'));
+  await editSettings('alumni', 'publish', () => {});
+  const alumniSettings = (await content()).settings.published;
+  assert.equal(alumniSettings.alumniInterval, 3);
+  assert.equal(alumniSettings.alumniAutoplay, false);
+  assert.equal(alumniSettings.alumniDestinations.length, 8);
+  assert.equal(alumniSettings.homeResearchHighlightLabel, 'Featured science QA');
+  assert.equal(alumniSettings.professorAchievementsTitle, 'Academic leadership QA');
+  const homeSections = await (await request('/')).text();
+  const alumniOffset = homeSections.indexOf('class="alumni-section"');
+  assert.ok(alumniOffset > homeSections.indexOf('hero-home'));
+  assert.ok(alumniOffset < homeSections.indexOf('class="research-ribbon"'));
+  assert.ok(homeSections.includes('Alumni careers QA'));
+  mark('Home evidence, in-hero alumni carousel, and professor headings support isolated drafts and publishing');
   let peopleHtml = await (await request('/people')).text();
   assert.ok(peopleHtml.indexOf('Ho-Sub Bae') < peopleHtml.indexOf('Chaeik joe'));
   await editSettings('peopleOrder', 'draft', s => { s.peopleSortDirection = 'desc'; });
