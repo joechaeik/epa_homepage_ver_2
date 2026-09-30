@@ -72,7 +72,7 @@ export const fields: Record<Kind, Field[]> = {
     { key: "imageAlt", label: "사진 설명" },
     { key: "email", label: "이메일", type: "email" },
     { key: "summary", label: "연구 분야 / 짧은 소개", type: "textarea" },
-    { key: "body", label: "상세 소개", type: "textarea" },
+    { key: "body", label: "상세 소개", type: "textarea", hint: "교수님 소개는 빈 줄로 문단을 나눌 수 있습니다. 본문 링크는 [논문 보기](https://doi.org/...)처럼 입력하면 새 탭으로 열립니다. 링크 주소는 http 또는 https를 사용하세요." },
     { key: "link", label: "프로필 / ORCID 링크" },
   ],
   research: [

@@ -688,11 +688,27 @@
   font-size: 1.7rem;
   color: #658078;
 }
-.pi-copy > p:not(.eyebrow) {
+.pi-copy > p:not(.eyebrow),
+.pi-biography > p {
   line-height: 1.8;
   color: #61746d;
   font-size: 1rem;
   margin-top: 18px;
+}
+.pi-biography {
+  min-width: 0;
+}
+.pi-biography > p {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.pi-biography a {
+  color: var(--teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pi-biography a:hover {
+  text-decoration-thickness: 2px;
 }
 .pi-copy .pi-role {
   font-size: 0.875rem !important;

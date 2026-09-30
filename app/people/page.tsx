@@ -1,4 +1,5 @@
 import ProfessorAchievements from "@/components/professor-achievements";
+import LinkedBiography from "@/components/linked-biography";
 import Hero from "@/components/hero";
 import PeopleAlumni from "@/components/people-alumni";
 import { publicContent } from "@/lib/store";
@@ -33,7 +34,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
               <span>, Ph.D.</span>
             </h2>
             <p className="pi-role">{pi.role}</p>
-            <p>{pi.body}</p>
+            <LinkedBiography text={pi.body} />
             <p>{pi.summary}</p>
             <div className="pi-links">
               <a className="button outline" href={"mailto:" + pi.email}>
