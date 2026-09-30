@@ -666,6 +666,13 @@
 .pi-image {
   background: #eff3ef;
 }
+@media (min-width: 1101px) {
+  .pi-image {
+    align-self: start;
+    /* Align with the name below the director label. */
+    margin-top: calc(0.75rem * 1.6 + 18px);
+  }
+}
 .pi-image > img {
   width: 100%;
   aspect-ratio: 0.87;
