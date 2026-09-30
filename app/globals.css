@@ -637,7 +637,7 @@ svg {
 .hero-proof-metric > strong { display: block; font-family: var(--sans); font-size: var(--hero-number-size); font-weight: 600; line-height: 1.35; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
 .hero-proof-metric > .hero-proof-years { white-space: nowrap; }
 .hero-proof-note { display: block; font-size: .74rem; line-height: 1.5; color: #d1dfdc; }
-@media (max-width: 360px) { .hero-proof-metrics { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 360px) { .hero-proof-metrics { grid-template-columns: minmax(0, 1fr); } .paper-pagination ul { gap: 0; } }
 .hero-facilities { position: absolute; top: 26px; right: 5%; display: inline-flex; align-items: center; gap: 9px; padding: 10px 14px; border: 1px solid #c9eece6b; border-radius: 3px; background: #0b333b99; color: #eff8ed; text-decoration: none; font-size: .74rem; }
 .hero-facilities:hover { background: #c9eece; color: #0b333b; }
 .alumni-section { position: relative; max-width: 1440px; margin: 0 auto; padding: 20px 5% 28px; border-top: 1px solid #b7d6cf38; background: #062c343b; }
