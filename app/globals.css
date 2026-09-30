@@ -663,7 +663,7 @@ svg {
 @media (max-width: 760px) { .people-alumni { margin-inline: 0; } .people-alumni-link { width: 100%; padding-inline: 25px; } }
 @media (min-width: 1051px) {
   .alumni-heading, .alumni-window { max-width: calc(var(--alumni-visible, 5) * 216px); margin-inline: auto; }
-  .alumni-slide { padding-inline: 4px; }
+  .alumni-section .alumni-slide { padding-inline: 4px; }
 }
 .alumni-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
 .alumni-heading > div:first-child { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
