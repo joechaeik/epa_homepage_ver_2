@@ -1,4 +1,5 @@
 import Hero from "@/components/hero";
+import ResearchToc from "@/components/research-toc";
 import Link from "@/components/site-link";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
@@ -70,6 +71,7 @@ export default async function Research() {
                 </>
               )}
             </div>
+            <ResearchToc topic={r} papers={records.filter(p => p.kind === "publications")} />
           </section>
         ))}
       </div>

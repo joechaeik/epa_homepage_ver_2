@@ -995,7 +995,7 @@ export default function AdminWorkspace({
                   sortDirection={editing.kind === "people" ? settings.peopleSortDirection : editing.kind === "news" ? settings.newsSortDirection : editing.kind === "publications" ? settings.publicationsSortDirection : settings.photosSortDirection}
                   setData={(d) => setEditing({ ...editing, draft: d })}
                   onPick={setPicker}
-                  publicationOptions={data.records.filter(r => r.kind === "publications" && !r.archived && r.published).map(r => ({ id: r.id, title: r.published!.title, year: r.published!.year }))}
+                  publicationOptions={data.records.filter(r => r.kind === "publications" && !r.archived && r.published).map(r => ({ id: r.id, title: r.published!.title, year: r.published!.year, image: r.published!.image, imageAlt: r.published!.imageAlt, doi: r.published!.doi }))}
                 />
               </div>
               <div className="entry-sheet-footer">

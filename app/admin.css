@@ -1387,6 +1387,11 @@
 .settings-repeat-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
 @media (max-width: 620px) { .settings-repeat-heading { align-items: flex-start; flex-direction: column; } }
 .settings-career-list { margin: 28px 0; }
+.admin-toc-editor { min-width: 0; padding: 18px; margin: 24px 0; border: 1px solid #dce8de; border-radius: 7px; }
+.admin-toc-editor legend { font-weight: 600; padding: 0 8px; }
+.admin-toc-slot { display: grid; gap: 10px; margin: 18px 0; }
+.admin-toc-slot select { width: 100%; min-width: 0; }
+.admin-toc-preview { width: 180px; height: 135px; object-fit: contain; border: 1px solid #dce8de; background: #fff; }
 .settings-career-list h3 { font-size: 1.1rem; margin-bottom: 12px; }
 .settings-table-wrap { max-width: 100%; overflow-x: auto; margin-bottom: 14px; border: 1px solid #dce8de; border-radius: 7px; }
 .settings-career-table { border-collapse: collapse; width: 100%; min-width: 680px; table-layout: fixed; }

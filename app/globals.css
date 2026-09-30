@@ -707,6 +707,14 @@ a.alumni-destination:hover { background: #d3e8df22; border-color: #b5ddcc88; }
 .professor-timeline p { color: #5e7272; font-size: .83rem; line-height: 1.5; margin: 5px 0 0; }
 .professor-more summary { cursor: pointer; color: #075462; font-weight: 650; padding: 20px 0; }
 .research-topic-header { padding-bottom: 28px; }
+.research-toc-grid { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; min-width: 0; }
+.research-toc-card, .research-toc-empty { aspect-ratio: 4 / 3; min-width: 0; }
+.research-toc-card { display: grid; place-items: center; padding: 8px; border: 1px solid #dce7e1; border-radius: 5px; background: #fff; transition: border-color .2s, box-shadow .2s; }
+.research-toc-card img { width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+.research-toc-card:hover { border-color: #78a497; box-shadow: 0 4px 14px #173e4312; }
+.research-toc-card:focus-visible { outline: 2px solid #075462; outline-offset: 3px; }
+.research-toc-empty { background: transparent; }
+@media (max-width: 760px) { .research-toc-grid { grid-column: 1; grid-template-columns: repeat(5, 160px); overflow-x: auto; gap: 12px; padding-bottom: 6px; } }
 .research-topic-header .eyebrow { margin-top: 34px; }
 .research-topic-header h1 { font: 400 clamp(2.8rem, 5vw, 5rem)/1.08 var(--heading); max-width: 840px; }
 .research-topic-header .research-lead { max-width: 760px; margin-top: 24px; }

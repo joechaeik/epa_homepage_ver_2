@@ -77,11 +77,14 @@ export const entrySchema = z.object({
   role: short,
   tags: z.string().max(500).default(""),
   relatedPublicationIds: z.array(z.string().max(120)).max(30).default([]),
+  tocPublicationIds: z.array(z.string().min(1).max(120)).max(5).refine(ids => new Set(ids).size === ids.length, "TOC 논문은 중복 선택할 수 없습니다.").default([]),
   featured: z.boolean().default(false),
   sortOrder: z.coerce.number().int().min(0).max(99999).default(0),
 });
 export type Entry = z.infer<typeof entrySchema>;
 export function entryProblem(kind: Kind, data: Entry): string | null {
+  if (kind === "research" && data.tocPublicationIds.some(id => !data.relatedPublicationIds.includes(id)))
+    return "TOC 그래픽은 이 연구 분야의 관련 논문 중에서 선택해 주세요.";
   if (kind === "publications" && (!data.authors || !data.journal))
     return "저자와 학술지를 입력해 주세요.";
   if (kind === "photos" && (!data.image || !data.imageAlt))

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { kindLabels, type Entry, type Kind } from "@/lib/content-model";
+import ResearchTocEditor, { type TocPublicationOption } from "./research-toc-editor";
 export const categories: Record<Kind, string[]> = {
   publications: ["Journal article", "Review", "Perspective", "Patent", "In press"],
   news: ["Research", "Awards", "Lab life", "Media", "Events"],
@@ -46,6 +47,8 @@ export const fields: Record<Kind, Field[]> = {
     { key: "doi", label: "DOI", hint: "예: 10.1002/adfm.202600082" },
     { key: "summary", label: "연구 요약", type: "textarea" },
     { key: "pdf", label: "논문 PDF", type: "pdf" },
+    { key: "image", label: "TOC·대표 figure", type: "image", hint: "연구 분야의 TOC 그래픽에 사용됩니다. 원본 비율을 유지해 표시하며, DOI가 있어야 클릭 연결됩니다." },
+    { key: "imageAlt", label: "TOC·figure 이미지 설명" },
     { key: "tags", label: "연구 키워드", hint: "쉼표로 구분해 입력하세요." },
   ],
   news: [
@@ -136,7 +139,7 @@ export function EntryFields({
   setData: (d: Entry) => void;
   onPick: (key: "image" | "pdf") => void;
   sortDirection?: "asc" | "desc";
-  publicationOptions?: { id: string; title: string; year: number }[];
+  publicationOptions?: TocPublicationOption[];
 }) {
   const [publicationQuery, setPublicationQuery] = useState("");
   const selectedPublicationIds = data.relatedPublicationIds ?? [];
@@ -266,7 +269,7 @@ export function EntryFields({
         {selectedPublicationOptions.length ? <div className="related-publication-picker selected-publications">
           {selectedPublicationOptions.map((p, index) => <div className="related-publication-choice" key={p.id}>
             <span>{index + 1}. {p.title} <small>({p.year})</small></span>
-            <div><button type="button" disabled={index === 0} onClick={() => movePublication(index, -1)}>위로</button><button type="button" disabled={index === selectedPublicationOptions.length - 1} onClick={() => movePublication(index, 1)}>아래로</button><button type="button" onClick={() => setData({ ...data, relatedPublicationIds: selectedPublicationIds.filter(id => id !== p.id) })}>제거</button></div>
+            <div><button type="button" disabled={index === 0} onClick={() => movePublication(index, -1)}>위로</button><button type="button" disabled={index === selectedPublicationOptions.length - 1} onClick={() => movePublication(index, 1)}>아래로</button><button type="button" onClick={() => setData({ ...data, relatedPublicationIds: selectedPublicationIds.filter(id => id !== p.id), tocPublicationIds: (data.tocPublicationIds ?? []).filter(id => id !== p.id) })}>제거</button></div>
           </div>)}
         </div> : null}
         <input id="related-publication-search" value={publicationQuery} onChange={e => setPublicationQuery(e.target.value)} placeholder="논문 제목 또는 연도 검색" />
@@ -277,6 +280,7 @@ export function EntryFields({
           </label>)}
         </div> : null}
       </div> : null}
+      {kind === "research" ? <ResearchTocEditor data={data} setData={setData} publications={publicationOptions} /> : null}
       <div className="form-field">
         <label htmlFor="edit-source">자료 출처 링크</label>
         <input
