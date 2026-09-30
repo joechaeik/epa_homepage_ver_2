@@ -53,19 +53,14 @@ export default function HomePage({
       <Hero settings={settings} page="home"
         utility={settings.homeFacilitiesUrl ? <a className="hero-facilities" href={settings.homeFacilitiesUrl} target="_blank" rel="noreferrer"><Microscope size={17} />{settings.homeFacilitiesLabel}<ArrowUpRight size={15} /></a> : null}
         aside={<aside className="hero-proof" aria-label="Research highlights">
-          <a className="hero-proof-research" href={settings.homeResearchHighlightLink || "/research"}>
-            <span className="hero-proof-label">{settings.homeResearchHighlightLabel}<ArrowUpRight size={17} /></span>
-            <strong>{settings.homeResearchHighlightTitle}</strong>
-            {settings.homeResearchHighlightBody ? <p>{settings.homeResearchHighlightBody}</p> : null}
-          </a>
           <div className="hero-proof-metrics">
             <div className="hero-proof-metric">
-              <span className="hero-proof-label">{settings.homeInfluenceLabel}</span>
+              <span className="button mint hero-proof-label">{settings.homeInfluenceLabel}</span>
               <strong>{settings.homeHIndex}</strong>
               <span className="hero-proof-note">{settings.homeHIndexNote}</span>
             </div>
             <div className="hero-proof-metric">
-              <span className="hero-proof-label">{settings.homeHcrLabel}</span>
+              <span className="button mint hero-proof-label">{settings.homeHcrLabel}</span>
               <strong className="hero-proof-years">{settings.homeHcrYears}</strong>
               <span className="hero-proof-note">{settings.homeHcrNote}</span>
             </div>

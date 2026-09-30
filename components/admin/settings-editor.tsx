@@ -10,10 +10,6 @@ const groups: { title: string; description: string; fields: Field[] }[] = [
     title: "Home 연구 성과",
     description: "논문 수는 공개 논문 목록에서 자동 계산됩니다. 이곳의 수치와 문구는 직접 관리합니다.",
     fields: [
-      { key: "homeResearchHighlightLabel", label: "대표 연구 상단 문구 (Selected research)" },
-      { key: "homeResearchHighlightTitle", label: "대표 연구 제목" },
-      { key: "homeResearchHighlightBody", label: "대표 연구 소개", area: true },
-      { key: "homeResearchHighlightLink", label: "대표 연구 연결 링크" },
       { key: "homeInfluenceLabel", label: "H-index 상단 문구 (Research influence)" },
       { key: "homeHIndex", label: "H-index 값" },
       { key: "homeHIndexNote", label: "H-index 설명·출처" },

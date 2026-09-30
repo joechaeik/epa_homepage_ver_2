@@ -212,7 +212,7 @@ try {
   assert.equal(scoped.draft.pageHeroes.people.title, 'People draft QA');
   await editSettings('site', 'publish', s => {
     s.address = 'QA address';
-    s.homeResearchHighlightTitle = 'EPA research QA';
+    s.homeHIndexNote = 'EPA research QA';
     s.alumniDestinations = [{ name: 'QA University', alumnus: 'QA Alumnus', logo: '', link: '' }];
     s.professorAwards = [{ period: '2026', title: 'QA recognition', detail: 'QA source' }];
   });
@@ -226,7 +226,7 @@ try {
   assert.ok((await (await request('/people')).text()).includes('Download CV'));
   assert.ok((await (await request('/join')).text()).includes('output=embed'));
   await editSettings('homeEvidence', 'draft', s => {
-    s.homeResearchHighlightLabel = 'Featured science QA';
+    s.homeInfluenceLabel = 'Featured science QA';
     s.homeHcrNote = 'Clarivate distinction QA';
     s.professorAchievementsTitle = 'Unpublished professor title QA';
   });
@@ -258,7 +258,7 @@ try {
   assert.equal(alumniSettings.alumniInterval, 3);
   assert.equal(alumniSettings.alumniAutoplay, false);
   assert.equal(alumniSettings.alumniDestinations.length, 8);
-  assert.equal(alumniSettings.homeResearchHighlightLabel, 'Featured science QA');
+  assert.equal(alumniSettings.homeInfluenceLabel, 'Featured science QA');
   assert.equal(alumniSettings.professorAchievementsTitle, 'Academic leadership QA');
   const homeSections = await (await request('/')).text();
   const alumniOffset = homeSections.indexOf('class="alumni-section"');

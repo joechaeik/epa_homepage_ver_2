@@ -1,7 +1,7 @@
 import type { HeroPage, HeroSettings, Settings } from "./content-model";
 export type SettingsScope = HeroPage | "site" | "peopleOrder" | "newsOrder" | "publicationsOrder" | "photosOrder" | "homeEvidence" | "alumni" | "professor";
 const sectionKeys = {
-  homeEvidence: ["homeResearchHighlightTitle", "homeResearchHighlightBody", "homeResearchHighlightLabel", "homeResearchHighlightLink", "homeInfluenceLabel", "homeHIndex", "homeHIndexNote", "homeHcrLabel", "homeHcrYears", "homeHcrNote", "homePublicationsLabel", "homeFacilitiesLabel", "homeFacilitiesUrl"],
+  homeEvidence: ["homeInfluenceLabel", "homeHIndex", "homeHIndexNote", "homeHcrLabel", "homeHcrYears", "homeHcrNote", "homePublicationsLabel", "homeFacilitiesLabel", "homeFacilitiesUrl"],
   alumni: ["alumniHeading", "alumniEyebrow", "alumniDestinations", "alumniAutoplay", "alumniInterval", "alumniDirection"],
   professor: ["professorScholarUrl", "professorCvUrl", "professorAchievementsEyebrow", "professorAchievementsTitle", "professorAchievementsDescription", "professorEducationHeading", "professorCareerHeading", "professorAwardsHeading", "professorEducation", "professorCareer", "professorAwards"],
 } as const satisfies Record<string, readonly (keyof Settings)[]>;
