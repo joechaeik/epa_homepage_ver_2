@@ -35,9 +35,12 @@ export default async function Research() {
               {String(i + 1).padStart(2, "0")}
             </div>
             <div className="research-detail-content">
+              <div className="research-detail-heading">
               <p className="eyebrow">{r.category}</p>
               <h2>{r.title}</h2>
               <p className="research-lead">{r.summary}</p>
+              </div>
+              <div className="research-detail-body">
               <div className="prose">
                 {r.body.split("\n\n").map((p, j) => (
                   <p key={j}>{p}</p>
@@ -56,6 +59,7 @@ export default async function Research() {
               <Link className="text-link" href={`/research/${r.id}`}>
                 Explore this research <ArrowUpRight size={17} />
               </Link>
+              </div>
             </div>
             <div className="research-diagram">
               {r.image ? (
