@@ -1,5 +1,6 @@
 import ProfessorAchievements from "@/components/professor-achievements";
 import Hero from "@/components/hero";
+import PeopleAlumni from "@/components/people-alumni";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
@@ -8,7 +9,8 @@ import { Gallery } from "@/components/site-chrome";
 import { Mail, ArrowUpRight, Download } from "lucide-react";
 export const metadata = { title: "People & Lab Life" };
 export const dynamic = "force-dynamic";
-export default async function People() {
+export default async function People({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const requestedCategory = (await searchParams).category;
   const { settings, records } = await publicContent();
   const people = records
     .filter((r) => r.kind === "people")
@@ -17,6 +19,7 @@ export default async function People() {
   return (
     <SiteFrame settings={settings}>
       <Hero settings={settings} page="people" />
+      <PeopleAlumni settings={settings} />
       {pi ? (
         <section className="section pi-section">
           <div className="pi-image">
@@ -54,7 +57,7 @@ export default async function People() {
         </section>
       ) : null}
       {pi ? <ProfessorAchievements settings={settings} /> : null}
-      <section className="team-section">
+      <section className="team-section" id="team-members">
         <div className="section">
           <div className="section-heading">
             <div>
@@ -65,7 +68,7 @@ export default async function People() {
               A community connected by a commitment to scientific discovery.
             </p>
           </div>
-          <PeopleBrowser people={people.filter((p) => p.id !== pi?.id)} />
+          <PeopleBrowser key={requestedCategory || "All"} initialFilter={requestedCategory} people={people.filter((p) => p.id !== pi?.id)} />
         </div>
       </section>
       <section className="section" id="lab-life">

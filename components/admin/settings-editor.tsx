@@ -135,6 +135,9 @@ export default function SettingsEditor({
         ))}
         <section className="admin-panel settings-group">
           <h2>동문 진로 배너</h2>
+          <p>기관·졸업생·로고·링크와 순환 설정은 Home과 People이 함께 사용합니다. 공개 반영하면 표시 중인 두 페이지에 동시에 적용됩니다.</p>
+          <div className="form-field"><label htmlFor="alumni-show-home">Home 표시</label><select id="alumni-show-home" value={String(value.alumniShowHome)} onChange={e => onChange({ ...value, alumniShowHome: e.target.value === "true" })}><option value="true">표시</option><option value="false">숨김</option></select></div>
+          <div className="form-field"><label htmlFor="alumni-show-people">People 표시</label><select id="alumni-show-people" value={String(value.alumniShowPeople)} onChange={e => onChange({ ...value, alumniShowPeople: e.target.value === "true" })}><option value="true">표시</option><option value="false">숨김</option></select></div>
           <p>Home 히어로 안에서 자동 순환합니다. PC는 최대 5개, 태블릿은 3개, 모바일은 1~2개가 보입니다. 기관 추가·순서·로고·링크를 관리할 수 있습니다.</p>
           <div className="form-field"><label htmlFor="alumni-eyebrow">상단 문구 (Alumni pathways)</label><input id="alumni-eyebrow" value={value.alumniEyebrow} onChange={e => onChange({ ...value, alumniEyebrow: e.target.value })} /></div>
           <div className="form-field"><label htmlFor="alumni-heading">배너 제목</label><input id="alumni-heading" value={value.alumniHeading} onChange={e => onChange({ ...value, alumniHeading: e.target.value })} /></div>
@@ -148,6 +151,7 @@ export default function SettingsEditor({
           </div>)}
           <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 30} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
           {sectionActions("alumni", "동문 배너")}
+          <a className="text-link" href="/admin/preview?page=people" target="_blank" rel="noreferrer">People 동문 배너 초안 보기 ↗</a>
         </section>
       </div>
       <aside className="settings-preview">

@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Mail, ArrowUpRight, UserRound } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { PublicEntry } from "@/lib/content-model";
-export default function PeopleBrowser({ people }: { people: PublicEntry[] }) {
-  const [filter, setFilter] = useState("All");
+export default function PeopleBrowser({ people, initialFilter = "All" }: { people: PublicEntry[]; initialFilter?: string }) {
+  const [filter, setFilter] = useState(people.some(p => p.category === initialFilter) ? initialFilter : "All");
   const categories = [
     "All",
     ...new Set(people.map((p) => p.category).filter(Boolean)),

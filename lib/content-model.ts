@@ -181,6 +181,8 @@ export const settingsSchema = z.object({
   homePublicationsLabel: short.default("Our publications"),
   homeFacilitiesLabel: short.default("KENTECH facilities"),
   alumniEyebrow: short.default("Alumni pathways"),
+  alumniShowHome: z.boolean().default(true),
+  alumniShowPeople: z.boolean().default(true),
   alumniAutoplay: z.boolean().default(true),
   alumniInterval: z.coerce.number().int().min(2).max(15).default(5),
   alumniDirection: z.enum(["left", "right"]).default("right"),

@@ -635,6 +635,12 @@ svg {
 .hero-facilities { position: absolute; top: 26px; right: 5%; display: inline-flex; align-items: center; gap: 9px; padding: 10px 14px; border: 1px solid #c9eece6b; border-radius: 3px; background: #0b333b99; color: #eff8ed; text-decoration: none; font-size: .74rem; }
 .hero-facilities:hover { background: #c9eece; color: #0b333b; }
 .alumni-section { position: relative; max-width: 1440px; margin: 0 auto; padding: 20px 5% 28px; border-top: 1px solid #b7d6cf38; background: #062c343b; }
+.people-alumni { background: var(--teal, #075462); padding: 12px 0 24px; margin: 0 24px; }
+.people-alumni .alumni-section { border-top: 0; background: transparent; padding-bottom: 16px; }
+.people-alumni-link { max-width: 1140px; width: 90%; margin: 0 auto; padding: 0 30px; }
+.people-alumni-link .text-link { font-size: .8rem; }
+#team-members { scroll-margin-top: 100px; }
+@media (max-width: 760px) { .people-alumni { margin-inline: 0; } .people-alumni-link { width: 100%; padding-inline: 25px; } }
 @media (min-width: 1051px) {
   .alumni-section { max-width: 1140px; width: 90%; padding-inline: 24px; }
 }

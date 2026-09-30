@@ -5,6 +5,7 @@ import { adminContent } from "@/lib/store";
 import HomePage from "@/components/home-page";
 import Hero from "@/components/hero";
 import ProfessorAchievements from "@/components/professor-achievements";
+import PeopleAlumni from "@/components/people-alumni";
 import LocationMap from "@/components/location-map";
 import { SiteFrame } from "@/components/site-frame";
 import { heroPages, type HeroPage } from "@/lib/content-model";
@@ -34,7 +35,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
           .map((r) => ({ ...r.draft, id: r.id, kind: r.kind }))}
       /> : <SiteFrame settings={data.settings.draft}>
         <Hero settings={data.settings.draft} page={page} />
-        {page === "people" ? <ProfessorAchievements settings={data.settings.draft} /> : null}
+        {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview /><ProfessorAchievements settings={data.settings.draft} /></> : null}
         {page !== "people" ? <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
           {page === "join" ? <><h2>Location</h2><p>{data.settings.draft.address}</p><LocationMap settings={data.settings.draft} /></> : null}
         </section> : null}

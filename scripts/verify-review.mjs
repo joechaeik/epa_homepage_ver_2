@@ -259,6 +259,9 @@ try {
   assert.equal(alumniSettings.alumniInterval, 3);
   assert.equal(alumniSettings.alumniAutoplay, false);
   assert.equal(alumniSettings.alumniDestinations.length, 8);
+  assert.equal(alumniSettings.alumniShowHome, true);
+  assert.equal(alumniSettings.alumniShowPeople, true);
+  assert.ok((await (await request('/people')).text()).includes('Alumni careers QA'));
   assert.equal(alumniSettings.homeInfluenceLabel, 'Featured science QA');
   assert.equal(alumniSettings.professorAchievementsTitle, 'Academic leadership QA');
   await editSettings('professor', 'draft', s => { s.professorAchievementsTitle = 'Professor isolated draft QA'; });

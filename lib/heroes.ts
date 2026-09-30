@@ -2,7 +2,7 @@ import type { HeroPage, HeroSettings, Settings } from "./content-model";
 export type SettingsScope = HeroPage | "site" | "peopleOrder" | "newsOrder" | "publicationsOrder" | "photosOrder" | "homeEvidence" | "alumni" | "professor";
 const sectionKeys = {
   homeEvidence: ["homeInfluenceLabel", "homeHIndex", "homeHIndexNote", "homeHcrLabel", "homeHcrYears", "homeHcrNote", "homePublicationsLabel", "homeFacilitiesLabel", "homeFacilitiesUrl"],
-  alumni: ["alumniHeading", "alumniEyebrow", "alumniDestinations", "alumniAutoplay", "alumniInterval", "alumniDirection"],
+  alumni: ["alumniHeading", "alumniEyebrow", "alumniDestinations", "alumniAutoplay", "alumniInterval", "alumniDirection", "alumniShowHome", "alumniShowPeople"],
   professor: ["professorScholarUrl", "professorCvUrl", "professorAchievementsEyebrow", "professorAchievementsTitle", "professorAchievementsDescription", "professorEducationHeading", "professorCareerHeading", "professorAwardsHeading", "professorEducation", "professorCareer", "professorAwards"],
 } as const satisfies Record<string, readonly (keyof Settings)[]>;
 const orderKeys = ["peopleSortDirection", "newsSortDirection", "publicationsSortDirection", "photosSortDirection"] as const;

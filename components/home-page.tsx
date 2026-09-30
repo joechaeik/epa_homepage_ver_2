@@ -66,7 +66,7 @@ export default function HomePage({
             </div>
           </div>
         </aside>}
-        footer={<AlumniStrip title={settings.alumniHeading} eyebrow={settings.alumniEyebrow} destinations={settings.alumniDestinations} autoplay={settings.alumniAutoplay} interval={settings.alumniInterval} direction={settings.alumniDirection} />}
+        footer={settings.alumniShowHome ? <AlumniStrip title={settings.alumniHeading} eyebrow={settings.alumniEyebrow} destinations={settings.alumniDestinations} autoplay={settings.alumniAutoplay} interval={settings.alumniInterval} direction={settings.alumniDirection} /> : null}
       >
           <div className="hero-actions">
             <a
