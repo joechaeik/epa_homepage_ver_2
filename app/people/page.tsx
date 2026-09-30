@@ -7,7 +7,7 @@ import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
 import { compareDisplayOrder, comparePeople } from "@/lib/people-order";
 import { Gallery } from "@/components/site-chrome";
-import { Mail, ArrowUpRight, Download } from "lucide-react";
+import ProfessorLinks from "@/components/professor-links";
 export const metadata = { title: "People & Lab Life" };
 export const dynamic = "force-dynamic";
 export default async function People({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
@@ -28,24 +28,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
               <img src={pi.image} alt={pi.imageAlt || pi.title} />
               <span>PRINCIPAL INVESTIGATOR</span>
             </div>
-            <div className="pi-links">
-              <a className="button outline" href={"mailto:" + pi.email}>
-                <Mail size={16} />
-                Contact Professor Choi
-              </a>
-              {settings.professorScholarUrl ? <a className="text-link" href={settings.professorScholarUrl} target="_blank" rel="noreferrer">Google Scholar <ArrowUpRight size={16} /></a> : null}
-              {settings.professorCvUrl ? <a className="text-link" href={settings.professorCvUrl} target="_blank" rel="noreferrer" download={settings.professorCvUrl.startsWith("/") ? "Wonyong_Choi_CV.pdf" : undefined}>Download CV <Download size={16} /></a> : null}
-              {pi.link ? (
-                <a
-                  className="text-link"
-                  href={pi.link}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  ORCID profile <ArrowUpRight size={16} />
-                </a>
-              ) : null}
-            </div>
+            <ProfessorLinks email={pi.email} scholarUrl={settings.professorScholarUrl} cvUrl={settings.professorCvUrl} orcidUrl={pi.link} />
           </div>
           <div className="pi-copy">
             <p className="eyebrow">LABORATORY DIRECTOR</p>
@@ -56,6 +39,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
             <p className="pi-role">{pi.role}</p>
             <LinkedBiography text={pi.body} />
             <p>{pi.summary}</p>
+            <ProfessorLinks email={pi.email} scholarUrl={settings.professorScholarUrl} cvUrl={settings.professorCvUrl} orcidUrl={pi.link} compact />
           </div>
         </section>
       ) : null}

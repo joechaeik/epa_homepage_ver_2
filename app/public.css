@@ -739,6 +739,9 @@
 .pi-links > .button {
   width: 100%;
 }
+.pi-links-mobile {
+  display: none;
+}
 .team-section {
   background: #f5f7f5;
 }
@@ -1200,6 +1203,31 @@
   }
   .pi-copy h2 {
     font-size: 2.3rem;
+  }
+  .pi-profile > .pi-links {
+    display: none;
+  }
+  .pi-links-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: nowrap;
+  }
+  .pi-links-mobile > a {
+    min-height: 44px;
+    white-space: nowrap;
+  }
+  .pi-links-mobile > .text-link {
+    padding: 8px 4px;
+  }
+  .pi-links-mobile > .button {
+    width: auto;
+    min-width: 44px;
+    padding: 8px;
+    border: 0;
+    background: transparent;
   }
   .people-grid {
     grid-template-columns: 1fr;
