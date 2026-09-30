@@ -626,10 +626,9 @@ svg {
 .hero-home .hero-actions .text-link { font-size: var(--hero-label-size); }
 .hero-publication-count { display: block; font-family: inherit; font-size: var(--hero-number-size); line-height: 1.35; font-variant-numeric: tabular-nums; font-weight: inherit; color: var(--mint); }
 .hero-proof { min-width: 0; }
-.hero-proof-label.button { font-size: var(--hero-label-size); width: 100%; gap: 0; text-align: center; }
-.hero-proof-label.button.mint:hover { background: var(--mint); }
+.hero-proof-label { display: block; font-size: var(--hero-label-size); font-weight: 600; line-height: 1.45; color: #e1eee8; }
 .hero-proof-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.hero-proof-metric { min-width: 0; }
+.hero-proof-metric { min-width: 0; padding: 20px 18px; border: 1px solid #d7eee226; border-radius: 10px; background: #082e36a6; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 8px 28px #001a2026; }
 .hero-proof-metric > strong { display: block; font-family: var(--sans); font-size: var(--hero-number-size); font-weight: 600; line-height: 1.35; margin: 14px 0 6px; font-variant-numeric: tabular-nums; }
 .hero-proof-metric > .hero-proof-years { white-space: nowrap; }
 .hero-proof-note { display: block; font-size: .74rem; line-height: 1.5; color: #d1dfdc; }
@@ -727,7 +726,7 @@ a.alumni-destination:hover { background: #d3e8df22; border-color: #b5ddcc88; }
   .hero-home .hero-inner { padding: 94px 20px 28px; }
   .hero-home :is(h1, h2), .hero-page :is(h1, h2) { font-size: 2.15rem; overflow-wrap: normal; word-break: normal; }
   .hero-proof-metrics { gap: 12px; }
-  .hero-proof-label.button { padding: 12px 8px; }
+  .hero-proof-metric { padding: 16px 13px; }
   .hero-proof-note { font-size: .68rem; }
   .hero-actions { flex-wrap: wrap; }
   .people-tabs, .news-tabs { width: 100%; max-width: calc(100vw - 48px); min-width: 0; overflow-x: auto; }
