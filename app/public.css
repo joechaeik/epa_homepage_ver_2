@@ -666,8 +666,11 @@
 .pi-image {
   background: #eff3ef;
 }
+.pi-profile {
+  min-width: 0;
+}
 @media (min-width: 1101px) {
-  .pi-image {
+  .pi-profile {
     align-self: start;
     /* Align with the name below the director label. */
     margin-top: calc(0.75rem * 1.6 + 18px);
@@ -724,10 +727,17 @@
 }
 .pi-links {
   display: flex;
-  gap: 25px;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 14px;
+  align-items: stretch;
   margin-top: 26px;
+}
+.pi-links > .text-link {
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+.pi-links > .button {
+  width: 100%;
 }
 .team-section {
   background: #f5f7f5;
@@ -1183,7 +1193,7 @@
     grid-template-columns: 1fr;
     gap: 32px;
   }
-  .pi-image {
+  .pi-profile {
     max-width: 260px;
     width: 100%;
     margin-inline: auto;

@@ -23,19 +23,11 @@ export default async function People({ searchParams }: { searchParams: Promise<{
       <PeopleAlumni settings={settings} />
       {pi ? (
         <section className="section pi-section">
-          <div className="pi-image">
-            <img src={pi.image} alt={pi.imageAlt || pi.title} />
-            <span>PRINCIPAL INVESTIGATOR</span>
-          </div>
-          <div className="pi-copy">
-            <p className="eyebrow">LABORATORY DIRECTOR</p>
-            <h2>
-              {pi.title}
-              <span>, Ph.D.</span>
-            </h2>
-            <p className="pi-role">{pi.role}</p>
-            <LinkedBiography text={pi.body} />
-            <p>{pi.summary}</p>
+          <div className="pi-profile">
+            <div className="pi-image">
+              <img src={pi.image} alt={pi.imageAlt || pi.title} />
+              <span>PRINCIPAL INVESTIGATOR</span>
+            </div>
             <div className="pi-links">
               <a className="button outline" href={"mailto:" + pi.email}>
                 <Mail size={16} />
@@ -54,6 +46,16 @@ export default async function People({ searchParams }: { searchParams: Promise<{
                 </a>
               ) : null}
             </div>
+          </div>
+          <div className="pi-copy">
+            <p className="eyebrow">LABORATORY DIRECTOR</p>
+            <h2>
+              {pi.title}
+              <span>, Ph.D.</span>
+            </h2>
+            <p className="pi-role">{pi.role}</p>
+            <LinkedBiography text={pi.body} />
+            <p>{pi.summary}</p>
           </div>
         </section>
       ) : null}
