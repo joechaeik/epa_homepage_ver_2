@@ -23,7 +23,7 @@ export function setHero(settings: Settings, page: HeroPage, hero: HeroSettings):
 export function mergeSettingsScope(current: Settings, incoming: Settings, scope?: SettingsScope): Settings {
   if (!scope) return incoming;
   if (scope === "homeEvidence" || scope === "alumni" || scope === "professor") return { ...current, ...Object.fromEntries(sectionKeys[scope].map(key => [key, incoming[key]])) };
-  if (scope === "site") return { ...incoming, ...Object.fromEntries([...homeHeroKeys, ...orderKeys].map(key => [key, current[key]])), pageHeroes: current.pageHeroes };
+  if (scope === "site") return { ...incoming, ...Object.fromEntries([...homeHeroKeys, ...orderKeys, ...sectionKeys.professor].map(key => [key, current[key]])), pageHeroes: current.pageHeroes };
   if (scope === "peopleOrder") return { ...current, peopleSortDirection: incoming.peopleSortDirection };
   if (scope === "newsOrder") return { ...current, newsSortDirection: incoming.newsSortDirection };
   if (scope === "publicationsOrder") return { ...current, publicationsSortDirection: incoming.publicationsSortDirection };

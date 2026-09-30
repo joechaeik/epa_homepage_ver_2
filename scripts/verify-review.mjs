@@ -214,8 +214,8 @@ try {
     s.address = 'QA address';
     s.homeHIndexNote = 'EPA research QA';
     s.alumniDestinations = [{ name: 'QA University', alumnus: 'QA Alumnus', logo: '', link: '' }];
-    s.professorAwards = [{ period: '2026', title: 'QA recognition', detail: 'QA source' }];
   });
+  await editSettings('professor', 'publish', s => { s.professorAwards = [{ period: '2026', title: 'QA recognition', detail: 'QA source' }]; });
   scoped = (await content()).settings;
   assert.deepEqual(scoped.published.pageHeroes.people, original.published.pageHeroes.people);
   assert.equal(scoped.published.pageHeroes.research.title, 'Research hero QA');
@@ -252,6 +252,7 @@ try {
   assert.ok(achievementsHtml.includes('Academic leadership QA'));
   assert.ok(achievementsHtml.includes('Qualifications QA'));
   assert.ok(achievementsHtml.includes('Updated achievements QA'));
+
   assert.ok(!(await (await request('/')).text()).includes('Alumni careers QA'));
   await editSettings('alumni', 'publish', () => {});
   const alumniSettings = (await content()).settings.published;
@@ -260,6 +261,12 @@ try {
   assert.equal(alumniSettings.alumniDestinations.length, 8);
   assert.equal(alumniSettings.homeInfluenceLabel, 'Featured science QA');
   assert.equal(alumniSettings.professorAchievementsTitle, 'Academic leadership QA');
+  await editSettings('professor', 'draft', s => { s.professorAchievementsTitle = 'Professor isolated draft QA'; });
+  assert.ok((await (await request('/admin/preview?page=people', { headers: { Cookie: cookie } })).text()).includes('Professor isolated draft QA'));
+  await editSettings('site', 'publish', s => { s.address = 'QA profile isolation'; });
+  assert.equal((await content()).settings.published.professorAchievementsTitle, 'Academic leadership QA');
+  assert.equal((await content()).settings.draft.professorAchievementsTitle, 'Professor isolated draft QA');
+  await editSettings('professor', 'publish', s => { s.professorAchievementsTitle = 'Academic leadership QA'; });
   const homeSections = await (await request('/')).text();
   const alumniOffset = homeSections.indexOf('class="alumni-section"');
   assert.ok(alumniOffset > homeSections.indexOf('hero-home'));

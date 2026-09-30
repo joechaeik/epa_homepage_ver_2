@@ -90,6 +90,7 @@ import {
 import { Choice, EntryFields, categories } from "./fields";
 import MediaLibrary, { type Asset } from "./media-library";
 import SettingsEditor from "./settings-editor";
+import ProfessorEditor from "./professor-editor";
 import type { HeroPicker } from "./hero-editor";
 import type { HeroPage } from "@/lib/content-model";
 import { getHero, setHero, mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
@@ -109,13 +110,14 @@ export type AdminData = {
   uploadsEnabled: boolean;
   activity: { action: string; target: string; createdAt: string }[];
 };
-type Tab = "dashboard" | "settings" | "media" | Kind;
+type Tab = "dashboard" | "settings" | "professor" | "media" | Kind;
 const menu = [
   { id: "dashboard", name: "대시보드", icon: LayoutDashboard },
   { id: "settings", name: "Hero·사이트 설정", icon: PanelsTopLeft },
   { id: "publications", name: "논문", icon: BookOpen },
   { id: "news", name: "뉴스", icon: Newspaper },
   { id: "people", name: "구성원", icon: Users },
+  { id: "professor", name: "교수 프로필·성과", icon: BookOpen },
   { id: "research", name: "연구 분야", icon: FlaskConical },
   { id: "photos", name: "연구실 사진", icon: Images },
   { id: "positions", name: "모집 안내", icon: Briefcase },
@@ -127,6 +129,7 @@ const descriptions: Record<Tab, string> = {
   publications: "논문 정보, DOI, PDF를 관리하고 최신 연구를 소개합니다.",
   news: "연구 성과, 수상 소식, 연구실의 일상을 전합니다.",
   people: "교수·연구원·학생 소개와 프로필 사진을 관리합니다.",
+  professor: "People의 Academic career & recognition, 학력·경력·수상과 Scholar·CV 링크를 관리합니다.",
   research: "연구 분야별 소개와 키워드, 이미지를 관리합니다.",
   photos: "홈과 People 페이지에 표시할 연구실 사진을 관리합니다.",
   positions: "확정된 모집 조건을 등록하고 공개 여부를 관리합니다.",
@@ -545,14 +548,14 @@ export default function AdminWorkspace({
                 <p>{descriptions[tab]}</p>
               </div>
               <div>
-                {tab === "dashboard" || tab === "settings" ? (
+                {tab === "dashboard" || tab === "settings" || tab === "professor" ? (
                   <Link
                     className="button outline"
-                    href="/admin/preview"
+                    href={tab === "professor" ? "/admin/preview?page=people" : "/admin/preview"}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <Eye size={17} />홈 초안 미리보기
+                    <Eye size={17} />{tab === "professor" ? "교수 성과 초안 미리보기" : "홈 초안 미리보기"}
                   </Link>
                 ) : currentKind ? (
                   <button
@@ -748,6 +751,7 @@ export default function AdminWorkspace({
                 dirty={settingsDirty}
               />
             ) : null}
+            {tab === "professor" ? <ProfessorEditor value={settings} onChange={setSettings} onPick={() => setPicker("professorCv")} onSave={intent => saveSettings(intent, "professor")} busy={busy} /> : null}
             {tab === "media" ? (
               <MediaLibrary
                 uploadsEnabled={data.uploadsEnabled}

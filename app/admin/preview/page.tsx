@@ -4,6 +4,7 @@ import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
 import HomePage from "@/components/home-page";
 import Hero from "@/components/hero";
+import ProfessorAchievements from "@/components/professor-achievements";
 import LocationMap from "@/components/location-map";
 import { SiteFrame } from "@/components/site-frame";
 import { heroPages, type HeroPage } from "@/lib/content-model";
@@ -22,7 +23,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
   return (
     <>
       <div className="preview-banner" lang="ko">
-        저장된 {page === "home" ? "홈" : "Hero"} 초안 미리보기 · 편집 내용은 공개 반영 버튼을 눌러야
+        저장된 {page === "home" ? "홈" : page === "people" ? "People·교수 성과" : "Hero"} 초안 미리보기 · 편집 내용은 공개 반영 버튼을 눌러야
         공개됩니다.
         <Link href="/admin">관리자로 돌아가기 →</Link>
       </div>
@@ -33,9 +34,10 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
           .map((r) => ({ ...r.draft, id: r.id, kind: r.kind }))}
       /> : <SiteFrame settings={data.settings.draft}>
         <Hero settings={data.settings.draft} page={page} />
-        <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
+        {page === "people" ? <ProfessorAchievements settings={data.settings.draft} /> : null}
+        {page !== "people" ? <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
           {page === "join" ? <><h2>Location</h2><p>{data.settings.draft.address}</p><LocationMap settings={data.settings.draft} /></> : null}
-        </section>
+        </section> : null}
       </SiteFrame>}
     </>
   );
