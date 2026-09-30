@@ -1156,6 +1156,8 @@
   }
   .pi-image {
     max-width: 260px;
+    width: 100%;
+    margin-inline: auto;
   }
   .pi-copy h2 {
     font-size: 2.3rem;
