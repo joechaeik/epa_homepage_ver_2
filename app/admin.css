@@ -1362,6 +1362,10 @@
 .settings-page { display: grid; gap: 28px; }
 .professor-editor { grid-template-columns: minmax(0, 1fr); }
 .professor-editor .settings-form { min-width: 0; }
+.professor-editor .settings-actions { flex-wrap: wrap; }
+@media (max-width: 620px) {
+  .professor-editor .settings-actions .button { flex: 0 0 100%; }
+}
 .hero-editor { padding: 28px; min-width: 0; }
 .hero-editor fieldset { border: 0; min-width: 0; margin: 0; padding: 0; }
 .hero-editor-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
