@@ -4,7 +4,7 @@ import LinkedBiography from "@/components/linked-biography";
 import Link from "@/components/site-link";
 import type { PublicEntry, Settings } from "@/lib/content-model";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
-import { ArrowUpRight, ArrowDown, Sun } from "lucide-react";
+import { ArrowRight, ArrowDown, Sun } from "lucide-react";
 const reactions: Record<string, [string, string]> = {
   Water: ["Sunlight + water", "Cleaner water + resources"],
   "Solar energy": ["Sunlight + H₂O + O₂", "H₂O₂ + solar chemicals"],
@@ -51,7 +51,7 @@ export default function ResearchPage({ settings, records, preview = false }: { s
                   ))}
               </div>
               <Link className="text-link" href={preview ? `/admin/preview?page=research&topic=${encodeURIComponent(r.id)}` : `/research/${r.id}`}>
-                Explore this research <ArrowUpRight size={17} />
+                View research details <ArrowRight size={17} aria-hidden="true" />
               </Link>
               </div>
             </div>
