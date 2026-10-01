@@ -1001,6 +1001,7 @@ export default function AdminWorkspace({
                   onPick={setPicker}
                   publicationOptions={data.records.filter(r => r.kind === "publications" && !r.archived && r.published).map(r => ({ id: r.id, title: r.published!.title, year: r.published!.year, image: r.published!.image, imageAlt: r.published!.imageAlt, doi: r.published!.doi }))}
                 />
+                {editing.kind === "research" && editing.id ? <Link className="text-link" href={`/admin/preview?page=research&topic=${encodeURIComponent(editing.id)}`} target="_blank" rel="noopener noreferrer"><Eye size={17} />저장한 연구 설명 미리보기</Link> : null}
               </div>
               <div className="entry-sheet-footer">
                 {error ? (

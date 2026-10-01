@@ -78,7 +78,8 @@ export const fields: Record<Kind, Field[]> = {
   research: [
     { key: "title", label: "연구 분야 제목 *" },
     { key: "summary", label: "한 줄 소개", type: "textarea" },
-    { key: "body", label: "연구 설명", type: "textarea" },
+    { key: "body", label: "연구 설명 · Research 첫 화면", type: "textarea", hint: "분야의 문제와 접근을 짧게 소개하세요. 빈 줄로 문단을 나누고, [논문 보기](https://doi.org/...)처럼 입력하면 링크가 새 탭으로 열립니다." },
+    { key: "researchDetails", label: "상세 연구 설명 · Explore this research", type: "textarea", hint: "논문별 연구 내용·결과·의미를 입력하세요. [링크 문구](https://doi.org/...) 형식을 지원합니다. 비워두면 첫 화면의 연구 설명을 표시합니다." },
     { key: "image", label: "연구 이미지", type: "image" },
     { key: "imageAlt", label: "이미지 설명" },
     { key: "tags", label: "키워드", hint: "쉼표로 구분해 입력하세요." },
@@ -181,8 +182,8 @@ export function EntryFields({
           {f.type === "textarea" ? (
             <textarea
               id={"edit-" + f.key}
-              rows={f.key === "body" ? 9 : 3}
-              value={String(data[f.key])}
+              rows={f.key === "body" || f.key === "researchDetails" ? 9 : 3}
+              value={String(data[f.key] ?? "")}
               onChange={(e) => setData({ ...data, [f.key]: e.target.value })}
             />
           ) : f.type === "image" || f.type === "pdf" ? (

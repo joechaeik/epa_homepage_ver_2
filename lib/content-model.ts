@@ -52,6 +52,7 @@ export const entrySchema = z.object({
   title: z.string().trim().min(1, "제목을 입력해 주세요.").max(500),
   summary: z.string().trim().max(3000).default(""),
   body: z.string().trim().max(30000).default(""),
+  researchDetails: z.string().trim().max(30000).default(""),
   category: short,
   date: z.string().refine(validDate, "날짜를 확인해 주세요.").default(""),
   releaseDate: z.string().refine(validDate, "발행일을 확인해 주세요.").default(""),

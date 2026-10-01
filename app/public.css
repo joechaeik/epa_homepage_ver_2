@@ -712,13 +712,22 @@
   white-space: pre-line;
   overflow-wrap: anywhere;
 }
-.pi-biography a {
+.pi-biography a,
+.research-description a {
   color: var(--teal);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.pi-biography a:hover {
+.pi-biography a:hover,
+.research-description a:hover {
   text-decoration-thickness: 2px;
+}
+.research-description {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.research-description > p {
+  white-space: pre-line;
 }
 .pi-copy .pi-role {
   font-size: 0.875rem !important;

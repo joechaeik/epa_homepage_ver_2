@@ -24,9 +24,9 @@ function linkedText(text: string): ReactNode[] {
   return parts;
 }
 
-export default function LinkedBiography({ text }: { text: string }) {
+export default function LinkedBiography({ text, className = "pi-biography" }: { text: string; className?: string }) {
   return (
-    <div className="pi-biography">
+    <div className={className}>
       {text.split(/\r?\n\s*\r?\n/).filter((paragraph) => paragraph.trim()).map((paragraph, index) => (
         <p key={index}>{linkedText(paragraph)}</p>
       ))}
