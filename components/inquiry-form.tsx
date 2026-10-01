@@ -59,6 +59,7 @@ export default function InquiryForm({ email }: { email: string }) {
               {[
                 "Graduate research",
                 "Postdoctoral research",
+                "Undergraduate research",
                 "Visiting researcher",
                 "Research collaboration",
               ].map((p) => (

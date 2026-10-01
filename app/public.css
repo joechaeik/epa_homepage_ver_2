@@ -806,15 +806,33 @@
 .join-process ol { padding: 0; list-style: none; }
 .join-process li { border-left: 1px solid var(--border); padding-left: 24px; }
 .join-process h3 { margin-top: 15px; }
+.join-english { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+.join-english p, .join-environment > p, .join-careers > p { color: #61746d; line-height: 1.75; }
+.join-english table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: .95rem; }
+.join-english th, .join-english td { padding: 14px 18px; border-bottom: 1px solid var(--border); text-align: left; overflow-wrap: anywhere; }
+.join-english thead { background: #edf4f0; color: var(--teal); }
+.join-english tbody th { font-weight: 500; }
+.join-english td { font-weight: 600; color: var(--teal); }
+.join-environment-grid, .join-career-grid { display: grid; gap: 24px; margin-top: 32px; }
+.join-environment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.join-career-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.join-environment-grid article, .join-career-grid article { min-width: 0; border-top: 1px solid var(--border); padding-top: 24px; }
+.join-environment-grid svg { color: var(--teal); }
+.join-environment-grid h3, .join-career-grid h3 { margin: 16px 0 12px; }
+.join-environment-grid p, .join-career-grid p { color: #61746d; line-height: 1.75; overflow-wrap: anywhere; }
 @media (max-width: 1024px) {
   .join-introduction { gap: 32px; }
   .join-benefit-grid, .join-process ol { gap: 20px; }
   .join-path-card { padding: 24px; }
+  .join-english { gap: 28px; }
+  .join-career-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
   .join-introduction, .join-benefit-grid, .join-path-grid, .join-process ol { grid-template-columns: 1fr; }
   .join-benefit-grid, .join-process ol { gap: 28px; }
   .join-path-card { padding: 24px 20px; }
+  .join-english, .join-environment-grid, .join-career-grid { grid-template-columns: 1fr; }
+  .join-english th, .join-english td { padding: 12px; }
 }
 .people-tabs {
   margin-bottom: 30px;
