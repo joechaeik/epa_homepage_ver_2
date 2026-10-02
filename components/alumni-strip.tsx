@@ -89,19 +89,28 @@ function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interva
       ? { index: count + ((p.index % count) + count) % count, animate: false } : p);
   }
 
+  function togglePlayback() {
+    if (paused) {
+      // An explicit Play action resumes even while this control retains focus.
+      setFocused(false);
+      setHovered(false);
+    }
+    setPaused(p => !p);
+  }
+
   return <section className="alumni-section" aria-label={eyebrow || title} aria-roledescription="carousel"
-    style={{ "--alumni-visible": visible } as CSSProperties}
-    onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-    onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}>
+    style={{ "--alumni-visible": visible } as CSSProperties}>
     <div className="alumni-heading">
       <div><p className="eyebrow">{eyebrow}</p><p className="alumni-title">{title}</p></div>
       <div className="alumni-controls">
         <button type="button" aria-label="Previous alumni destination" aria-controls={id} onClick={() => move(-1)} disabled={count < 2}><ChevronLeft size={17} /></button>
-        <button type="button" aria-label={paused || reduced ? "Play alumni carousel" : "Pause alumni carousel"} aria-pressed={paused || reduced} onClick={() => setPaused(p => !p)} disabled={count < 2 || reduced}>{paused || reduced ? <Play size={13} /> : <Pause size={13} />}</button>
+        <button type="button" aria-label={paused || reduced ? "Play alumni carousel" : "Pause alumni carousel"} aria-pressed={paused || reduced} onClick={togglePlayback} disabled={count < 2 || reduced}>{paused || reduced ? <Play size={13} /> : <Pause size={13} />}</button>
         <button type="button" aria-label="Next alumni destination" aria-controls={id} onClick={() => move(1)} disabled={count < 2}><ChevronRight size={17} /></button>
       </div>
     </div>
     <div className="alumni-window" id={id} aria-live="off"
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)} onBlurCapture={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false); }}
       onTouchStart={e => { touchX.current = e.touches[0].clientX; }}
       onTouchEnd={e => { if (touchX.current !== null) { const delta = e.changedTouches[0].clientX - touchX.current; if (Math.abs(delta) > 40) move(delta < 0 ? 1 : -1); } touchX.current = null; }}>
       <div className={`alumni-track${position.animate ? " is-animating" : ""}`}
