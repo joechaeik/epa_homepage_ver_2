@@ -715,6 +715,10 @@ a.alumni-destination:hover { background: #d3e8df22; border-color: #b5ddcc88; }
 .professor-timeline strong { font-size: .94rem; font-weight: 650; }
 .professor-timeline p { color: #5e7272; font-size: .83rem; line-height: 1.5; margin: 5px 0 0; }
 .professor-more summary { cursor: pointer; color: #075462; font-weight: 650; padding: 20px 0; }
+@media (min-width: 761px) {
+  .professor-achievement-column { display: flex; flex-direction: column; }
+  .professor-achievement-column > .professor-more { margin-top: auto; }
+}
 .research-topic-header { padding-bottom: 28px; }
 .research-toc-grid { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; min-width: 0; }
 .research-toc-card, .research-toc-empty { aspect-ratio: 4 / 3; min-width: 0; }
