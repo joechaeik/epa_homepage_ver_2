@@ -1,10 +1,16 @@
 // Presentation windows preserve the official original artwork without redrawing it.
 export type AlumniLogoPresentation = {
   white: boolean;
+  dark?: boolean;
+  label?: string;
   crop?: readonly [number, number, number, number, number, number];
   clip?: string;
 };
 export const alumniLogoPresentations: Record<string, AlumniLogoPresentation> = {
+  "/images/alumni-logos/Argonne_National_Laboratory.png": { white: false, dark: true, crop: [974, 125, 360, 0, 105, 93] },
+  "/images/alumni-logos/Shanghai_University.png": { white: false, dark: true, crop: [186, 70, 0, 0, 56, 70] },
+  "/images/alumni-logos/Nanjing_University_of_Science_and_Technology.png": { white: false, dark: true, label: "Nanjing Univ. of Science & Technology", crop: [342, 55, 0, 0, 55, 55] },
+  "/images/alumni-logos/Korea_Railroad_Research_Institute.png": { white: true, label: "KRRI", crop: [286, 36, 0, 0, 79, 36] },
   "/images/alumni-logos/Aekyung_Chemical.svg": {
     "white": true,
     "crop": [

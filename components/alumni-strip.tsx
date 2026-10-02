@@ -17,7 +17,7 @@ function AlumniLogo({ src }: { src: string }) {
     windowStyle = { width: `${90 * width / side}%`, height: `${90 * height / side}%`, clipPath: presentation.clip };
     imageStyle = { width: `${100 * sourceWidth / width}%`, height: `${100 * sourceHeight / height}%`, left: `${-100 * x / width}%`, top: `${-100 * y / height}%` };
   }
-  return <span className={`alumni-mark has-logo is-prepared-logo${presentation.white ? " is-white-logo" : ""}`}>
+  return <span className={`alumni-mark has-logo is-prepared-logo${presentation.white ? " is-white-logo" : ""}${presentation.dark ? " is-dark-logo" : ""}`}>
     {crop ? <span className="alumni-logo-window" style={windowStyle}><img src={src} alt="" style={imageStyle} /></span> : <img src={src} alt="" />}
   </span>;
 }
@@ -112,7 +112,7 @@ function AlumniCarousel({ title, eyebrow, destinations: items, autoplay, interva
           const active = slot >= displayIndex && slot < displayIndex + visible;
           const content = <>
             <AlumniLogo src={item.logo} />
-            <span className={`alumni-name${item.name.length > 24 ? " is-long-name" : ""}`}><strong title={item.name}>{item.name === "Research Center for Eco-Environmental Sciences, CAS" ? "RCEES, CAS" : item.name === "Hefei Institutes of Physical Science, CAS" ? "Hefei Institutes, CAS" : item.name.length > 24 ? item.name.replace(/University/g, "Univ.") : item.name}</strong>{item.alumnus ? <small>{item.alumnus}</small> : null}</span>
+            <span className={`alumni-name${item.name.length > 24 ? " is-long-name" : ""}`}><strong title={item.name}>{alumniLogoPresentations[item.logo]?.label || (item.name === "University of Chinese Academy of Sciences" ? "UCAS" : item.name === "Research Center for Eco-Environmental Sciences, CAS" ? "RCEES, CAS" : item.name === "Hefei Institutes of Physical Science, CAS" ? "Hefei Institutes, CAS" : item.name.length > 24 ? item.name.replace(/University/g, "Univ.") : item.name)}</strong>{item.alumnus ? <small>{item.alumnus}</small> : null}</span>
             {item.link ? <ArrowUpRight className="alumni-arrow" size={14} /> : null}
           </>;
           return <div className="alumni-slide" key={`${copy}-${index}`} aria-hidden={!active} inert={!active} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${count}`}>

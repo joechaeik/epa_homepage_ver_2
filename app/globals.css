@@ -701,6 +701,7 @@ a.alumni-destination:hover { background: #d3e8df22; border-color: #b5ddcc88; }
 .alumni-mark.is-circular-logo img { border-radius: 50%; }
 .alumni-section .alumni-mark.has-logo.is-prepared-logo { background: transparent; border-radius: 50%; padding: 0; overflow: hidden; }
 .alumni-section .alumni-mark.has-logo.is-white-logo { background: #fff; }
+.alumni-section .alumni-mark.has-logo.is-dark-logo { background: #123943; }
 .alumni-mark.is-prepared-logo > img { width: 90%; height: 90%; }
 .alumni-logo-window { position: relative; display: block; overflow: hidden; }
 .alumni-logo-window img { position: absolute; max-width: none; object-fit: fill; }
