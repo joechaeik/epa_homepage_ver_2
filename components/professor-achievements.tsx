@@ -7,7 +7,8 @@ export default function ProfessorAchievements({ settings }: { settings: Settings
             <h3>{settings.professorEducationHeading}</h3>
             <ol className="professor-timeline">{settings.professorEducation.map((item, index) => <li key={`${item.period}-${index}`}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol>
             <h3>{settings.professorCareerHeading}</h3>
-            <ol className="professor-timeline">{settings.professorCareer.map((item, index) => <li key={`${item.period}-${index}`}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol>
+            <ol className="professor-timeline">{settings.professorCareer.slice(0, 6).map((item, index) => <li key={`${item.period}-${index}`}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol>
+            {settings.professorCareer.length > 6 ? <details className="professor-more"><summary>View full career →</summary><ol className="professor-timeline">{settings.professorCareer.slice(6).map((item, index) => <li key={`${item.period}-${index}`}><span>{item.period}</span><div><strong>{item.title}</strong><p>{item.detail}</p></div></li>)}</ol></details> : null}
           </div>
           <div className="professor-achievement-column">
             <h3>{settings.professorAwardsHeading}</h3>
