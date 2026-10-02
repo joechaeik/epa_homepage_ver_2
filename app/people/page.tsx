@@ -55,7 +55,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
               A community connected by a commitment to scientific discovery.
             </p>
           </div>
-          <PeopleBrowser key={requestedCategory || "All"} initialFilter={requestedCategory} people={people.filter((p) => p.id !== pi?.id)} />
+          <PeopleBrowser key={requestedCategory || "All"} initialFilter={requestedCategory} alumniListUpdated={settings.alumniListUpdated} people={people.filter((p) => p.id !== pi?.id)} />
         </div>
       </section>
       <section className="section" id="lab-life">

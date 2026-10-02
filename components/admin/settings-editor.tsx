@@ -3,8 +3,13 @@ import { Save, Check } from "lucide-react";
 import HeroEditor, { type HeroPicker } from "./hero-editor";
 import { mergeSettingsScope, type SettingsScope } from "@/lib/heroes";
 import type { Settings, SettingsItem } from "@/lib/content-model";
-type Field = { key: keyof Settings; label: string; area?: boolean };
+type Field = { key: keyof Settings; label: string; area?: boolean; type?: "date" };
 const groups: { title: string; description: string; fields: Field[] }[] = [
+  {
+    title: "동문 목록",
+    description: "People 동문 명단에 한 번 표시하는 자료 갱신 날짜입니다. 개별 소속을 확인한 날짜와 구분합니다. 인물별 정보는 구성원에서 편집하세요.",
+    fields: [{ key: "alumniListUpdated", label: "동문 자료 갱신 날짜", type: "date" }],
+  },
   {
     title: "Home 연구 성과",
     description: "Research influence·Wonyong Choi 문구와 수치는 Home과 Publications 히어로가 함께 사용합니다. 공개 반영하면 두 페이지에 적용됩니다. 논문 수는 공개 목록에서 자동 계산됩니다.",
@@ -87,7 +92,7 @@ export default function SettingsEditor({
     <div className="settings-actions">
       <button className="button outline small" type="button" disabled={busy} onClick={() => onSave("draft", scope)}><Save size={15} />{label} 초안 저장</button>
       <button className="button small" type="button" disabled={busy} onClick={() => onSave("publish", scope)}><Check size={15} />{label} 공개 반영</button>
-      <a className="text-link" href={`/admin/preview?page=${scope === "professor" ? "people" : "home"}`} target="_blank" rel="noreferrer">저장한 초안 보기 ↗</a>
+      <a className="text-link" href={`/admin/preview?page=${scope === "professor" || scope === "alumniList" ? "people" : "home"}`} target="_blank" rel="noreferrer">저장한 초안 보기 ↗</a>
     </div></>;
   }
   return (
@@ -122,6 +127,7 @@ export default function SettingsEditor({
                 ) : (
                   <input
                     id={"setting-" + f.key}
+                    type={f.type || "text"}
                     value={String(value[f.key])}
                     onChange={(e) =>
                       onChange({ ...value, [f.key]: e.target.value })
@@ -131,6 +137,7 @@ export default function SettingsEditor({
               </div>
             ))}
             {g.title === "Home 연구 성과" ? sectionActions("homeEvidence", "성과 영역") : null}
+            {g.title === "동문 목록" ? sectionActions("alumniList", "동문 목록") : null}
           </section>
         ))}
         <section className="admin-panel settings-group">

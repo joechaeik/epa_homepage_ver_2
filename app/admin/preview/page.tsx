@@ -11,6 +11,8 @@ import ResearchPage from "@/components/research-page";
 import ResearchTopic from "@/components/research-topic";
 import { SiteFrame } from "@/components/site-frame";
 import { heroPages, type HeroPage } from "@/lib/content-model";
+import PeopleBrowser from "@/components/people-browser";
+import { comparePeople } from "@/lib/people-order";
 export const dynamic = "force-dynamic";
 export const metadata = {
   title: "초안 미리보기",
@@ -42,7 +44,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
         : <ResearchPage settings={data.settings.draft} records={records} preview />
       : page === "join" ? <JoinPage settings={data.settings.draft} records={records} /> : <SiteFrame settings={data.settings.draft}>
         <Hero settings={data.settings.draft} page={page} />
-        {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview /><ProfessorAchievements settings={data.settings.draft} /></> : null}
+        {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview /><ProfessorAchievements settings={data.settings.draft} /><section className="team-section" id="team-members"><div className="section"><div className="section-heading"><div><p className="eyebrow">RESEARCH COMMUNITY</p><h2>Meet our team</h2></div><p>A community connected by a commitment to scientific discovery.</p></div><PeopleBrowser alumniListUpdated={data.settings.draft.alumniListUpdated} people={records.filter(r => r.kind === "people" && r.category !== "Principal investigator").sort((a, b) => comparePeople(a, b, data.settings.draft.peopleSortDirection))} /></div></section></> : null}
         {page !== "people" ? <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
         </section> : null}
       </SiteFrame>}

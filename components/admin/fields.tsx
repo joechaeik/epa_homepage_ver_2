@@ -68,6 +68,9 @@ export const fields: Record<Kind, Field[]> = {
   people: [
     { key: "title", label: "이름 *" },
     { key: "role", label: "직위 / 과정" },
+    { key: "membershipHistory", label: "학위·졸업 연도 / 연구실 활동 기간", type: "textarea", hint: "동문은 Ph.D. · 2015, M.Sc. · 2011, Postdoctoral researcher · 2024–2026 등을 한 줄씩 입력하세요. 학위 수여기관이나 확인되지 않은 경력은 추정하지 마세요. 비워두면 기존 직위 / 과정을 표시합니다." },
+    { key: "affiliation", label: "자료에 기재된 소속", hint: "기관·캠퍼스명만 입력하세요. 주소는 제외하고, 소속이 없거나 자료가 충돌하면 확인 후 입력하세요." },
+    { key: "affiliationPosition", label: "소속 기관의 직위", hint: "자료에 명시된 직위만 입력하세요. 기관명으로 담당 업무를 추정하지 마세요." },
     { key: "image", label: "프로필 사진", type: "image" },
     { key: "imageAlt", label: "사진 설명" },
     { key: "email", label: "이메일", type: "email" },

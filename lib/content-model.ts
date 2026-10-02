@@ -77,6 +77,9 @@ export const entrySchema = z.object({
   source: url,
   email: z.union([z.literal(""), z.string().email()]).default(""),
   role: short,
+  membershipHistory: z.string().trim().max(1000).default(""),
+  affiliation: z.string().trim().max(1000).default(""),
+  affiliationPosition: short,
   tags: z.string().max(500).default(""),
   relatedPublicationIds: z.array(z.string().max(120)).max(30).default([]),
   tocPublicationIds: z.array(z.string().min(1).max(120)).max(5).refine(ids => new Set(ids).size === ids.length, "TOC 논문은 중복 선택할 수 없습니다.").default([]),
@@ -193,6 +196,7 @@ export const settingsSchema = z.object({
   alumniInterval: z.coerce.number().int().min(2).max(15).default(5),
   alumniDirection: z.enum(["left", "right"]).default("right"),
   alumniHeading: short.default("Where our alumni go"),
+  alumniListUpdated: z.string().refine(validDate, "동문 목록 갱신 날짜를 확인해 주세요.").default(""),
   alumniDestinations: z.array(alumniDestinationSchema).max(30).default([
     { name: "Sookmyung Women's University", alumnus: "Wooyul Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4211" },
     { name: "Samsung Electronics", alumnus: "Sujeong Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4237" },
