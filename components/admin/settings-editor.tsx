@@ -142,10 +142,10 @@ export default function SettingsEditor({
         ))}
         <section className="admin-panel settings-group">
           <h2>동문 진로 배너</h2>
-          <p>기관·졸업생·로고·링크와 순환 설정은 Home과 People이 함께 사용합니다. 공개 반영하면 표시 중인 두 페이지에 동시에 적용됩니다.</p>
+          <p>기관·로고·링크와 순환 설정은 Home과 People이 함께 사용합니다. 같은 기관은 한 번만 등록하고, 졸업생 이름을 비워두면 기관명만 표시됩니다. 공개 반영하면 두 페이지에 동시에 적용됩니다.</p>
           <div className="form-field"><label htmlFor="alumni-show-home">Home 표시</label><select id="alumni-show-home" value={String(value.alumniShowHome)} onChange={e => onChange({ ...value, alumniShowHome: e.target.value === "true" })}><option value="true">표시</option><option value="false">숨김</option></select></div>
           <div className="form-field"><label htmlFor="alumni-show-people">People 표시</label><select id="alumni-show-people" value={String(value.alumniShowPeople)} onChange={e => onChange({ ...value, alumniShowPeople: e.target.value === "true" })}><option value="true">표시</option><option value="false">숨김</option></select></div>
-          <p>Home 히어로 안에서 자동 순환합니다. PC는 최대 5개, 태블릿은 3개, 모바일은 1~2개가 보입니다. 기관 추가·순서·로고·링크를 관리할 수 있습니다.</p>
+          <p>Home 히어로 안에서 자동 순환합니다. PC는 최대 6개, 태블릿은 3개, 모바일은 1~2개가 보입니다. 기관은 최대 60개까지 등록하고 순서·로고·링크를 관리할 수 있습니다.</p>
           <div className="form-field"><label htmlFor="alumni-eyebrow">상단 문구 (Alumni pathways)</label><input id="alumni-eyebrow" value={value.alumniEyebrow} onChange={e => onChange({ ...value, alumniEyebrow: e.target.value })} /></div>
           <div className="form-field"><label htmlFor="alumni-heading">배너 제목</label><input id="alumni-heading" value={value.alumniHeading} onChange={e => onChange({ ...value, alumniHeading: e.target.value })} /></div>
           <div className="form-field"><label htmlFor="alumni-autoplay">자동 순환</label><select id="alumni-autoplay" value={String(value.alumniAutoplay)} onChange={e => onChange({ ...value, alumniAutoplay: e.target.value === "true" })}><option value="true">사용</option><option value="false">사용 안 함</option></select></div>
@@ -153,10 +153,10 @@ export default function SettingsEditor({
           <div className="form-field"><label htmlFor="alumni-direction">자동 이동 방향</label><select id="alumni-direction" value={value.alumniDirection} onChange={e => onChange({ ...value, alumniDirection: e.target.value as Settings["alumniDirection"] })}><option value="right">오른쪽으로 이동 (PPT 기준)</option><option value="left">왼쪽으로 이동</option></select></div>
           {value.alumniDestinations.map((item, index) => <div className="settings-repeat-item" key={index}>
             <div className="settings-repeat-heading"><strong>{index + 1}. {item.name || "새 기관"}</strong><div className="settings-repeat-controls"><button className="button outline small" type="button" disabled={index === 0} onClick={() => moveItem("alumniDestinations", index, -1)}>위로</button><button className="button outline small" type="button" disabled={index === value.alumniDestinations.length - 1} onClick={() => moveItem("alumniDestinations", index, 1)}>아래로</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, alumniDestinations: value.alumniDestinations.filter((_, i) => i !== index) })}>삭제</button></div></div>
-            {([ ["name", "기관명"], ["alumnus", "졸업생"], ["link", "졸업생 소개 링크"], ["logo", "로고 이미지 URL"] ] as const).map(([key, label]) => <div className="form-field" key={key}><label htmlFor={`alumni-${index}-${key}`}>{label}</label><input id={`alumni-${index}-${key}`} value={item[key]} onChange={e => onChange({ ...value, alumniDestinations: value.alumniDestinations.map((entry, i) => i === index ? { ...entry, [key]: e.target.value } : entry) })} /></div>)}
+            {([ ["name", "기관명"], ["alumnus", "졸업생 (선택·비워두면 생략)"], ["link", "기관 링크"], ["logo", "로고 이미지 URL"] ] as const).map(([key, label]) => <div className="form-field" key={key}><label htmlFor={`alumni-${index}-${key}`}>{label}</label><input id={`alumni-${index}-${key}`} value={item[key]} onChange={e => onChange({ ...value, alumniDestinations: value.alumniDestinations.map((entry, i) => i === index ? { ...entry, [key]: e.target.value } : entry) })} /></div>)}
             <button className="button outline small" type="button" onClick={() => onPick(`alumni:${index}`)}>미디어 보관함에서 로고 선택</button>
           </div>)}
-          <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 30} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
+          <button className="button outline small" type="button" disabled={value.alumniDestinations.length >= 60} onClick={() => onChange({ ...value, alumniDestinations: [...value.alumniDestinations, { name: "", alumnus: "", logo: "", link: "" }] })}>기관 추가</button>
           {sectionActions("alumni", "동문 배너")}
           <a className="text-link" href="/admin/preview?page=people" target="_blank" rel="noreferrer">People 동문 배너 초안 보기 ↗</a>
         </section>

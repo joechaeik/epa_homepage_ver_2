@@ -697,8 +697,19 @@ a.alumni-destination:hover { background: #d3e8df22; border-color: #b5ddcc88; }
 .alumni-mark { display: grid; place-items: center; flex: 0 0 37px; width: 37px; height: 37px; border-radius: 50%; background: #c9eece13; color: #bfe5c6; }
 .alumni-mark.has-logo { background: #fff; border-radius: 3px; flex-basis: 48px; width: 48px; height: 42px; padding: 4px; }
 .alumni-mark img { width: 100%; height: 100%; object-fit: contain; }
+.alumni-section .alumni-mark.has-logo.is-circular-logo { background: transparent; border-radius: 50%; padding: 0; }
+.alumni-mark.is-circular-logo img { border-radius: 50%; }
+.alumni-section .alumni-mark.has-logo.is-prepared-logo { background: transparent; border-radius: 50%; padding: 0; overflow: hidden; }
+.alumni-section .alumni-mark.has-logo.is-white-logo { background: #fff; }
+.alumni-mark.is-prepared-logo > img { width: 90%; height: 90%; }
+.alumni-logo-window { position: relative; display: block; overflow: hidden; }
+.alumni-logo-window img { position: absolute; max-width: none; object-fit: fill; }
+.alumni-section .alumni-mark.has-logo:is(.is-prepared-logo, .is-circular-logo) { flex-basis: 36px; width: 36px; height: 36px; }
+@media (min-width: 761px) and (max-width: 1050px) { .alumni-section .alumni-mark.has-logo:is(.is-prepared-logo, .is-circular-logo) { flex-basis: 42px; width: 42px; height: 42px; } }
+@media (max-width: 760px) { .alumni-section .alumni-mark.has-logo:is(.is-prepared-logo, .is-circular-logo) { flex-basis: 32px; width: 32px; height: 32px; } }
 .alumni-name { min-width: 0; }
 .alumni-name strong { display: block; font-size: .79rem; font-weight: 550; line-height: 1.4; overflow-wrap: anywhere; }
+.alumni-name.is-long-name strong { font-size: .7rem; }
 .alumni-name small { display: block; font-size: .68rem; color: #b3cac3; margin-top: 3px; }
 .alumni-arrow { flex-shrink: 0; margin-left: auto; color: #a4c9bb; }
 @media (prefers-reduced-motion: reduce) { .alumni-track.is-animating { transition: none; } }

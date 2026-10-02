@@ -197,7 +197,7 @@ export const settingsSchema = z.object({
   alumniDirection: z.enum(["left", "right"]).default("right"),
   alumniHeading: short.default("Where our alumni go"),
   alumniListUpdated: z.string().refine(validDate, "동문 목록 갱신 날짜를 확인해 주세요.").default(""),
-  alumniDestinations: z.array(alumniDestinationSchema).max(30).default([
+  alumniDestinations: z.array(alumniDestinationSchema).max(60).default([
     { name: "Sookmyung Women's University", alumnus: "Wooyul Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4211" },
     { name: "Samsung Electronics", alumnus: "Sujeong Kim", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4237" },
     { name: "KIST", alumnus: "Gunhee Moon", logo: "", link: "https://epa.kentech.ac.kr/mboard_3_4/4237" },
