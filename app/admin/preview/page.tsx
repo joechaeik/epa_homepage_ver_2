@@ -4,6 +4,7 @@ import { adminIdentity } from "@/lib/admin-auth";
 import { adminContent } from "@/lib/store";
 import HomePage from "@/components/home-page";
 import Hero from "@/components/hero";
+import ProfessorProfile from "@/components/professor-profile";
 import ProfessorAchievements from "@/components/professor-achievements";
 import PeopleAlumni from "@/components/people-alumni";
 import JoinPage from "@/components/join-page";
@@ -28,6 +29,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
   const page: HeroPage = heroPages.includes(requested as HeroPage) ? requested as HeroPage : "home";
   const records = data.records.filter(r => !r.archived).map(r => ({ ...r.draft, id: r.id, kind: r.kind }));
   if (requested === "lab-life") return <><div className="preview-banner" lang="ko">저장된 연구실 사진 초안 미리보기 · 공개 반영한 사진만 홈페이지에 표시됩니다. <Link href="/admin">관리자로 돌아가기 →</Link></div><LabLifePage settings={data.settings.draft} records={records} /></>;
+  const professor = records.find(r => r.kind === "people" && r.category === "Principal investigator");
   const topic = page === "research" ? records.find(r => r.kind === "research" && r.id === topicId) : undefined;
   return (
     <>
@@ -46,7 +48,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
         : <ResearchPage settings={data.settings.draft} records={records} preview />
       : page === "join" ? <JoinPage settings={data.settings.draft} records={records} /> : <SiteFrame settings={data.settings.draft}>
         <Hero settings={data.settings.draft} page={page} />
-        {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview /><ProfessorAchievements settings={data.settings.draft} /><section className="team-section" id="team-members"><div className="section"><div className="section-heading"><div><p className="eyebrow">RESEARCH COMMUNITY</p><h2>Meet our team</h2></div><p>A community connected by a commitment to scientific discovery.</p></div><PeopleBrowser alumniListUpdated={data.settings.draft.alumniListUpdated} people={records.filter(r => r.kind === "people" && r.category !== "Principal investigator").sort((a, b) => comparePeople(a, b, data.settings.draft.peopleSortDirection))} /></div></section></> : null}
+        {page === "people" ? <><PeopleAlumni settings={data.settings.draft} preview />{professor ? <ProfessorProfile professor={professor} settings={data.settings.draft} /> : null}<ProfessorAchievements settings={data.settings.draft} /><section className="team-section" id="team-members"><div className="section"><div className="section-heading"><div><p className="eyebrow">RESEARCH COMMUNITY</p><h2>Meet our team</h2></div><p>A community connected by a commitment to scientific discovery.</p></div><PeopleBrowser alumniListUpdated={data.settings.draft.alumniListUpdated} people={records.filter(r => r.kind === "people" && r.category !== "Principal investigator").sort((a, b) => comparePeople(a, b, data.settings.draft.peopleSortDirection))} /></div></section></> : null}
         {page !== "people" ? <section className="section"><p>Hero preview · Content below this section remains unchanged.</p>
         </section> : null}
       </SiteFrame>}

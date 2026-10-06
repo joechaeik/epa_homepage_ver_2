@@ -3,14 +3,16 @@ import { useState } from "react";
 import { Mail, ArrowUpRight, UserRound } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { PublicEntry } from "@/lib/content-model";
-export default function PeopleBrowser({ people, initialFilter = "All", alumniListUpdated = "" }: { people: PublicEntry[]; initialFilter?: string; alumniListUpdated?: string }) {
-  const [filter, setFilter] = useState(people.some(p => p.category === initialFilter) ? initialFilter : "All");
-  const categories = [
-    "All",
-    ...new Set(people.map((p) => p.category).filter(Boolean)),
-  ];
-  const shown = people.filter((p) => filter === "All" || p.category === filter);
-  const showAlumniNote = (filter === "All" || filter === "Alumni") && people.some(p => p.category === "Alumni");
+export default function PeopleBrowser({ people, initialFilter = "Graduate students", alumniListUpdated = "" }: { people: PublicEntry[]; initialFilter?: string; alumniListUpdated?: string }) {
+  const groupOf = (p: PublicEntry) => p.category === "Alumni" ? p.alumniGroup || "Alumni" : p.category;
+  const available = new Set(people.map(groupOf).filter(Boolean));
+  const preferred = ["Graduate students", "Researchers", "Korean Alumni", "International Alumni", "Visitors"];
+  const categories = [...preferred.filter(c => available.has(c)), ...[...available].filter(c => !preferred.includes(c))];
+  // Preserve old Alumni links while opening the first available alumni group.
+  const requested = initialFilter === "Alumni" ? categories.find(c => c.includes("Alumni")) : initialFilter;
+  const [filter, setFilter] = useState(requested && available.has(requested) ? requested : categories[0] || "");
+  const shown = people.filter((p) => groupOf(p) === filter);
+  const showAlumniNote = filter.includes("Alumni");
   const updatedLabel = alumniListUpdated ? new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(alumniListUpdated + "T00:00:00Z")) : "";
   return (
     <>
@@ -18,7 +20,7 @@ export default function PeopleBrowser({ people, initialFilter = "All", alumniLis
         <TabsList>
           {categories.map((c) => (
             <TabsTrigger value={c} key={c}>
-              {c === "All" ? "Everyone" : c}
+              {c}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -35,7 +37,7 @@ export default function PeopleBrowser({ people, initialFilter = "All", alumniLis
               </div>
             )}
             <div className="person-info">
-              <p className="eyebrow">{p.category}</p>
+              <p className="eyebrow">{groupOf(p)}</p>
               <h3>{p.title}</h3>
               <p className="person-role">{p.membershipHistory || p.role}</p>
               {p.affiliation || p.affiliationPosition ? <p className="person-affiliation">{p.affiliation}{p.affiliation && p.affiliationPosition ? <br /> : null}{p.affiliationPosition ? <span>{p.affiliationPosition}</span> : null}</p> : null}

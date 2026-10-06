@@ -78,6 +78,7 @@ export const entrySchema = z.object({
   email: z.union([z.literal(""), z.string().email()]).default(""),
   role: short,
   membershipHistory: z.string().trim().max(1000).default(""),
+  alumniGroup: z.enum(["", "Korean Alumni", "International Alumni"]).default(""),
   affiliation: z.string().trim().max(1000).default(""),
   affiliationPosition: short,
   tags: z.string().max(500).default(""),
@@ -88,6 +89,8 @@ export const entrySchema = z.object({
 });
 export type Entry = z.infer<typeof entrySchema>;
 export function entryProblem(kind: Kind, data: Entry): string | null {
+  if (kind === "people" && data.category === "Alumni" && !data.alumniGroup)
+    return "동문 구분에서 Korean Alumni 또는 International Alumni를 선택해 주세요.";
   if (kind === "research" && data.tocPublicationIds.some(id => !data.relatedPublicationIds.includes(id)))
     return "TOC 그래픽은 이 연구 분야의 관련 논문 중에서 선택해 주세요.";
   if (kind === "publications" && (!data.authors || !data.journal))
@@ -210,6 +213,8 @@ export const settingsSchema = z.object({
   ]),
   professorScholarUrl: url.default("https://scholar.google.com/citations?user=BvtyVgIAAAAJ"),
   professorCvUrl: url.default("/files/wonyong-choi-cv-2025.pdf"),
+  professorCvKorUrl: url.default(""),
+  professorWosUrl: url.default(""),
   professorAchievementsEyebrow: short.default("Wonyong Choi"),
   professorAchievementsTitle: short.default("Academic career & recognition"),
   professorAchievementsDescription: short.default("Education, research leadership, and selected honors."),

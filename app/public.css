@@ -1301,12 +1301,12 @@
     display: none;
   }
   .pi-links-mobile {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
     align-items: center;
-    gap: 12px;
+    column-gap: 12px;
+    row-gap: 4px;
     margin-top: 16px;
-    flex-wrap: nowrap;
   }
   .pi-links-mobile > a {
     min-height: 44px;
@@ -1314,6 +1314,7 @@
   }
   .pi-links-mobile > .text-link {
     padding: 8px 4px;
+    font-size: .8rem;
   }
   .pi-links-mobile > .button {
     width: auto;
@@ -1389,3 +1390,5 @@
 .photo-caption small {
   font-size: 0.875rem !important;
 }
+
+@media (max-width: 360px) { .pi-links-mobile { column-gap: 8px; } .pi-links-mobile > .text-link { font-size: .75rem; } }

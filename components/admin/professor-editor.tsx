@@ -3,7 +3,7 @@ import { Save, Check } from "lucide-react";
 import type { Settings } from "@/lib/content-model";
 type CareerListKey = "professorEducation" | "professorCareer" | "professorAwards";
 export default function ProfessorEditor({ value, onChange, onPick, onSave, busy }: {
-  value: Settings; onChange: (v: Settings) => void; onPick: () => void;
+  value: Settings; onChange: (v: Settings) => void; onPick: (language: "en" | "kor") => void;
   onSave: (intent: "draft" | "publish") => void; busy: boolean;
 }) {
   function updateCareer(key: CareerListKey, index: number, field: "period" | "title" | "detail", text: string) {
@@ -21,10 +21,13 @@ export default function ProfessorEditor({ value, onChange, onPick, onSave, busy 
   return <div className="settings-page professor-editor"><div className="settings-form">
         <section className="admin-panel settings-group">
           <h2>교수 프로필 링크</h2>
-          <p>Google Scholar와 People 페이지의 CV 다운로드 링크를 관리합니다. 새 CV를 업로드한 뒤 보관함에서 선택하면 교체됩니다.</p>
+          <p>Web of Science·Google Scholar와 영문·국문 CV를 관리합니다. 연락처와 ORCID는 구성원 메뉴의 교수 프로필에서 수정합니다.</p>
+          <div className="form-field"><label htmlFor="professor-wos-url">Web of Science URL</label><input id="professor-wos-url" value={value.professorWosUrl} onChange={e => onChange({ ...value, professorWosUrl: e.target.value })} /></div>
           <div className="form-field"><label htmlFor="professor-scholar-url">Google Scholar URL</label><input id="professor-scholar-url" value={value.professorScholarUrl} onChange={e => onChange({ ...value, professorScholarUrl: e.target.value })} /></div>
-          <div className="form-field"><label htmlFor="professor-cv-url">CV PDF URL</label><input id="professor-cv-url" value={value.professorCvUrl} onChange={e => onChange({ ...value, professorCvUrl: e.target.value })} /></div>
-          <div className="settings-repeat-controls"><button className="button outline small" type="button" onClick={() => onPick()}>미디어 보관함에서 CV 선택</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, professorCvUrl: "" })}>CV 링크 비우기</button></div>
+          {([ ["professorCvUrl", "en", "영문 CV (EN)"], ["professorCvKorUrl", "kor", "국문 CV (KOR)"] ] as const).map(([key, language, label]) => <div key={key}>
+            <div className="form-field"><label htmlFor={`professor-cv-${language}`}>{label} PDF URL</label><input id={`professor-cv-${language}`} value={value[key]} onChange={e => onChange({ ...value, [key]: e.target.value })} /></div>
+            <div className="settings-repeat-controls"><button className="button outline small" type="button" onClick={() => onPick(language)}>미디어 보관함에서 {label} 선택</button><button className="button outline small" type="button" onClick={() => onChange({ ...value, [key]: "" })}>{label} 링크 비우기</button></div>
+          </div>)}
         </section>
         <section className="admin-panel settings-group">
           <h2>교수 성과</h2>

@@ -24,7 +24,7 @@ export default function ResearchTopic({ settings, records, topic, preview = fals
         {topic.image ? <figure className="research-topic-image"><img src={topic.image} alt={topic.imageAlt || topic.title} />{topic.imageAlt ? <figcaption>{topic.imageAlt}</figcaption> : null}</figure> : null}
       </div>
       {related.length ? <section className="section research-topic-papers">
-        <div className="section-heading"><div><p className="eyebrow">SELECTED PUBLICATIONS</p><h2>Related publications</h2></div><Link className="text-link" href="/publications">All publications <ArrowUpRight size={17} /></Link></div>
+        <div className="section-heading"><div><p className="eyebrow">SELECTED PUBLICATIONS</p><h2>Recent publications</h2></div><Link className="text-link" href="/publications">All publications <ArrowUpRight size={17} /></Link></div>
         <div className="publication-list">{related.map(paper => <PublicationRow key={paper.id} entry={paper} compact />)}</div>
       </section> : null}
     </article>

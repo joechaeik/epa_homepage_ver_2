@@ -5,7 +5,7 @@ const sectionKeys = {
   homeEvidence: ["homeInfluenceLabel", "homeHIndex", "homeHIndexNote", "homeHcrLabel", "homeHcrYears", "homeHcrNote", "homePublicationsLabel", "homeFacilitiesLabel", "homeFacilitiesUrl"],
   alumni: ["alumniHeading", "alumniEyebrow", "alumniDestinations", "alumniAutoplay", "alumniInterval", "alumniDirection", "alumniShowHome", "alumniShowPeople"],
   alumniList: ["alumniListUpdated"],
-  professor: ["professorScholarUrl", "professorCvUrl", "professorAchievementsEyebrow", "professorAchievementsTitle", "professorAchievementsDescription", "professorEducationHeading", "professorCareerHeading", "professorAwardsHeading", "professorEducation", "professorCareer", "professorAwards"],
+  professor: ["professorScholarUrl", "professorCvUrl", "professorCvKorUrl", "professorWosUrl", "professorAchievementsEyebrow", "professorAchievementsTitle", "professorAchievementsDescription", "professorEducationHeading", "professorCareerHeading", "professorAwardsHeading", "professorEducation", "professorCareer", "professorAwards"],
 } as const satisfies Record<string, readonly (keyof Settings)[]>;
 const orderKeys = ["peopleSortDirection", "newsSortDirection", "publicationsSortDirection", "photosSortDirection"] as const;
 export const homeHeroKeys = ["heroTitle", "heroDescription", "heroImage", "heroImageAlt", "heroPosition", "heroPositionY", "heroEyebrow", "heroAccent", "heroCaption", "heroButtonText", "heroButtonLink"] as const;

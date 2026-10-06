@@ -179,6 +179,12 @@ export function EntryFields({
           ]}
         />
       </div>
+      {kind === "people" && data.category === "Alumni" ? <div className="form-field">
+        <label>동문 구분</label>
+        <Choice label="동문 구분" value={data.alumniGroup || "none"} onChange={v => setData({ ...data, alumniGroup: v === "none" ? "" : v as Entry["alumniGroup"] })}
+          options={[{ value: "none", label: "확인 필요" }, { value: "Korean Alumni", label: "Korean Alumni · 한국인" }, { value: "International Alumni", label: "International Alumni · 비한국인" }]} />
+        <p className="admin-note">국적 기준으로 구분합니다. 해외 소속 한국인은 Korean Alumni에 포함됩니다. 학위·박사후연구·방문연구 경력은 아래 활동 기간에 유지하세요.</p>
+      </div> : null}
       {fields[kind].map((f) => (
         <div className="form-field" key={f.key}>
           <label htmlFor={"edit-" + f.key}>{f.label}</label>

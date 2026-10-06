@@ -202,7 +202,7 @@ export default function AdminWorkspace({
   } | null>(null);
   const [settings, setSettings] = useState(initial.settings.draft);
   const [picker, setPicker] = useState<
-    "image" | "pdf" | HeroPicker | "intro" | "professorCv" | "joinPhoto" | `alumni:${number}` | null
+    "image" | "pdf" | HeroPicker | "intro" | "professorCv" | "professorCvKor" | "joinPhoto" | `alumni:${number}` | null
   >(null);
   const [confirm, setConfirm] = useState<{
     record: RecordItem;
@@ -485,8 +485,8 @@ export default function AdminWorkspace({
       }));
     else if (picker === "joinPhoto")
       setSettings(s => ({ ...s, joinContent: { ...s.joinContent, photo: a.url, photoAlt: a.alt || a.name } }));
-    else if (picker === "professorCv")
-      setSettings((s) => ({ ...s, professorCvUrl: a.url }));
+    else if (picker === "professorCv" || picker === "professorCvKor")
+      setSettings((s) => ({ ...s, [picker === "professorCv" ? "professorCvUrl" : "professorCvKorUrl"]: a.url }));
     else if (editing && picker)
       setEditing({
         ...editing,
@@ -770,7 +770,7 @@ export default function AdminWorkspace({
                 saveError={settingsSaveError}
               />
             ) : null}
-            {tab === "professor" ? <ProfessorEditor value={settings} onChange={setSettings} onPick={() => setPicker("professorCv")} onSave={intent => saveSettings(intent, "professor")} busy={busy} /> : null}
+            {tab === "professor" ? <ProfessorEditor value={settings} onChange={setSettings} onPick={language => setPicker(language === "en" ? "professorCv" : "professorCvKor")} onSave={intent => saveSettings(intent, "professor")} busy={busy} /> : null}
             {tab === "positions" ? <JoinEditor value={settings} onChange={setSettings} onPick={() => setPicker("joinPhoto")} onSave={intent => saveSettings(intent, "joinContent")} busy={busy} /> : null}
             {tab === "media" ? (
               <MediaLibrary
@@ -1050,7 +1050,7 @@ export default function AdminWorkspace({
         <DialogContent className="media-dialog">
           <DialogHeader>
             <DialogTitle>
-              {picker === "pdf" ? "논문 PDF 선택" : picker === "professorCv" ? "교수 CV PDF 선택" : "이미지 선택"}
+              {picker === "pdf" ? "논문 PDF 선택" : picker === "professorCv" ? "교수 영문 CV PDF 선택" : picker === "professorCvKor" ? "교수 국문 CV PDF 선택" : "이미지 선택"}
             </DialogTitle>
             <DialogDescription>
               파일을 추가하거나 보관함에서 선택하세요.
@@ -1063,7 +1063,7 @@ export default function AdminWorkspace({
             settings={data.settings}
             onUploaded={upload}
             onSelect={chooseAsset}
-            only={picker === "pdf" || picker === "professorCv" ? "pdf" : "image"}
+            only={picker === "pdf" || picker === "professorCv" || picker === "professorCvKor" ? "pdf" : "image"}
           />
         </DialogContent>
       </Dialog>

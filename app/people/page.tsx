@@ -1,5 +1,5 @@
 import ProfessorAchievements from "@/components/professor-achievements";
-import LinkedBiography from "@/components/linked-biography";
+import ProfessorProfile from "@/components/professor-profile";
 import Hero from "@/components/hero";
 import PeopleAlumni from "@/components/people-alumni";
 import { publicContent } from "@/lib/store";
@@ -7,7 +7,6 @@ import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
 import { comparePeople } from "@/lib/people-order";
 import Link from "@/components/site-link";
-import ProfessorLinks from "@/components/professor-links";
 export const metadata = { title: "People" };
 export const dynamic = "force-dynamic";
 export default async function People({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
@@ -21,28 +20,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
     <SiteFrame settings={settings}>
       <Hero settings={settings} page="people" />
       <PeopleAlumni settings={settings} />
-      {pi ? (
-        <section className="section pi-section">
-          <div className="pi-profile">
-            <div className="pi-image">
-              <img src={pi.image} alt={pi.imageAlt || pi.title} />
-              <span>PRINCIPAL INVESTIGATOR</span>
-            </div>
-            <ProfessorLinks email={pi.email} scholarUrl={settings.professorScholarUrl} cvUrl={settings.professorCvUrl} orcidUrl={pi.link} />
-          </div>
-          <div className="pi-copy">
-            <p className="eyebrow">LABORATORY DIRECTOR</p>
-            <h2>
-              {pi.title}
-              <span>, Ph.D.</span>
-            </h2>
-            <p className="pi-role">{pi.role}</p>
-            <LinkedBiography text={pi.body} />
-            <p>{pi.summary}</p>
-            <ProfessorLinks email={pi.email} scholarUrl={settings.professorScholarUrl} cvUrl={settings.professorCvUrl} orcidUrl={pi.link} compact />
-          </div>
-        </section>
-      ) : null}
+      {pi ? <ProfessorProfile professor={pi} settings={settings} /> : null}
       {pi ? <ProfessorAchievements settings={settings} /> : null}
       <section className="team-section" id="team-members">
         <div className="section">

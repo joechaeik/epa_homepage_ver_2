@@ -7,7 +7,8 @@ export default function ResearchToc({ topic, papers }: { topic: PublicEntry; pap
     {Array.from({ length: 5 }, (_, index) => {
       const paper = selected[index];
       return paper ? <a className="research-toc-card" key={paper.id} href={`https://doi.org/${paper.doi}`} target="_blank" rel="noreferrer" title={paper.title} aria-label={`${paper.title} · View publication (opens in a new tab)`}>
-        <img loading="lazy" src={paper.image} alt={paper.imageAlt || `TOC graphic for ${paper.title}`} />
+        <span className="research-toc-image"><img loading="lazy" src={paper.image} alt={paper.imageAlt || `TOC graphic for ${paper.title}`} /></span>
+        <span className="research-toc-caption">{paper.title}</span>
       </a> : <span className="research-toc-empty" key={`empty-${index}`} aria-hidden="true" />;
     })}
   </div>;
