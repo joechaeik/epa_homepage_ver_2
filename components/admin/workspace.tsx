@@ -132,7 +132,7 @@ const descriptions: Record<Tab, string> = {
   people: "교수·연구원·학생 소개와 프로필 사진을 관리합니다.",
   professor: "People의 Academic career & recognition, 학력·경력·수상과 Scholar·CV 링크를 관리합니다.",
   research: "연구 분야별 소개와 키워드, 이미지를 관리합니다.",
-  photos: "홈과 People 페이지에 표시할 연구실 사진을 관리합니다.",
+  photos: "Lab life 페이지의 전체 사진과 홈에 표시할 주요 사진을 관리합니다.",
   positions: "확정된 모집 조건을 등록하고 공개 여부를 관리합니다.",
   media: "사진과 논문 PDF를 업로드하고 콘텐츠에 연결하세요.",
 };
@@ -781,6 +781,7 @@ export default function AdminWorkspace({
             ) : null}
             {currentKind ? (
               <section className="admin-panel content-panel">
+                {currentKind === "photos" ? <p><Link className="text-link" href="/admin/preview?page=lab-life" target="_blank" rel="noopener noreferrer"><Eye size={17} />저장한 연구실 사진 초안 미리보기</Link> · <Link className="text-link" href="/lab-life" target="_blank" rel="noopener noreferrer">공개된 Lab life 보기 ↗</Link></p> : null}
                 <div className="content-toolbar">
                   <div className="search-box">
                     <Search size={18} />

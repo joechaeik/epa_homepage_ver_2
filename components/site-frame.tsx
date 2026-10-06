@@ -29,7 +29,8 @@ export function SiteFrame({
             <h3>Explore</h3>
             <Link href="/research">Research</Link>
             <Link href="/publications">Publications</Link>
-            <Link href="/people">People & lab life</Link>
+            <Link href="/people">People</Link>
+            <Link href="/lab-life">Lab life</Link>
             <Link href="/news">News</Link>
           </div>
           <div>

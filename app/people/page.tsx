@@ -5,10 +5,10 @@ import PeopleAlumni from "@/components/people-alumni";
 import { publicContent } from "@/lib/store";
 import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
-import { compareDisplayOrder, comparePeople } from "@/lib/people-order";
-import { Gallery } from "@/components/site-chrome";
+import { comparePeople } from "@/lib/people-order";
+import Link from "@/components/site-link";
 import ProfessorLinks from "@/components/professor-links";
-export const metadata = { title: "People & Lab Life" };
+export const metadata = { title: "People" };
 export const dynamic = "force-dynamic";
 export default async function People({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const requestedCategory = (await searchParams).category;
@@ -66,7 +66,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
           </div>
           <p>Shared moments from our laboratory archive.</p>
         </div>
-        <Gallery photos={records.filter((r) => r.kind === "photos").sort((a, b) => compareDisplayOrder(a, b, settings.photosSortDirection))} />
+        <Link className="text-link" href="/lab-life">View lab life photos →</Link>
       </section>
       <JoinBanner settings={settings} />
     </SiteFrame>

@@ -29,6 +29,7 @@ const nav = [
   ["Research", "/research"],
   ["Publications", "/publications"],
   ["People", "/people"],
+  ["Lab life", "/lab-life"],
   ["News", "/news"],
 ];
 export function Header({ labFullName }: { labFullName: string }) {

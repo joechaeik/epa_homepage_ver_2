@@ -207,6 +207,7 @@ export default function HomePage({
           </p>
         </div>
         <Gallery photos={photos} />
+        <Link className="text-link lab-life-archive-link" href="/lab-life">View all lab life photos →</Link>
       </section>
       <JoinBanner settings={settings} />
     </SiteFrame>

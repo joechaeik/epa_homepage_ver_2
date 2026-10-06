@@ -1,6 +1,10 @@
 .preserve-lines {
   white-space: pre-line;
 }
+.lab-life-archive-link {
+  display: inline-flex;
+  margin-top: 24px;
+}
 .skip-link {
   position: fixed;
   top: -70px;

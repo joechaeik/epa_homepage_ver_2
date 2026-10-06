@@ -12,6 +12,7 @@ import ResearchTopic from "@/components/research-topic";
 import { SiteFrame } from "@/components/site-frame";
 import { heroPages, type HeroPage } from "@/lib/content-model";
 import PeopleBrowser from "@/components/people-browser";
+import LabLifePage from "@/components/lab-life-page";
 import { comparePeople } from "@/lib/people-order";
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -26,6 +27,7 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
   const { page: requested, topic: topicId } = await searchParams;
   const page: HeroPage = heroPages.includes(requested as HeroPage) ? requested as HeroPage : "home";
   const records = data.records.filter(r => !r.archived).map(r => ({ ...r.draft, id: r.id, kind: r.kind }));
+  if (requested === "lab-life") return <><div className="preview-banner" lang="ko">저장된 연구실 사진 초안 미리보기 · 공개 반영한 사진만 홈페이지에 표시됩니다. <Link href="/admin">관리자로 돌아가기 →</Link></div><LabLifePage settings={data.settings.draft} records={records} /></>;
   const topic = page === "research" ? records.find(r => r.kind === "research" && r.id === topicId) : undefined;
   return (
     <>
