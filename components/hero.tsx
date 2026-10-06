@@ -13,7 +13,7 @@ export default function Hero({ settings, page, children, aside, footer, utility,
     {utility}
     <div className="hero-inner">
       <div className="hero-copy">
-      <p className="eyebrow light">{home ? settings.heroEyebrow : "EPA LABORATORY · KENTECH"}</p>
+      <p className="eyebrow light">{home ? settings.heroEyebrow : page === "lab-life" ? "BEYOND THE BENCH" : "EPA LABORATORY · KENTECH"}</p>
       <Title><span className="preserve-lines">{hero.title}</span>{home && settings.heroAccent ? <><br /><em>{settings.heroAccent}</em></> : null}</Title>
       {hero.subtitle ? <p className="hero-description">{hero.subtitle}</p> : null}
       {children}

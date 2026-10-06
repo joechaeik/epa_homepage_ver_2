@@ -110,9 +110,9 @@ export type RecordItem = {
   updatedAt: string;
 };
 export type PublicEntry = Entry & { id: string; kind: Kind };
-export const heroPages = ["home", "research", "people", "publications", "news", "join"] as const;
+export const heroPages = ["home", "research", "people", "lab-life", "publications", "news", "join"] as const;
 export type HeroPage = (typeof heroPages)[number];
-export const heroLabels: Record<HeroPage, string> = { home: "Home", research: "Research", people: "People", publications: "Publications", news: "News", join: "Join Our Lab" };
+export const heroLabels: Record<HeroPage, string> = { home: "Home", research: "Research", people: "People", "lab-life": "Lab life", publications: "Publications", news: "News", join: "Join Our Lab" };
 export const heroSchema = z.object({
   title: z.string().trim().min(1, "히어로 제목을 입력해 주세요.").max(180),
   subtitle: z.string().max(700).default(""),
@@ -127,6 +127,7 @@ const pageHero = (title: string, subtitle: string, image: string, imageAlt: stri
 const pageHeroesSchema = z.object({
   research: pageHero("Research", "From interfacial charge transfer to environmental transformation, we explore the chemistry that turns light into change.", "/images/main-02.jpg", "Concept illustration of photoenergy research"),
   people: pageHero("People", "Meet the researchers bringing new questions and ideas to photoenergy and environmental chemistry.", "/images/lab-6.jpg", "EPA Lab group photograph, 2025"),
+  "lab-life": pageHero("Lab life", "Shared moments, seminars, and experiences from life at EPA Lab.", "/images/lab-6.jpg", "EPA Lab group photograph, 2025"),
   publications: pageHero("Publications", "Explore recent peer-reviewed work from EPA Lab, connecting photoenergy, catalytic materials, and environmental chemistry.", "/images/main-03.jpg", "Concept illustration of environmental chemistry"),
   news: pageHero("News", "Research developments, recognition, and moments from our laboratory community.", "/images/lab-1.jpg", "EPA Lab seminar, 2025"),
   join: pageHero("Join Our Lab", "Interested in photoenergy, catalysis, or environmental chemistry? Start a conversation about research at EPA Lab.", "/images/lab-2.jpg", "EPA Lab community, 2025"),
