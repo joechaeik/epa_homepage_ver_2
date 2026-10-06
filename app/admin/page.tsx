@@ -41,6 +41,7 @@ export default async function AdminPage({
                 <label htmlFor="admin-password">관리자 비밀번호</label>
                 <input id="admin-password" name="password" type="password" autoComplete="current-password" required />
                 {loginStatus === "failed" ? <p className="form-error" role="alert">비밀번호를 확인해 주세요.</p> : null}
+                {loginStatus === "changed" ? <p role="status">비밀번호가 변경되었습니다. 새 비밀번호로 로그인해 주세요.</p> : null}
                 {loginStatus === "limited" ? <p className="form-error" role="alert">로그인 시도가 많습니다. 1분 후 다시 시도해 주세요.</p> : null}
                 <button className="button" type="submit">관리자 로그인</button>
               </form>

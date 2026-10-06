@@ -1,5 +1,6 @@
 "use client";
 import Link from "@/components/site-link";
+import PasswordChange from "./password-change";
 
 import { useEffect, useState } from "react";
 import {
@@ -544,6 +545,7 @@ export default function AdminWorkspace({
             </div>
             <div>
               {local ? <span className="local-tag">로컬 미리보기</span> : null}
+              {!local ? <PasswordChange /> : null}
               <Link
                 className="text-link"
                 href="/"
@@ -718,6 +720,7 @@ export default function AdminWorkspace({
                                     archive: "보관",
                                     restore: "복원",
                                     unpublish: "공개 해제",
+                                    "password-change": "비밀번호 변경",
                                   } as Record<string, string>
                                 )[a.action] || a.action}{" "}
                                 ·{" "}

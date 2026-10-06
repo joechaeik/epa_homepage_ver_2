@@ -37,3 +37,11 @@ export const audit = sqliteTable("audit", {
   target: text("target").notNull(),
   createdAt: text("created_at").notNull(),
 });
+export const adminCredentials = sqliteTable("admin_credentials", {
+  id: text("id").primaryKey(),
+  passwordSalt: text("password_salt").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  sessionSecret: text("session_secret").notNull(),
+  version: integer("version").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});

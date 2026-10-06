@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { apiError, createAdminSession, passwordLoginAvailable, sessionCookie, verifyAdminPassword } from "@/lib/admin-auth";
+import { apiError, authenticateAdminPassword, passwordLoginAvailable, sessionCookie } from "@/lib/admin-auth";
 import { boundedBody, discardRequestBody } from "@/lib/request-body";
 import { HttpError } from "@/lib/store";
 
@@ -30,9 +30,10 @@ export async function POST(request: Request) {
       key: `admin-login:${request.headers.get("CF-Connecting-IP") || "local"}`,
     });
     if (!success) return redirect(request, "/admin?login=limited");
-    if (!(await verifyAdminPassword(form.get("password") || "")))
+    const session = await authenticateAdminPassword(form.get("password") || "");
+    if (!session)
       return redirect(request, "/admin?login=failed");
-    return redirect(request, "/admin", sessionCookie(await createAdminSession()));
+    return redirect(request, "/admin", sessionCookie(session));
   } catch (error) {
     await discardRequestBody(request);
     const response = apiError(error);

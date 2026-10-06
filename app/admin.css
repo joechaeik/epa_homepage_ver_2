@@ -1391,6 +1391,9 @@
 .admin-toc-editor legend { font-weight: 600; padding: 0 8px; }
 .admin-toc-slot { display: grid; gap: 10px; margin: 18px 0; }
 .admin-toc-slot select { width: 100%; min-width: 0; }
+.admin-password-dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; }
+.admin-password-dialog .admin-password-form { margin-top: 18px; }
+.admin-password-dialog #change-password-hint { font-size: .8rem; color: #61766c; }
 .admin-toc-preview { width: 180px; height: 135px; object-fit: contain; border: 1px solid #dce8de; background: #fff; }
 .settings-career-list h3 { font-size: 1.1rem; margin-bottom: 12px; }
 .settings-table-wrap { max-width: 100%; overflow-x: auto; margin-bottom: 14px; border: 1px solid #dce8de; border-radius: 7px; }
