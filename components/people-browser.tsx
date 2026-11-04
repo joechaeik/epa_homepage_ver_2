@@ -3,13 +3,13 @@ import { useState } from "react";
 import { Mail, ArrowUpRight, UserRound } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { PublicEntry } from "@/lib/content-model";
-export default function PeopleBrowser({ people, initialFilter = "Graduate students", alumniListUpdated = "" }: { people: PublicEntry[]; initialFilter?: string; alumniListUpdated?: string }) {
-  const groupOf = (p: PublicEntry) => p.category === "Alumni" ? p.alumniGroup || "Alumni" : p.category;
+import { currentMemberGroup, isAlumnus, peopleFilter, peopleGroup as groupOf, peopleText } from "@/lib/people-presentation";
+export default function PeopleBrowser({ people, initialFilter = currentMemberGroup, alumniListUpdated = "" }: { people: PublicEntry[]; initialFilter?: string; alumniListUpdated?: string }) {
   const available = new Set(people.map(groupOf).filter(Boolean));
-  const preferred = ["Graduate students", "Researchers", "Korean Alumni", "International Alumni", "Visitors"];
+  const preferred = [currentMemberGroup, "Korean Alumni", "International Alumni", "Visitors"];
   const categories = [...preferred.filter(c => available.has(c)), ...[...available].filter(c => !preferred.includes(c))];
   // Preserve old Alumni links while opening the first available alumni group.
-  const requested = initialFilter === "Alumni" ? categories.find(c => c.includes("Alumni")) : initialFilter;
+  const requested = initialFilter === "Alumni" ? categories.find(c => c.includes("Alumni")) : peopleFilter(initialFilter);
   const [filter, setFilter] = useState(requested && available.has(requested) ? requested : categories[0] || "");
   const shown = people.filter((p) => groupOf(p) === filter);
   const showAlumniNote = filter.includes("Alumni");
@@ -39,11 +39,11 @@ export default function PeopleBrowser({ people, initialFilter = "Graduate studen
             <div className="person-info">
               <p className="eyebrow">{groupOf(p)}</p>
               <h3>{p.title}</h3>
-              <p className="person-role">{p.membershipHistory || p.role}</p>
-              {p.affiliation || p.affiliationPosition ? <p className="person-affiliation">{p.affiliation}{p.affiliation && p.affiliationPosition ? <br /> : null}{p.affiliationPosition ? <span>{p.affiliationPosition}</span> : null}</p> : null}
-              {p.summary ? <p className="person-summary">{p.summary}</p> : null}
+              <p className="person-role">{peopleText(p, p.membershipHistory || p.role)}</p>
+              {p.affiliation || p.affiliationPosition ? <p className="person-affiliation">{peopleText(p, p.affiliation)}{p.affiliation && p.affiliationPosition ? <br /> : null}{p.affiliationPosition ? <span>{peopleText(p, p.affiliationPosition)}</span> : null}</p> : null}
+              {p.summary ? <p className="person-summary">{peopleText(p, p.summary)}</p> : null}
               <div className="person-links">
-                {p.email ? (
+                {p.email && !isAlumnus(p) ? (
                   <a href={"mailto:" + p.email} aria-label={"Email " + p.title}>
                     <Mail size={16} />
                     Email

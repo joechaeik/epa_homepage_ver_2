@@ -1392,3 +1392,77 @@
 }
 
 @media (max-width: 360px) { .pi-links-mobile { column-gap: 8px; } .pi-links-mobile > .text-link { font-size: .75rem; } }
+
+/* Readable primary navigation and direct access to People sections. */
+.site-header > nav[aria-label="Main navigation"] {
+  align-items: center;
+  font-size: 1rem;
+}
+.site-header .people-nav-trigger {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  padding: 12px 0;
+  background: transparent;
+  color: #5b6a6d;
+  font: inherit;
+  cursor: pointer;
+}
+.site-header .people-nav-trigger:is(.active, :hover, [data-state="open"]) {
+  color: var(--teal);
+}
+.site-header .people-nav-trigger.active::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 4px;
+  left: 0;
+  height: 2px;
+  background: var(--teal);
+}
+.site-header .people-nav-trigger:focus-visible,
+.mobile-people-toggle:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 4px;
+}
+.people-nav-trigger[data-state="open"] > svg,
+.mobile-people-toggle[aria-expanded="true"] > svg {
+  transform: rotate(180deg);
+}
+.people-nav-dropdown [role="menuitem"] {
+  padding: 10px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.mobile-sheet nav[aria-label="Mobile navigation"] {
+  font-size: 1.125rem;
+}
+.mobile-people-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.mobile-sheet .mobile-people-links a {
+  padding: 14px 12px;
+  color: var(--teal);
+  font-size: 1rem;
+}
+#professor-profile,
+#team-members {
+  scroll-margin-top: 104px;
+}
+@media (max-width: 760px) {
+  #professor-profile,
+  #team-members { scroll-margin-top: 96px; }
+}

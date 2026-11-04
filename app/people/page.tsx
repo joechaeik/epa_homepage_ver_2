@@ -7,6 +7,7 @@ import { SiteFrame, JoinBanner } from "@/components/site-frame";
 import PeopleBrowser from "@/components/people-browser";
 import { comparePeople } from "@/lib/people-order";
 import Link from "@/components/site-link";
+import { currentMemberGroup, isAlumnus } from "@/lib/people-presentation";
 export const metadata = { title: "People" };
 export const dynamic = "force-dynamic";
 export default async function People({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
@@ -33,7 +34,7 @@ export default async function People({ searchParams }: { searchParams: Promise<{
               A community connected by a commitment to scientific discovery.
             </p>
           </div>
-          <PeopleBrowser key={requestedCategory || "All"} initialFilter={requestedCategory} alumniListUpdated={settings.alumniListUpdated} people={people.filter((p) => p.id !== pi?.id)} />
+          <PeopleBrowser key={requestedCategory || currentMemberGroup} initialFilter={requestedCategory} alumniListUpdated={settings.alumniListUpdated} people={people.filter((p) => p.id !== pi?.id).map(p => isAlumnus(p) ? { ...p, email: "" } : p)} />
         </div>
       </section>
       <section className="section" id="lab-life">

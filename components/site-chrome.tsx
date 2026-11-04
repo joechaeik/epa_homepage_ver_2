@@ -1,9 +1,15 @@
 "use client";
 import Link from "@/components/site-link";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, Menu, ArrowUp, Quote, Copy, Check } from "lucide-react";
+import { ArrowUpRight, Menu, ArrowUp, Quote, Copy, Check, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -32,9 +38,20 @@ const nav = [
   ["Lab life", "/lab-life"],
   ["News", "/news"],
 ];
+const peopleNav = [
+  ["Professor", "/people#professor-profile"],
+  ["Student", "/people?category=Current%20Member#team-members"],
+];
 export function Header({ labFullName }: { labFullName: string }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [peopleExpanded, setPeopleExpanded] = useState(false);
+  const mobilePeopleId = useId();
+  const peopleActive = path === "/people";
+  function setNavigationOpen(next: boolean) {
+    setOpen(next);
+    if (!next) setPeopleExpanded(false);
+  }
   return (
     <>
       <a className="skip-link" href="#main">
@@ -46,7 +63,22 @@ export function Header({ labFullName }: { labFullName: string }) {
           <small>{labFullName}</small>
         </Link>
         <nav aria-label="Main navigation">
-          {nav.map(([label, url]) => (
+          {nav.map(([label, url]) => url === "/people" ? (
+            <DropdownMenu key={url} modal={false}>
+              <DropdownMenuTrigger asChild>
+                <button type="button" className={`people-nav-trigger${peopleActive ? " active" : ""}`} aria-current={peopleActive ? "page" : undefined}>
+                  {label}<ChevronDown size={15} aria-hidden="true" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="people-nav-dropdown" align="start" sideOffset={8}>
+                {peopleNav.map(([name, href]) => (
+                  <DropdownMenuItem key={href} asChild>
+                    <Link href={href}>{name}</Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
             <Link
               key={url}
               href={url}
@@ -61,7 +93,7 @@ export function Header({ labFullName }: { labFullName: string }) {
           <Link className="button small" href="/join-us">
             Join our lab <ArrowUpRight size={16} />
           </Link>
-          <Sheet open={open} onOpenChange={setOpen}>
+          <Sheet open={open} onOpenChange={setNavigationOpen}>
             <SheetTrigger asChild>
               <button
                 className="mobile-menu icon-button"
@@ -74,11 +106,20 @@ export function Header({ labFullName }: { labFullName: string }) {
               <SheetTitle>EPA Lab</SheetTitle>
               <SheetDescription>Explore our laboratory</SheetDescription>
               <nav aria-label="Mobile navigation">
-                {[...nav, ["Join us", "/join-us"]].map(([label, url]) => (
+                {[...nav, ["Join us", "/join-us"]].map(([label, url]) => url === "/people" ? (
+                  <div className="mobile-people-nav" key={url}>
+                    <button type="button" className="mobile-people-toggle" aria-expanded={peopleExpanded} aria-controls={mobilePeopleId} aria-current={peopleActive ? "page" : undefined} onClick={() => setPeopleExpanded(value => !value)}>
+                      {label}<ChevronDown size={18} aria-hidden="true" />
+                    </button>
+                    <div id={mobilePeopleId} className="mobile-people-links" hidden={!peopleExpanded}>
+                      {peopleNav.map(([name, href]) => <Link key={href} href={href} onClick={() => setNavigationOpen(false)}>{name}<ArrowUpRight size={16} aria-hidden="true" /></Link>)}
+                    </div>
+                  </div>
+                ) : (
                   <Link
                     key={url}
                     href={url}
-                    onClick={() => setOpen(false)}
+                    onClick={() => setNavigationOpen(false)}
                     aria-current={path === url ? "page" : undefined}
                   >
                     {label}
