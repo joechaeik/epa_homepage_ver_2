@@ -37,6 +37,8 @@
 }
 .mobile-sheet {
   padding: 34px 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .mobile-sheet nav {
   display: flex;
