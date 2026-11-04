@@ -1468,3 +1468,56 @@
   #professor-profile,
   #team-members { scroll-margin-top: 96px; }
 }
+
+/* A modest readability increase for the team directory, keeping its visual hierarchy. */
+.team-section .section-heading h2 {
+  font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+}
+.team-section .section-heading > p {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+.team-section .eyebrow {
+  font-size: 0.8125rem;
+}
+.team-section .people-tabs {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+}
+.team-section .people-tabs [role="tablist"] {
+  width: max-content;
+  max-width: none;
+  min-height: 40px;
+  height: auto;
+}
+.team-section .people-tabs [role="tab"] {
+  min-height: 34px;
+  height: auto;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.team-section .person-info h3 {
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+.team-section .person-role,
+.team-section .person-affiliation {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+.team-section .person-summary {
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.team-section .person-links a {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.team-section .alumni-list-note {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+@media (max-width: 760px) {
+  .team-section .person-info h3 { font-size: 1.5rem; }
+}
